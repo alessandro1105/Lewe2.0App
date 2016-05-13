@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--THEME COLOR-->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--SPLASH SCREEN-->
+    <color name="splash_screen_background_color">#FFFFFF</color>
 </resources>

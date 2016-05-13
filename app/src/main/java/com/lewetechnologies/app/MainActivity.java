@@ -70,7 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            //avvio l'activity SettingsActivity
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(settingsActivity);
+
             return true;
+
         } else if (id == R.id.action_credits) {
 
             //avvio l'activity CreditsActivity
