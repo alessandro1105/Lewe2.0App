@@ -1,5 +1,6 @@
 package com.lewetechnologies.app;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,16 +51,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
 
@@ -80,6 +71,22 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_credits) {
+
+            //avvio l'activity CreditsActivity
+            Intent creditsActivity = new Intent(this, CreditsActivity.class);
+            startActivity(creditsActivity);
+
+            return true;
+
+        } else if (id == R.id.action_about) {
+
+            //avvio l'activity AboutActivity
+            Intent aboutActivity = new Intent(this, AboutActivity.class);
+            startActivity(aboutActivity);
+
+            return true;
+
         }
 
         return super.onOptionsItemSelected(item);

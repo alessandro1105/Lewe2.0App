@@ -9,7 +9,13 @@
     <string name="action_about">About</string>
 
 
+    <!--ACTIVITY NAME-->
+    <string name="title_activity_about">About</string>
+    <string name="title_activity_credits">Credits</string>
+
 
     <!---GARBAGE-->
     <string name="section_format">Hello World from section: %1$d</string>
+
+
 </resources>
