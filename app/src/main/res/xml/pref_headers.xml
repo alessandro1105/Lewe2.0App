@@ -3,18 +3,17 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.lewetechnologies.app.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.lewetechnologies.app.SettingsActivity2$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general"
-        android:summary="test1345dhedhed"/>
+        android:title="@string/pref_header_general"/>
 
     <header
-        android:fragment="com.lewetechnologies.app.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.lewetechnologies.app.SettingsActivity2$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="com.lewetechnologies.app.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.lewetechnologies.app.SettingsActivity2$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="@string/pref_header_data_sync" />
 

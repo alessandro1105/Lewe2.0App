@@ -1,9 +1,7 @@
 package com.lewetechnologies.app;
 
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 public class CreditsActivity extends AppCompatActivity {
 
@@ -13,20 +11,23 @@ public class CreditsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_credits);
 
         //visualizzo il back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                //NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+    */
 
 
 }

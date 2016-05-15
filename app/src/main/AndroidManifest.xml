@@ -29,20 +29,50 @@
         <activity
             android:name=".CreditsActivity"
             android:label="@string/title_activity_credits"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"></activity>
 
         <!-- ABOUT ACTIVITY -->
         <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity">
+            <intent-filter>
+                <action android:name="com.lewetechnologies.app.intent.activities.AboutActivity" />
 
-        <!-- SETTINGS ACTIVITY -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- SETTINGS MAIN ACTIVITY -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:parentActivityName=".MainActivity" />
+
+        <!-- SETTINGS BAND ACTIVITY -->
+
+        <activity
+            android:name=".BandSettingsActivity"
+            android:label="@string/title_activity_settings_band"
+            android:parentActivityName=".SettingsActivity">
+
+            <intent-filter>
+                <action android:name="com.lewetechnologies.app.intent.activities.BandSettingsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <!-- GARBAGE -->
+        <activity
+            android:name=".SettingsActivity2"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
