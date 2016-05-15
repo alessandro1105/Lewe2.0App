@@ -78,15 +78,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings2) {
-
-            //avvio l'activity SettingsActivity
-            Intent settingsActivity = new Intent(this, SettingsActivity2.class);
-            startActivity(settingsActivity);
-
-            return true;
-
-        } else if (id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
 
             //avvio l'activity SettingsActivity
             Intent settingsActivity = new Intent(this, SettingsActivity.class);

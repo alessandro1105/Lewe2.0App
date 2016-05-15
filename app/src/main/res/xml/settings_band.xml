@@ -1,3 +1,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <Preference
+        android:title="@string/title_activity_settings_band_status"
+        android:summary="Connected (DA CAMBIARE DA SW)">
+
+    </Preference>
+
+    <Preference
+        android:title="@string/title_activity_settings_band_associated"
+        android:summary="Lewe2.0Band (DA CAMBIARE DA SW)">
+    </Preference>
+
+    <Preference
+        android:title="@string/title_activity_settings_band_firmware"
+        android:summary="@string/summary_activity_settings_band_firmware">
+    </Preference>
+
+    <Preference
+        android:title="@string/title_activity_settings_band_search"
+        android:summary="@string/summary_activity_settings_band_search">
+
+        <intent android:action="com.lewetechnologies.app.intent.activities.SearchActivity" />
+    </Preference>
+
 </PreferenceScreen>
