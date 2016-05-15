@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,13 +53,15 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        /*
-        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("EXIT", false)) {
-            //finish();
+        //on click listener exitButton
+        ((ImageButton) findViewById(R.id.exitButton)).setOnClickListener(new View.OnClickListener() {
 
-            Toast.makeText(getApplicationContext(), "MAIN INTENT", Toast.LENGTH_LONG).show();
-        }
-        */
+            public void onClick(View v) {
+                //chiudo l'app al click
+                MainActivity.this.shutdownApp();
+            }
+
+        });
 
     }
 
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             //avvio l'activity SettingsActivity
             Intent settingsActivity = new Intent(this, SettingsActivity.class);
-            startActivity(settingsActivity);
+            startActivityForResult(settingsActivity, Constants.REQUEST_EXIT_CODE);
 
             return true;
 
@@ -105,6 +108,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //controllo richiesta di chiusura app
+        if (requestCode == Constants.REQUEST_EXIT_CODE && resultCode == Constants.RESULT_EXIT_CODE) {
+            //chiudo l'app
+            shutdownApp();
+        }
+    }
+
+    //metodo che chiude l'app e tutti i suoi componenti
+    private void shutdownApp() {
+        //chiudo i servizi attivi
+
+
+        //chiudo l'activity
+        finish();
     }
 
     /**

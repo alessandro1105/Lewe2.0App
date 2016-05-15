@@ -21,7 +21,8 @@
 
     <Preference
         android:title="@string/title_activity_settings_main_exit"
-        android:summary="@string/summary_activity_settings_main_exit">
+        android:summary="@string/summary_activity_settings_main_exit"
+        android:key="exit">
     </Preference>
 
 </PreferenceScreen>

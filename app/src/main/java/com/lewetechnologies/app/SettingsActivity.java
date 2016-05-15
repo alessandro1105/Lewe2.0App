@@ -1,8 +1,11 @@
 package com.lewetechnologies.app;
 
+import android.content.Intent;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -24,23 +27,22 @@ public class SettingsActivity extends AppCompatActivity {
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.settings_main);
 
-             /*
-            Preference myPref = (Preference) findPreference("exit1"); //search by key
-            myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            //on click listener su "Exit" (richiede di chiudere l'app
+            Preference exitPreference = (Preference) findPreference("exit"); //search by key
+            exitPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
 
-                    //getActivity().finish();
-                    //Toast.makeText(DataSyncPreferenceFragment.this.getActivity().getApplicationContext(), "TEST", Toast.LENGTH_LONG).show();
+                    //ritorno la richiesta di chiusura dell'app
+                    Intent exitIntent = new Intent();
+                    SettingsMainPreferenceFragment.this.getActivity().setResult(Constants.RESULT_EXIT_CODE, exitIntent);
+                    SettingsMainPreferenceFragment.this.getActivity().finish();
 
-                    Intent intent = new Intent(DataSyncPreferenceFragment.this.getActivity().getApplicationContext(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("EXIT", true);
-                    startActivity(intent);
 
                     return true;
                 }
             });
-            */
+
         }
     }
 }
