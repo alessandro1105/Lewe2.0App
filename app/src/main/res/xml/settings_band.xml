@@ -7,11 +7,6 @@
     </Preference>
 
     <Preference
-        android:title="@string/title_activity_settings_band_associated"
-        android:summary="Lewe2.0Band (DA CAMBIARE DA SW)">
-    </Preference>
-
-    <Preference
         android:title="@string/title_activity_settings_band_firmware"
         android:summary="@string/summary_activity_settings_band_firmware">
     </Preference>

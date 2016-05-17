@@ -15,7 +15,7 @@
     <string name="title_activity_credits">Credits</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_settings_band">Band</string>
-    <string name="title_activity_search">Search LeweBand</string>
+    <string name="title_activity_search"></string>
 
     <!--SETTINGS MAIN ACTIVITY-->
     <string name="title_activity_settings_main_band">Band</string>
@@ -29,10 +29,9 @@
 
     <!--SETTINGS BAND ACTIVITY -->
     <string name="title_activity_settings_band_status">Status</string>
-    <string name="title_activity_settings_band_associated">Band name</string>
     <string name="title_activity_settings_band_firmware">Firmware</string>
     <string name="summary_activity_settings_band_firmware">2.00 alfa build 15/05/2016 15:15</string>
-    <string name="title_activity_settings_band_search">Serach LeweBand</string>
+    <string name="title_activity_settings_band_search">Search LeweBand</string>
     <string name="summary_activity_settings_band_search">Associate to another LeweBand</string>
 
 
