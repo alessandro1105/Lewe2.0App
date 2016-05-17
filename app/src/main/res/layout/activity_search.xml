@@ -42,7 +42,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="0dp"
-            android:textSize="20sp"
+            android:textSize="23sp"
             android:textColor="@android:color/white"/>
 
         <TextView
@@ -50,9 +50,9 @@
             android:layout_height="wrap_content"
             android:text="keep you LeweBand near your smartphone"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:layout_marginBottom="50dp"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:textAlignment="center"
             android:textColor="@android:color/white" />
 

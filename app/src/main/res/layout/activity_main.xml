@@ -56,7 +56,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.33"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp">
+                android:layout_marginTop="11dp"
+                android:id="@+id/bottom_bar_action_temperature">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -67,7 +68,8 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_temperature"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:id="@+id/bottom_bar_icon_temperature"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -75,7 +77,9 @@
                         android:text="Temperature"
                         android:textAlignment="center"
                         android:textSize="12sp"
-                        android:layout_marginTop="2dp"/>
+                        android:layout_marginTop="2dp"
+                        android:id="@+id/bottom_bar_text_temperature"
+                        android:textColor="#65CCD1"/>
 
 
                 </LinearLayout>
@@ -86,7 +90,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.33"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp">
+                android:layout_marginTop="11dp"
+                android:id="@+id/bottom_bar_action_gsr">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -105,7 +110,8 @@
                         android:text="GSR"
                         android:textAlignment="center"
                         android:textSize="12sp"
-                        android:layout_marginTop="2dp"/>
+                        android:layout_marginTop="2dp"
+                        android:textColor="#777777"/>
 
 
                 </LinearLayout>
@@ -116,7 +122,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.33"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp">
+                android:layout_marginTop="11dp"
+                android:id="@+id/bottom_bar_action_settings">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,7 +142,8 @@
                         android:text="Settings"
                         android:textAlignment="center"
                         android:textSize="12sp"
-                        android:layout_marginTop="2dp"/>
+                        android:layout_marginTop="2dp"
+                        android:textColor="#777777"/>
 
 
                 </LinearLayout>

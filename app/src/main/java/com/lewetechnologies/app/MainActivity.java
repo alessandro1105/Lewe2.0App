@@ -1,8 +1,7 @@
 package com.lewetechnologies.app;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,38 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //chiudo l'app al click
                 MainActivity.this.shutdownApp();
+            }
+
+        });
+
+        //onclick bottom menu
+        //temperature
+        ((RelativeLayout) findViewById(R.id.bottom_bar_action_temperature)).setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+
+                ((ImageView) findViewById(R.id.bottom_bar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature_selected));
+
+                Toast.makeText(MainActivity.this.getApplicationContext(), "Temperature", Toast.LENGTH_LONG).show();
+            }
+
+        });
+
+        //gsr
+        ((RelativeLayout) findViewById(R.id.bottom_bar_action_gsr)).setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this.getApplicationContext(), "GSR", Toast.LENGTH_LONG).show();
+            }
+
+        });
+        //settings
+        ((RelativeLayout) findViewById(R.id.bottom_bar_action_settings)).setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                //avvio l'activity SettingsActivity
+                Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivityForResult(settingsActivity, Constants.REQUEST_EXIT_CODE);
             }
 
         });
@@ -159,7 +192,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false); //TEMPERATURE
+
+            Typeface blockFonts = Typeface.createFromAsset(PlaceholderFragment.this.getContext().getAssets(),"fonts/DINCond-Bold.ttf");
+
+            ((TextView) rootView.findViewById(R.id.number)).setTypeface(blockFonts);
+            //View rootView = inflater.inflate(R.layout.gsr_layout, container, false); //GSR
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;

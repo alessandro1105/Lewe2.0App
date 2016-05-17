@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -21,11 +22,12 @@ public class SearchActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /*
-        //stop search
-        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
-        progress.setIndeterminateDrawable(null);
 
+        //stop search
+        //ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
+        //progress.setIndeterminateDrawable(null);
+
+        /*
         //change image icon
         ImageView image = (ImageView) findViewById(R.id.icon);
         image.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error));

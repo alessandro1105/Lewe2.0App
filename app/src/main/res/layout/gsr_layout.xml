@@ -37,20 +37,18 @@
                 android:layout_height="wrap_content"
                 android:text="34.5°C"
                 android:layout_centerInParent="true"
-                android:textSize="52sp"
+                android:textSize="45sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
-                android:textAlignment="center"
-                android:id="@+id/number"
-                />
+                android:textAlignment="center"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Temperature"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="85dp"
-                android:textSize="18sp"
+                android:layout_marginTop="90dp"
+                android:textSize="15sp"
                 android:textColor="@android:color/white" />
 
             <TextView
@@ -58,9 +56,9 @@
                 android:layout_height="wrap_content"
                 android:text="11/05/2016 15:35"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="165dp"
+                android:layout_marginTop="162dp"
                 android:textSize="12sp"
-                android:textColor="#CBF6F7" />
+                android:textColor="@android:color/white" />
 
 
         </RelativeLayout>
