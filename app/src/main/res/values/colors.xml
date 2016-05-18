@@ -17,4 +17,10 @@
     <color name="activity_main_exitbutton_background_color">#00ffffff</color>
     <color name="activity_main_bottombar_element_description_text_color">#777777</color>
     <color name="activity_main_bottombar_element_description_text_color_selected">#65CCD1</color>
+
+    <!--FRAGMENT MAIN-->
+    <color name="fragment_main_background_color">#65CCD1</color>
+    <color name="fragment_main_data_text_color">#FFFFFF</color>
+    <color name="fragment_main_title_text_color">#FFFFFF</color>
+    <color name="fragment_main_date_text_color">#CBF6F7</color>
 </resources>

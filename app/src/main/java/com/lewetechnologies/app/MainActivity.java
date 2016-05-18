@@ -70,6 +70,34 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                //cambio l'elemento selezionato nella bottombar se cambia la pagina
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 0) { //selezionata temperatura
+
+                        MainActivity.this.setTemperatureSelected();
+
+                    } else if (position == 1) { //selezionata pagina gsr
+                        MainActivity.this.setGSRSelected();
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            }
+
+        );
+
+
         //on click listener exitButton
         ((ImageButton) findViewById(R.id.exitButton)).setOnClickListener(new View.OnClickListener() {
 
@@ -81,10 +109,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //inizializzo la bottom bar
-        ((ImageView) findViewById(R.id.bottombar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature_selected));
-        ((TextView) findViewById(R.id.bottombar_text_temperature)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color_selected));
-        ((ImageView) findViewById(R.id.bottombar_icon_gsr)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_gsr));
-        ((TextView) findViewById(R.id.bottombar_text_gsr)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color));
+        setTemperatureSelected();
 
         //onclick bottom bar
         //temperature
@@ -92,15 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
-                ((ImageView) findViewById(R.id.bottombar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature_selected));
-                ((TextView) findViewById(R.id.bottombar_text_temperature)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color_selected));
+                //selezione temperatura nella bottom bar
+                MainActivity.this.setTemperatureSelected();
 
-                //resetto la bottombar
-                //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
-                ((ImageView) findViewById(R.id.bottombar_icon_gsr)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_gsr));
-                ((TextView) findViewById(R.id.bottombar_text_gsr)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color));
-
+                //visualizzo il fragment scelto
                 mViewPager.setCurrentItem(0, true);
             }
 
@@ -111,14 +131,10 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
-                ((ImageView) findViewById(R.id.bottombar_icon_gsr)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_gsr_selected));
-                ((TextView) findViewById(R.id.bottombar_text_gsr)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color_selected));
+                //selezione GSR nella bottom bar
+                MainActivity.this.setGSRSelected();
 
-                //resetto la bottombar
-                //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
-                ((ImageView) findViewById(R.id.bottombar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature));
-                ((TextView) findViewById(R.id.bottombar_text_temperature)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color));
+                //visualizzo il fragment scelto
                 mViewPager.setCurrentItem(1, true);
             }
 
@@ -244,6 +260,30 @@ public class MainActivity extends AppCompatActivity {
         client.disconnect();
     }
 
+    //Handler bottom bar
+    public void setTemperatureSelected() {
+        //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
+        ((ImageView) findViewById(R.id.bottombar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature_selected));
+        ((TextView) findViewById(R.id.bottombar_text_temperature)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color_selected));
+
+        //resetto la bottombar
+        //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
+        ((ImageView) findViewById(R.id.bottombar_icon_gsr)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_gsr));
+        ((TextView) findViewById(R.id.bottombar_text_gsr)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color));
+    }
+
+    public void setGSRSelected() {
+        //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
+        ((ImageView) findViewById(R.id.bottombar_icon_gsr)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_gsr_selected));
+        ((TextView) findViewById(R.id.bottombar_text_gsr)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color_selected));
+
+        //resetto la bottombar
+        //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
+        ((ImageView) findViewById(R.id.bottombar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature));
+        ((TextView) findViewById(R.id.bottombar_text_temperature)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color));
+
+    }
+
 
     public static class TemperatureFragment extends Fragment {
 
@@ -261,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
             //cambio il font del valore mostrato
             Typeface blockFonts = Typeface.createFromAsset(TemperatureFragment.this.getContext().getAssets(), "fonts/DINCond-Bold.ttf");
-            ((TextView) rootView.findViewById(R.id.number)).setTypeface(blockFonts);
+            ((TextView) rootView.findViewById(R.id.data)).setTypeface(blockFonts);
 
             //ritorno la vista
             return rootView;
@@ -284,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
             //cambio il font del valore mostrato
             Typeface blockFonts = Typeface.createFromAsset(GSRFragment.this.getContext().getAssets(), "fonts/DINCond-Bold.ttf");
-            ((TextView) rootView.findViewById(R.id.number)).setTypeface(blockFonts);
+            ((TextView) rootView.findViewById(R.id.data)).setTypeface(blockFonts);
 
             //ritorno la vista
             return rootView;

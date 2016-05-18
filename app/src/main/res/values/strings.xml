@@ -44,8 +44,10 @@
     <string name="activity_main_bottom_bar_element_gsr">GSR</string>
     <string name="activity_main_bottom_bar_element_settings">Settings</string>
 
+    <!-- FRAGMENT MAIN TEMPERATURE -->
+    <string name="fragment_main_temperature_title">Temperature</string>
 
-    <!---GARBAGE-->
-    <string name="section_format">Hello World from section: %1$d</string>
+    <!-- FRAGMENT MAIN GSR -->
+    <string name="fragment_main_gsr_title">GSR</string>
 
 </resources>

@@ -29,4 +29,16 @@
     <dimen name="activity_main_bottombar_element_description_text_size">12sp</dimen>
     <dimen name="activity_main_bottombar_element_description_margin_top">2dp</dimen>
 
+    <!--FRAGMENT MAIN-->
+    <dimen name="fragment_main_circle_light_width">320dp</dimen>
+    <dimen name="fragment_main_circle_light_height">270dp</dimen>
+    <dimen name="fragment_main_circle_bold_width">270dp</dimen>
+    <dimen name="fragment_main_circle_bold_height">270dp</dimen>
+    <dimen name="fragment_main_data_text_size">52sp</dimen>
+    <dimen name="fragment_main_title_margin_top">85dp</dimen>
+    <dimen name="fragment_main_title_text_size">18sp</dimen>
+    <dimen name="fragment_main_date_margin_top">165dp</dimen>
+    <dimen name="fragment_main_date_text_size">12sp</dimen>
+
+
 </resources>
