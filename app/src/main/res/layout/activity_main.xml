@@ -78,7 +78,7 @@
                         android:textAlignment="center"
                         android:textSize="@dimen/activity_main_bottombar_element_description_text_size"
                         android:layout_marginTop="@dimen/activity_main_bottombar_element_description_margin_top"
-                        android:id="@+id/bottom_bar_text_temperature"
+                        android:id="@+id/bottombar_text_temperature"
                         android:textColor="@color/activity_main_bottombar_element_description_text_color"/>
 
 
@@ -112,6 +112,7 @@
                         android:textAlignment="center"
                         android:textSize="@dimen/activity_main_bottombar_element_description_text_size"
                         android:layout_marginTop="@dimen/activity_main_bottombar_element_description_margin_top"
+                        android:id="@+id/bottombar_text_gsr"
                         android:textColor="@color/activity_main_bottombar_element_description_text_color"/>
 
 
