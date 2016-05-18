@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,6 +27,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -150,9 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -174,27 +174,35 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
 
             //avvio l'activity SettingsActivity
-            Intent settingsActivity = new Intent(this, SettingsActivity.class);
-            startActivityForResult(settingsActivity, Constants.REQUEST_EXIT_CODE);
+            Intent activity = new Intent(this, SettingsActivity.class);
+            startActivityForResult(activity, Constants.REQUEST_EXIT_CODE);
 
             return true;
 
         } else if (id == R.id.action_credits) {
 
             //avvio l'activity CreditsActivity
-            Intent creditsActivity = new Intent(this, CreditsActivity.class);
-            startActivity(creditsActivity);
+            Intent activity = new Intent(this, CreditsActivity.class);
+            startActivity(activity);
 
             return true;
 
         } else if (id == R.id.action_about) {
 
             //avvio l'activity AboutActivity
-            Intent aboutActivity = new Intent(this, AboutActivity.class);
-            startActivity(aboutActivity);
+            Intent activity = new Intent(this, AboutActivity.class);
+            startActivity(activity);
 
             return true;
 
+        //TEST PER GRAFICO
+        } else if (id == R.id.chart) {
+
+            //avvio l'activity AboutActivity
+            Intent activity = new Intent(this, Chart.class);
+            startActivity(activity);
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -218,46 +226,6 @@ public class MainActivity extends AppCompatActivity {
 
         //chiudo l'activity
         finish();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.lewetechnologies.app/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.lewetechnologies.app/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 
     //Handler bottom bar
@@ -303,6 +271,16 @@ public class MainActivity extends AppCompatActivity {
             Typeface blockFonts = Typeface.createFromAsset(TemperatureFragment.this.getContext().getAssets(), "fonts/DINCond-Bold.ttf");
             ((TextView) rootView.findViewById(R.id.data)).setTypeface(blockFonts);
 
+            //on click chart
+            ((RelativeLayout) rootView.findViewById(R.id.chart_container)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //avvio l'activity TemperatureChart
+                    Intent activity = new Intent(TemperatureFragment.this.getActivity(), TemperatureChartActivity.class);
+                    startActivity(activity);
+                }
+            });
+
             //ritorno la vista
             return rootView;
         }
@@ -325,6 +303,16 @@ public class MainActivity extends AppCompatActivity {
             //cambio il font del valore mostrato
             Typeface blockFonts = Typeface.createFromAsset(GSRFragment.this.getContext().getAssets(), "fonts/DINCond-Bold.ttf");
             ((TextView) rootView.findViewById(R.id.data)).setTypeface(blockFonts);
+
+            //on click chart
+            ((RelativeLayout) rootView.findViewById(R.id.chart_container)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //avvio l'activity TemperatureChart
+                    Intent activity = new Intent(GSRFragment.this.getActivity(), GSRChartActivity.class);
+                    startActivity(activity);
+                }
+            });
 
             //ritorno la vista
             return rootView;

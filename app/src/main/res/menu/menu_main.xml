@@ -17,4 +17,10 @@
         android:orderInCategory="100"
         android:title="@string/action_about"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/chart"
+        android:orderInCategory="100"
+        android:title="Chart"
+        app:showAsAction="never" />
 </menu>

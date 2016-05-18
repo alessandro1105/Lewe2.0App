@@ -15,7 +15,9 @@
     <string name="title_activity_credits">Credits</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_settings_band">Band</string>
-    <string name="title_activity_search"/>
+    <string name="title_activity_search" />
+    <string name="title_activity_temperature_chart">Temperature</string>
+    <string name="title_activity_gsr_chart">GSR</string>
 
     <!--SETTINGS MAIN ACTIVITY-->
     <string name="activity_settings_main_band_title">Band</string>

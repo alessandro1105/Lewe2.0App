@@ -68,23 +68,32 @@
             android:label="@string/title_activity_search"
             android:parentActivityName=".SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="com.lewetechnologies.app.intent.activities.SearchActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
 
+        <!-- CHART ACTIVITY -->
+        <activity
+            android:name=".TemperatureChartActivity"
+            android:label="@string/title_activity_temperature_chart"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".GSRChartActivity"
+            android:label="@string/title_activity_gsr_chart"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape"/>
+
         <!-- GARBAGE -->
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".Chart"
+            android:screenOrientation="landscape" />
+
     </application>
 
 </manifest>
