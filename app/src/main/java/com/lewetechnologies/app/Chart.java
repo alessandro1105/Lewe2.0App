@@ -8,12 +8,17 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.XAxisValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Chart extends AppCompatActivity {
@@ -53,7 +58,10 @@ public class Chart extends AppCompatActivity {
         chart.getAxisLeft().setDrawGridLines(false);//disabilita la griglia dell'asse y
         chart.getAxisRight().setEnabled(false); //disabilita l'asse di destra (right y)
         chart.setScaleYEnabled(false); //disabilita lo zoom dell'asse y
-        chart.getAxisLeft().setTextColor(Color.parseColor("#FFFFFF"));
+        chart.getAxisLeft().setTextColor(Color.parseColor("#FFFFFF")); //colore delle label
+
+        //formatter
+        chart.getAxisLeft().setValueFormatter(new TemperatureYAxisValueFormatter());
 
 
         //maker view
@@ -164,4 +172,21 @@ public class Chart extends AppCompatActivity {
             return -getHeight();
         }
     }
+
+    public static class TemperatureYAxisValueFormatter implements YAxisValueFormatter {
+
+        private DecimalFormat mFormat;
+
+        public TemperatureYAxisValueFormatter () {
+            mFormat = new DecimalFormat("##0.0"); // use one decimal
+        }
+
+        @Override
+        public String getFormattedValue(float value, YAxis yAxis) {
+            // write your logic here
+            // access the YAxis object to get more information
+            return mFormat.format(value) + " °C"; // e.g. append a dollar-sign
+        }
+    }
+
 }
