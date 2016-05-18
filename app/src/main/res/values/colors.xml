@@ -6,6 +6,15 @@
     <color name="colorPrimaryDark">#239398</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!--SPLASH SCREEN-->
-    <color name="splash_screen_background_color">#FFFFFF</color>
+    <!--SPLASHSCREEN ACTIVITY-->
+    <color name="activity_splashscreen_background_color">#FFFFFF</color>
+
+    <!--SEARCH ACTIVITY-->
+    <color name="activity_search_title_text_color">#FFFFFF</color>
+    <color name="activity_search_description_text_color">#CBF6F7</color>
+
+    <!--MAIN ACTIVITY-->
+    <color name="activity_main_exitbutton_background_color">#00ffffff</color>
+    <color name="activity_main_bottombar_element_description_text_color">#777777</color>
+    <color name="activity_main_bottombar_element_description_text_color_selected">#65CCD1</color>
 </resources>

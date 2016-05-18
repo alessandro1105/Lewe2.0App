@@ -38,23 +38,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Searching for LeweBand..."
+            android:text="@string/activity_search_title"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="0dp"
-            android:textSize="23sp"
-            android:textColor="@android:color/white"/>
+            android:layout_marginTop="@dimen/activity_search_title_margin_top"
+            android:textSize="@dimen/activity_search_title_text_size"
+            android:textColor="@color/activity_search_title_text_color"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="keep you LeweBand near your smartphone"
+            android:text="@string/activity_search_description"
             android:layout_gravity="center"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="50dp"
-            android:textSize="13sp"
+            android:layout_marginTop="@dimen/activity_search_description_margin_top"
+            android:layout_marginBottom="@dimen/activity_search_description_margin_bottom"
+            android:textSize="@dimen/activity_search_description_text_size"
             android:textAlignment="center"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/activity_search_description_text_color" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -63,23 +62,22 @@
 
             <ProgressBar
                 android:id="@+id/progress"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="@dimen/activity_search_progressbar_width"
+                android:layout_height="@dimen/activity_search_progressbar_height"
                 android:background="@drawable/circular_progress_bar_shape"
                 android:indeterminateDrawable="@drawable/circular_progress_bar"
                 android:layout_gravity="center"
-                style="?android:attr/progressBarStyleLarge"
-                android:progress="100"
-                android:max="100"/>
+                style="?android:attr/progressBarStyleLarge" />
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/activity_search_imageview_width"
+                android:layout_height="@dimen/activity_search_imageview_height"
                 android:id="@+id/icon"
                 android:src="@drawable/ic_search"
                 android:layout_centerInParent="true" />
         </RelativeLayout>
 
+        <!-- Rimosso per test (Causa bug di rendering su android studio ma FUNZIONA)-->
         <!--android:indeterminateDrawable="@drawable/circular_progress_bar"-->
 
     </LinearLayout>

@@ -67,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
         //onclick bottom menu
         //temperature
-        ((RelativeLayout) findViewById(R.id.bottom_bar_action_temperature)).setOnClickListener(new View.OnClickListener() {
+        ((RelativeLayout) findViewById(R.id.bottombar_action_temperature)).setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
 
-                ((ImageView) findViewById(R.id.bottom_bar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature_selected));
+                ((ImageView) findViewById(R.id.bottombar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature_selected));
 
                 Toast.makeText(MainActivity.this.getApplicationContext(), "Temperature", Toast.LENGTH_LONG).show();
             }
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //gsr
-        ((RelativeLayout) findViewById(R.id.bottom_bar_action_gsr)).setOnClickListener(new View.OnClickListener() {
+        ((RelativeLayout) findViewById(R.id.bottombar_action_gsr)).setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this.getApplicationContext(), "GSR", Toast.LENGTH_LONG).show();
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
         //settings
-        ((RelativeLayout) findViewById(R.id.bottom_bar_action_settings)).setOnClickListener(new View.OnClickListener() {
+        ((RelativeLayout) findViewById(R.id.bottombar_action_settings)).setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 //avvio l'activity SettingsActivity

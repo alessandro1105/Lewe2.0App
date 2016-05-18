@@ -28,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_exit"
                 android:layout_gravity="end"
-                android:background="#00ffffff"
-                android:layout_marginRight="8dp"
+                android:background="@color/activity_main_exitbutton_background_color"
+                android:layout_marginEnd="@dimen/activity_main_exitbutton_margin_end"
                 android:id="@+id/exitButton"/>
 
         </android.support.v7.widget.Toolbar>
@@ -43,21 +43,21 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/activity_main_bottombar_height"
             android:layout_alignParentBottom="true"
             android:background="@drawable/main_bottom_toolbar_border">
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_main_bottombar_placeholder_width"
                 android:layout_weight="0.16"
                 android:layout_height="match_parent"/>
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_main_bottombar_element_width"
                 android:layout_weight="0.33"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp"
-                android:id="@+id/bottom_bar_action_temperature">
+                android:layout_marginTop="@dimen/activity_main_bottombar_element_margin_top"
+                android:id="@+id/bottombar_action_temperature">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -65,21 +65,21 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/activity_main_bottombar_element_icon_width"
+                        android:layout_height="@dimen/activity_main_bottombar_element_icon_height"
                         android:src="@drawable/ic_temperature"
                         android:layout_gravity="center"
-                        android:id="@+id/bottom_bar_icon_temperature"/>
+                        android:id="@+id/bottombar_icon_temperature"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Temperature"
+                        android:text="@string/activity_main_bottom_bar_element_temperature"
                         android:textAlignment="center"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp"
+                        android:textSize="@dimen/activity_main_bottombar_element_description_text_size"
+                        android:layout_marginTop="@dimen/activity_main_bottombar_element_description_margin_top"
                         android:id="@+id/bottom_bar_text_temperature"
-                        android:textColor="#65CCD1"/>
+                        android:textColor="@color/activity_main_bottombar_element_description_text_color"/>
 
 
                 </LinearLayout>
@@ -87,11 +87,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_main_bottombar_element_width"
                 android:layout_weight="0.33"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp"
-                android:id="@+id/bottom_bar_action_gsr">
+                android:layout_marginTop="@dimen/activity_main_bottombar_element_margin_top"
+                android:id="@+id/bottombar_action_gsr">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -99,19 +99,20 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/activity_main_bottombar_element_icon_width"
+                        android:layout_height="@dimen/activity_main_bottombar_element_icon_height"
                         android:src="@drawable/ic_gsr"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:id="@+id/bottombar_icon_gsr"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="GSR"
+                        android:text="@string/activity_main_bottom_bar_element_gsr"
                         android:textAlignment="center"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp"
-                        android:textColor="#777777"/>
+                        android:textSize="@dimen/activity_main_bottombar_element_description_text_size"
+                        android:layout_marginTop="@dimen/activity_main_bottombar_element_description_margin_top"
+                        android:textColor="@color/activity_main_bottombar_element_description_text_color"/>
 
 
                 </LinearLayout>
@@ -119,11 +120,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_main_bottombar_element_width"
                 android:layout_weight="0.33"
                 android:layout_height="match_parent"
-                android:layout_marginTop="11dp"
-                android:id="@+id/bottom_bar_action_settings">
+                android:layout_marginTop="@dimen/activity_main_bottombar_element_margin_top"
+                android:id="@+id/bottombar_action_settings">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -131,19 +132,19 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/activity_main_bottombar_element_icon_width"
+                        android:layout_height="@dimen/activity_main_bottombar_element_icon_height"
                         android:src="@drawable/ic_settings"
                         android:layout_gravity="center"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Settings"
+                        android:text="@string/activity_main_bottom_bar_element_settings"
                         android:textAlignment="center"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp"
-                        android:textColor="#777777"/>
+                        android:textSize="@dimen/activity_main_bottombar_element_description_text_size"
+                        android:layout_marginTop="@dimen/activity_main_bottombar_element_description_margin_top"
+                        android:textColor="@color/activity_main_bottombar_element_description_text_color"/>
 
 
                 </LinearLayout>
@@ -152,7 +153,7 @@
 
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_main_bottombar_placeholder_width"
                 android:layout_weight="0.16"
                 android:layout_height="match_parent" />
 

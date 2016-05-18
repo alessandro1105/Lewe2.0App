@@ -18,7 +18,7 @@ public class SplashScreenActivity extends Activity {
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(getApplication(), R.color.splash_screen_background_color));
+        window.setStatusBarColor(ContextCompat.getColor(getApplication(), R.color.activity_splashscreen_background_color));
 
         //thread per far partire la main activity dopo un 2 secondi
         Thread splashTimer = new Thread(){
