@@ -1,4 +1,4 @@
-package com.lewetechnologies.app;
+package com.lewetechnologies.app.activities;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.lewetechnologies.app.R;
 
 public class SearchActivity extends AppCompatActivity {
 

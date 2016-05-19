@@ -1,11 +1,13 @@
-package com.lewetechnologies.app;
+package com.lewetechnologies.app.activities;
 
 import android.content.Intent;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+
+import com.lewetechnologies.app.R;
+import com.lewetechnologies.app.configs.Config;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -35,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     //ritorno la richiesta di chiusura dell'app
                     Intent exitIntent = new Intent();
-                    SettingsMainPreferenceFragment.this.getActivity().setResult(Constants.RESULT_EXIT_CODE, exitIntent);
+                    SettingsMainPreferenceFragment.this.getActivity().setResult(Config.RESULT_EXIT_CODE, exitIntent);
                     SettingsMainPreferenceFragment.this.getActivity().finish();
 
 

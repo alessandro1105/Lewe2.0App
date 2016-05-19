@@ -1,7 +1,9 @@
-package com.lewetechnologies.app;
+package com.lewetechnologies.app.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.lewetechnologies.app.R;
 
 public class CreditsActivity extends AppCompatActivity {
 

@@ -1,10 +1,9 @@
-package com.lewetechnologies.app;
+package com.lewetechnologies.app.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -27,7 +26,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.MarkerView;
@@ -41,11 +39,8 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
-import org.w3c.dom.Text;
+import com.lewetechnologies.app.R;
+import com.lewetechnologies.app.configs.Config;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -66,11 +61,6 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //avvio l'activity SettingsActivity
                 Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivityForResult(settingsActivity, Constants.REQUEST_EXIT_CODE);
+                startActivityForResult(settingsActivity, Config.REQUEST_EXIT_CODE);
             }
 
         });
@@ -190,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
             //avvio l'activity SettingsActivity
             Intent activity = new Intent(this, SettingsActivity.class);
-            startActivityForResult(activity, Constants.REQUEST_EXIT_CODE);
+            startActivityForResult(activity, Config.REQUEST_EXIT_CODE);
 
             return true;
 
@@ -220,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         //controllo richiesta di chiusura app
-        if (requestCode == Constants.REQUEST_EXIT_CODE && resultCode == Constants.RESULT_EXIT_CODE) {
+        if (requestCode == Config.REQUEST_EXIT_CODE && resultCode == Config.RESULT_EXIT_CODE) {
             //chiudo l'app
             shutdownApp();
         }

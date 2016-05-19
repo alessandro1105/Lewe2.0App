@@ -1,4 +1,4 @@
-package com.lewetechnologies.app;
+package com.lewetechnologies.app.activities;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.lewetechnologies.app.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

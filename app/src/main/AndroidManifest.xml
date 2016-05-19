@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
 
         <!-- SPLASH SCREEN ACTIVITY -->
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,22 +20,22 @@
 
         <!-- MAIN ACTIVITY -->
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- CREDITS ACTIVITY -->
         <activity
-            android:name=".CreditsActivity"
+            android:name=".activities.CreditsActivity"
             android:label="@string/title_activity_credits"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
 
         <!-- ABOUT ACTIVITY -->
         <activity
-            android:name=".AboutActivity"
+            android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <intent-filter>
                 <action android:name="com.lewetechnologies.app.intent.activities.AboutActivity" />
 
@@ -45,16 +45,16 @@
 
         <!-- SETTINGS MAIN ACTIVITY -->
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
 
         <!-- SETTINGS BAND ACTIVITY -->
         <activity
-            android:name=".BandSettingsActivity"
+            android:name=".activities.BandSettingsActivity"
             android:label="@string/title_activity_settings_band"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".activities.SettingsActivity">
             <intent-filter>
                 <action android:name="com.lewetechnologies.app.intent.activities.BandSettingsActivity" />
 
@@ -64,9 +64,9 @@
 
         <!-- SEARCH ACTIVITY -->
         <activity
-            android:name=".SearchActivity"
+            android:name=".activities.SearchActivity"
             android:label="@string/title_activity_search"
-            android:parentActivityName=".SettingsActivity"
+            android:parentActivityName=".activities.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.lewetechnologies.app.intent.activities.SearchActivity" />
@@ -77,17 +77,19 @@
 
         <!-- CHART ACTIVITY -->
         <activity
-            android:name=".TemperatureChartActivity"
+            android:name=".activities.TemperatureChartActivity"
             android:label="@string/title_activity_temperature_chart"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="landscape"/>
 
         <activity
-            android:name=".GSRChartActivity"
+            android:name=".activities.GSRChartActivity"
             android:label="@string/title_activity_gsr_chart"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="landscape"/>
 
     </application>
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
 </manifest>
