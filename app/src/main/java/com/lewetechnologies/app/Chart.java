@@ -52,13 +52,16 @@ public class Chart extends AppCompatActivity {
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); //posizione asse x
         chart.setExtraLeftOffset(20f);
         chart.setExtraRightOffset(50f);
-        chart.getXAxis().setTextColor(Color.parseColor("#FFFFFF"));
+        chart.getXAxis().setTextColor(Color.parseColor("#666666"));
+        chart.getXAxis().setAxisLineWidth(2f);
 
         //settings asse y
-        chart.getAxisLeft().setDrawGridLines(false);//disabilita la griglia dell'asse y
+        chart.getAxisLeft().setDrawGridLines(true);//disabilita la griglia dell'asse y
+        chart.getAxisLeft().setGridColor(Color.parseColor("#BBBBBB")); //colore della griglia
+        chart.getAxisLeft().setAxisLineWidth(2f);
         chart.getAxisRight().setEnabled(false); //disabilita l'asse di destra (right y)
         chart.setScaleYEnabled(false); //disabilita lo zoom dell'asse y
-        chart.getAxisLeft().setTextColor(Color.parseColor("#FFFFFF")); //colore delle label
+        chart.getAxisLeft().setTextColor(Color.parseColor("#666666")); //colore delle label
 
         //formatter
         chart.getAxisLeft().setValueFormatter(new TemperatureYAxisValueFormatter());
@@ -118,8 +121,9 @@ public class Chart extends AppCompatActivity {
         set1.setLineWidth(2f); //line width
 
         //color
-        set1.setColor(Color.parseColor("#FFFFFF"));
-        set1.setCircleColor(Color.parseColor("#FFFFFF"));
+        set1.setColor(Color.parseColor("#4EBCF4"));
+        set1.setCircleColor(Color.parseColor("#3F51B5"));
+        set1.setDrawCircleHole(false);
 
         set1.setDrawValues(false); //disabilito la visualizzazione dei valori
 

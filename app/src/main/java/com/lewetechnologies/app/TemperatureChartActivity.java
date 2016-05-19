@@ -77,19 +77,22 @@ public class TemperatureChartActivity extends AppCompatActivity {
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); //posizione asse x
         chart.setExtraLeftOffset(20f);
         chart.setExtraRightOffset(50f);
-        chart.getXAxis().setTextColor(Color.parseColor("#FFFFFF"));
+        chart.getXAxis().setTextColor(Color.parseColor("#666666"));
+        chart.getXAxis().setAxisLineWidth(2f);
 
         //settings asse y
-        chart.getAxisLeft().setDrawGridLines(false);//disabilita la griglia dell'asse y
+        chart.getAxisLeft().setDrawGridLines(true);//abilito la griglia
+        chart.getAxisLeft().setGridColor(Color.parseColor("#BBBBBB")); //colore della griglia
         chart.getAxisRight().setEnabled(false); //disabilita l'asse di destra (right y)
         chart.setScaleYEnabled(false); //disabilita lo zoom dell'asse y
-        chart.getAxisLeft().setTextColor(Color.parseColor("#FFFFFF")); //colore delle label
+        chart.getAxisLeft().setTextColor(Color.parseColor("#666666")); //colore delle label
+        chart.getAxisLeft().setAxisLineWidth(2f);
 
         //formatter
         chart.getAxisLeft().setValueFormatter(new TemperatureYAxisValueFormatter());
 
         //maker view
-        chart.setMarkerView(new TooltipMarkerView(getApplicationContext(), R.layout.tooltip_chart));
+        chart.setMarkerView(new TemperatureTooltipMarkerView(getApplicationContext(), R.layout.tooltip_chart));
     }
 
     private void initializeDataSet(LineDataSet set) {
@@ -97,8 +100,9 @@ public class TemperatureChartActivity extends AppCompatActivity {
         set.setLineWidth(2f); //line width
 
         //color
-        set.setColor(Color.parseColor("#FFFFFF"));
-        set.setCircleColor(Color.parseColor("#FFFFFF"));
+        set.setColor(Color.parseColor("#4EBCF4")); //colore linea
+        set.setCircleColor(Color.parseColor("#3F51B5")); //colore cerchietti
+        set.setDrawCircleHole(false); //cerchietti senza buco
 
         set.setDrawValues(false); //disabilito la visualizzazione dei valori
 
@@ -139,11 +143,11 @@ public class TemperatureChartActivity extends AppCompatActivity {
     }
 
 
-    private static class TooltipMarkerView extends MarkerView {
+    private static class TemperatureTooltipMarkerView extends MarkerView {
 
         private TextView tvContent;
 
-        public TooltipMarkerView (Context context, int layoutResource) {
+        public TemperatureTooltipMarkerView (Context context, int layoutResource) {
             super(context, layoutResource);
             // this markerview only displays a textview
             tvContent = (TextView) findViewById(R.id.tvContent);

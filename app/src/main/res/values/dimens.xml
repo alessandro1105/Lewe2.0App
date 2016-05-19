@@ -40,5 +40,8 @@
     <dimen name="fragment_main_date_margin_top">165dp</dimen>
     <dimen name="fragment_main_date_text_size">12sp</dimen>
 
+    <!-- CHART ACTIVITY -->
+    <dimen name="chart_tooltip_text_size">12sp</dimen>
+
 
 </resources>
