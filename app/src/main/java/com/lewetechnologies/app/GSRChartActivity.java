@@ -38,7 +38,7 @@ public class GSRChartActivity extends AppCompatActivity {
         getData(xVals, yVals);
 
         //creo il dataset
-        LineDataSet set = new LineDataSet(yVals, "Temperature");
+        LineDataSet set = new LineDataSet(yVals, "GSRs");
 
         //inizializzo il dataset
         initializeDataSet(set);
