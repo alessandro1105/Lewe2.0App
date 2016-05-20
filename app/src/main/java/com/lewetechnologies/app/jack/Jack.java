@@ -17,9 +17,10 @@ public abstract class Jack {
     //---COSTANTI---
     private static final String JK_MESSAGE_TYPE = "type"; //key tipo messaggio
     private static final String JK_MESSAGE_TYPE_ACK = "ack"; //tipo ack
-
     private static final String JK_MESSAGE_TYPE_DATA = "data"; //tipo dati
+
     private static final String JK_MESSAGE_ID = "id"; //id messaggio
+    public static final String JK_MESSAGE_PAYLOAD = "val"; //payload messaggio
 
     private static final long JK_TIMER_RESEND_MESSAGE = 1000;//tempo (ms) da attendere prima di reinviare i messaggi non confermati
     private static final long JK_TIMER_POLLING  = 100; //tempo (ms) da attendere tra un polling e un altro del mezzo di strasmissione
@@ -99,8 +100,30 @@ public abstract class Jack {
     //funzione per inviare un messaggio
     public long send(JData message) {
 
-        return 0;
+        try {
 
+            //prelevo la root da messaggio JData
+            JSONObject root = message.getRoot();
+
+            //ottengo l'id del messaggio dalla funzione specificata dell'utente
+            long id = getMessageID();
+
+            //aggiungo id e la tipologia del messaggio
+            root.put(JK_MESSAGE_ID, id);//id del messaggio da confermare
+            root.put(JK_MESSAGE_TYPE, JK_MESSAGE_TYPE_DATA); //il messaggio è un ACK
+
+            //inserisco il messaggio nel buffer di invio
+            messageBuffer.put(id, root.toString());
+
+            //ritorno l'id del messaggio inserito nel buffer
+            return id;
+
+
+        } catch (JSONException e) {
+            Logger.e("Jack", "onSendAck", e, Logger.SEVERE);
+
+            return -1; //errore
+        }
     }
 
 
@@ -125,8 +148,23 @@ public abstract class Jack {
             //se è un messaggio dati
             if (type.equals(JK_MESSAGE_TYPE_DATA)) {
 
+                //verifico se possiede la chiave per l'id del messaggio
+                if (!root.has(JK_MESSAGE_ID)) {
+                    return; //non ha la chiave quindi il messaggio non è valido
+                }
+
+                //ottengo l'id del messaggio
+                long id = root.getLong(JK_MESSAGE_ID);
 
 
+                //costruisco il messaggio JData
+                JData message = new JData(root);
+
+                //confermo il messaggio
+                sendAck(id);
+
+                //chiamo la funzione di gestione definita dall'utente
+                onReceive(message, id);
 
             //se è un messaggio di ACK
             } else if (type.equals(JK_MESSAGE_TYPE_ACK)) {
