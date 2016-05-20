@@ -1,5 +1,7 @@
 package com.lewetechnologies.app.thread;
 
+import com.lewetechnologies.app.logger.Logger;
+
 /**
  * Created by alessandro on 20/05/16.
  */
@@ -55,8 +57,7 @@ public abstract class CyclicalThread extends Thread {
                         Thread.sleep(timerPolling); //metto in  pausa il thread
 
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        Logger.e("CyclicalThread", "InterruptedException", e, Logger.SEVERE);
                     }
                 }
 

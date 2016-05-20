@@ -3,6 +3,12 @@ package com.lewetechnologies.app.jack;
 import com.lewetechnologies.app.logger.Logger;
 import com.lewetechnologies.app.thread.CyclicalThread;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+
 /**
  * Created by alessandro on 20/05/16.
  */
@@ -24,17 +30,13 @@ public abstract class Jack {
     private JTransmissionMethod mmJTM; //mmJTM
 
     //timer
-    private long timerResendMessage; //tempo (ms) da attendere prima di reinviare i messaggi non confermati
-    private long timerPolling; //tempo (ms) da attendere tra un polling e un altro del mezzo di strasmissione
+    private long timerSendMessage; //tempo (ms) da attendere prima di reinviare i messaggi non confermati
 
-    //tempi
-    private long timeLastPolling; //ultimo accesso a mmJTM
-    private long timeLastSend; //ultimo invio dei messaggi
+    //thread che gestisce il polling
+    private PollingThread pollingThread;
 
-    //polling
-    private boolean pollingEnabled; //indica se è abilitato il polling
-
-
+    //contenitori dei messaggi
+    private HashMap<Long, String> messageBuffer; //buffer per i messaggi da inviare
 
 
     //---HANDLER USER SPECIFIED---
@@ -46,18 +48,19 @@ public abstract class Jack {
     //---PUBLIC---
 
     //costruttore con tutti i parametri (mmJTM, timerResendMessage, timerPolling)
-    public Jack(JTransmissionMethod mmJTM, long timerResendMessage, long timerPolling) {
+    public Jack(JTransmissionMethod mmJTM, long timerSendMessage, long timerPolling) {
 
         //salvo mmJTM
         this.mmJTM = mmJTM;
 
         //salvo i valori dei timer
-        this.timerResendMessage = timerResendMessage;
-        this.timerPolling = timerPolling;
+        this.timerSendMessage = timerSendMessage;
 
-        //inizializzo le varibili
-        this.timeLastSend = 0; //0 indica non ancora effettuato
-        this.timeLastPolling = 0; //0 indica non ancora effettuato
+        //creo il contenitore dei messaggi
+        this.messageBuffer = new HashMap<Long, String>();
+
+        //creo il thread di polling
+        this.pollingThread = new PollingThread(timerPolling);
 
     }
 
@@ -69,24 +72,27 @@ public abstract class Jack {
 
     //funzione di avvio
     public void start() {
-        Logger.i("JACK", "Start Jack protocol");
+        Logger.i("Jack", "Start Jack protocol");
 
-        //abilito il polling del mezzo di trasmissione
-        this.pollingEnabled = true;
+        //avvio il thread del polling
+        this.pollingThread.startThread();
 
     }
 
     //funzione di stop
     public void stop() {
-        Logger.i("JACK", "Stop Jack protocol");
+        Logger.i("Jack", "Stop Jack protocol");
 
-        //abilito il polling del mezzo di trasmissione
-        this.pollingEnabled = false;
+        //stoppo il thread del polling
+        this.pollingThread.stopThread();
 
     }
 
     //funzione per svuotare il buffer di invio
     public void flushBufferSend() {
+
+        //creo un nuovo contenitore dei dati (Garbage collector elimina il vecchio)
+        this.messageBuffer = new HashMap<Long, String>();
 
     }
 
@@ -103,34 +109,131 @@ public abstract class Jack {
     //funzione che elabora il messaggio
     private void execute(String messageJSON) {
 
+        try {
+
+            //parso il messaggio
+            JSONObject root = new JSONObject(messageJSON);
+
+            //verifico se possiede la chiave per il tipo di messaggio
+            if (!root.has(JK_MESSAGE_TYPE)) {
+                return; //non ha la chiave quindi il messaggio non è valido
+            }
+
+            //prelevo la stringa del tipo di messaggio
+            String type = root.getString(JK_MESSAGE_TYPE);
+
+            //se è un messaggio dati
+            if (type.equals(JK_MESSAGE_TYPE_DATA)) {
+
+
+
+
+            //se è un messaggio di ACK
+            } else if (type.equals(JK_MESSAGE_TYPE_ACK)) {
+
+                //verifico se possiede la chiave per l'id del messaggio
+                if (!root.has(JK_MESSAGE_ID)) {
+                    return; //non ha la chiave quindi il messaggio non è valido
+                }
+
+                //ottengo l'id del messaggio
+                long id = root.getLong(JK_MESSAGE_ID);
+
+                //chiamo la funzione di gestione degli ack
+                checkAck(id);
+
+            }
+
+        } catch (JSONException e) {
+
+            //JSON non valido
+            return; //messaggio non valido
+
+        }
+
     }
 
     //funzione che invia il messaggio ACK
     private void sendAck(long id) {
+
+        try {
+            //creo la root del messaggio JSON
+            JSONObject root = new JSONObject();
+
+            //inserisco i dati
+            root.put(JK_MESSAGE_ID, id);//id del messaggio da confermare
+            root.put(JK_MESSAGE_TYPE, JK_MESSAGE_TYPE_ACK); //il messaggio è un ACK
+
+            //invio il messaggio
+            this.mmJTM.send(root.toString());
+
+        } catch (JSONException e) {
+            Logger.e("Jack", "onSendAck", e, Logger.SEVERE);
+        }
 
     }
 
     //funzione che controlla un messaggio ACK
     private void checkAck(long id) {
 
+        //se l'id corrisponde ad un messaggio nel buffer
+        if (this.messageBuffer.containsKey(id)) {
+
+            //elimino il messaggio
+            this.messageBuffer.remove(id);
+
+            //richiamo l'handler dell'utente
+            onReceiveAck(id);
+        }
+
     }
 
 
     //thread per controllare periodicamente il mezzo di trasmissione
-    public class ThreadLoop extends CyclicalThread {
+    public class PollingThread extends CyclicalThread {
+
+        private long timeLastSend;
 
 
-        public ThreadLoop(long timer) {
+        public PollingThread(long timer) {
             super(timer);
+
+            //inizializzo le varibili
+            timeLastSend = 0; //0 significa non ancora inviato
         }
 
         @Override
         public void execute() {
 
-            //se il polling è abilitato
-            if (Jack.this.pollingEnabled) {
+            //controllo se ci sono messaggi da ricevere
+            if (Jack.this.mmJTM.available()) {
 
-                
+                String message = Jack.this.mmJTM.receive();
+
+                if (!message.equals("")) {
+                    Jack.this.execute(message);
+                }
+
+            }
+
+            //controllo se posso inviare i messaggi e se ce ne sono da inviare
+            if (System.currentTimeMillis() - timeLastSend >= Jack.this.timerSendMessage && Jack.this.messageBuffer.size() > 0) {
+
+                //salvo l'ultimo invio dei messaggi
+                timeLastSend = System.currentTimeMillis();
+
+                //creo iteratore del contenitore dei messaggi
+                Iterator<Long> iter = Jack.this.messageBuffer.keySet().iterator();
+
+                //finchè ci sono messaggi
+                while(iter.hasNext()) {
+
+                    //prelevo la chiave
+                    long key = iter.next();
+
+                    //invio il messaggio
+                    Jack.this.mmJTM.send("" + Jack.this.messageBuffer.get(key));
+                }
 
             }
 
