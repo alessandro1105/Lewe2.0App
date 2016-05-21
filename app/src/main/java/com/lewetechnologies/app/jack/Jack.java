@@ -98,7 +98,7 @@ public abstract class Jack {
     }
 
     //funzione per inviare un messaggio
-    public long send(JData message) {
+    public long send(JData message) throws JackException {
 
         try {
 
@@ -122,7 +122,8 @@ public abstract class Jack {
         } catch (JSONException e) {
             Logger.e("Jack", "onSendAck", e, Logger.SEVERE);
 
-            return -1; //errore
+            //lancio l'eccezione
+            throw new JackException();
         }
     }
 

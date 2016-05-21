@@ -42,7 +42,7 @@ public class JData {
     }
 
     //adder
-    public boolean add(String key, boolean value) {
+    public boolean add(String key, boolean value) throws JDataException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -57,12 +57,13 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
-    public boolean add(String key, float value) {
+    public boolean add(String key, float value) throws JSONException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -77,12 +78,13 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
-    public boolean add(String key, double value) {
+    public boolean add(String key, double value) throws JSONException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -97,12 +99,13 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
-    public boolean add(String key, char value) {
+    public boolean add(String key, char value) throws JSONException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -117,12 +120,13 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
-    public boolean add(String key, long value) {
+    public boolean add(String key, long value) throws JSONException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -137,12 +141,13 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
-    public boolean add(String key, int value) {
+    public boolean add(String key, int value) throws JSONException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -157,12 +162,13 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
-    public boolean add(String key, short value) {
+    public boolean add(String key, short value) throws JSONException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -177,12 +183,13 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
-    public boolean add(String key, String value) {
+    public boolean add(String key, String value) throws JSONException {
 
         //se non esiste l'oggetto nested lo creo
         if (!nestedObjectExists) {
@@ -197,88 +204,97 @@ public class JData {
         } catch (JSONException e) {
             Logger.e("JData", "add", e, Logger.SEVERE);
 
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
 
     }
 
     //get method
 
-    public boolean getBoolean(String key) {
+    public boolean getBoolean(String key) throws JSONException {
         try {
             return values.getBoolean(key);
 
         } catch (JSONException e) {
-            return false;
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
-    public double getFloat(String key) {
+    public double getFloat(String key) throws JSONException {
         try {
             return values.getDouble(key);
 
         } catch (JSONException e) {
-            return 0;
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
-    public double getDouble(String key) {
+    public double getDouble(String key) throws JSONException {
         try {
             return values.getDouble(key);
 
         } catch (JSONException e) {
-            return 0;
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
-    public char getChar(String key) {
+    public char getChar(String key) throws JSONException {
         try {
             return values.getString(key).charAt(0);
 
         } catch (JSONException e) {
-            return 0;
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
-    public long getLong(String key) {
+    public long getLong(String key) throws JSONException {
         try {
             return values.getLong(key);
 
         } catch (JSONException e) {
-            return 0;
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
-    public int getInt(String key) {
+    public int getInt(String key) throws JSONException {
         try {
             return values.getInt(key);
 
         } catch (JSONException e) {
-            return 0;
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
-    public int getShort(String key) {
+    public int getShort(String key) throws JSONException {
         try {
             return values.getInt(key);
 
         } catch (JSONException e) {
-            return 0;
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
-    public String getString(String key) {
+    public String getString(String key) throws JSONException {
         try {
             return values.getString(key);
 
         } catch (JSONException e) {
-            return "";
+            //lancio l'eccezione
+            throw new JDataException();
         }
     }
 
 
     //get JsonObject
-    public JSONObject getRoot() {
+    public JSONObject getRoot() throws JDataException {
 
         //se è stato creato l'oggetto nested lo inserisco
         if (nestedObjectExists) {
@@ -287,6 +303,9 @@ public class JData {
 
             } catch (JSONException e){
                 Logger.e("JData", "getRoot", e, Logger.SEVERE);
+
+                //lancio l'eccezione
+                throw new JDataException();
             }
         }
 
