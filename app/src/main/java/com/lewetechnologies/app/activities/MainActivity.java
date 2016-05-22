@@ -166,16 +166,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
-
-        //TEST PREFERENZE
-        /*SharedPreferences preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putBoolean("status", true);
-
-        editor.commit();*/
+        
 
 
     }

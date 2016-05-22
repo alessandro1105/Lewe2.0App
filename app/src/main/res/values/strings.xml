@@ -46,6 +46,8 @@
     <!-- SEARCH ACTIVITY -->
     <string name="activity_search_title">Searching for LeweBand…</string>
     <string name="activity_search_description">keep you LeweBand near your smartphone</string>
+    <string name="activity_search_bt_not_enabled">Cannot search for LeweBand because the bluetooth is off</string>
+    <string name="activity_search_leweband_found">LeweBand found</string>
 
     <!-- MAIN ACTIVITY -->
     <string name="activity_main_bottom_bar_element_temperature">Temperature</string>
@@ -62,8 +64,5 @@
 
     <!-- FRAGMENT MAIN GSR -->
     <string name="fragment_main_gsr_title">GSR</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
