@@ -28,6 +28,7 @@ public class Config {
     //---SHARED PREFERENCE KEY---
     public static final String SHARED_PREFERENCE_KEY_DEVICE_MAC = "shared_preference_key_device_mac";
     public static final String SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION = "shared_preference_key_first_association";
+    public static final String SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED = "shared_preference_key_band_name_associated";
 
 
 }

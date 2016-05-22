@@ -178,6 +178,7 @@ public class SearchActivity extends AppCompatActivity {
             //salvo i valori nelle preferenze
             editor.putString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, device.getAddress()); //salvo il mac del device
             editor.putBoolean(Config.SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION, true); //indico che è stato effettuata la prima associazione
+            editor.putString(Config.SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED, device.getName()); //indico che il band è stato associato
 
             //salvo i cambiamenti
             editor.commit();

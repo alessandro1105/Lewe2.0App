@@ -41,6 +41,9 @@
     <string name="activity_settings_band_dissociate_summary">Dissociate LeweBand</string>
     <string name="activity_settings_band_status_summary_disconnected">Disconnected</string>
     <string name="activity_settings_band_status_summary_connected">Connected</string>
+    <string name="activity_settings_band_name_title">LeweBand</string>
+    <string name="activity_settings_band_not_associated">Leweband not associated</string>
+    <string name="activity_settings_band_not_associated_toast">LeweBand successfully dissociated</string>
 
 
     <!-- SEARCH ACTIVITY -->

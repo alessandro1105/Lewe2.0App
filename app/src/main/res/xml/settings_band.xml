@@ -1,6 +1,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
+        android:title="@string/activity_settings_band_name_title"
+        android:key="band_name">
+    </Preference>
+
+    <Preference
         android:title="@string/activity_settings_band_status_title"
         android:summary="Disconnected"
         android:key="status">
@@ -13,7 +18,8 @@
 
     <Preference
         android:title="@string/activity_settings_band_dissociate_title"
-        android:summary="@string/activity_settings_band_dissociate_summary">
+        android:summary="@string/activity_settings_band_dissociate_summary"
+        android:key="dissociate">
     </Preference>
 
     <Preference

@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    //shared preferences
+    SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -167,9 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //controllo se è stata fatta la prima associazione dalle preferenze
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
 
+        //controllo se è stata fatta la prima associazione dalle preferenze
         //se non è stata fatta la prima associazione avvio la search activity
         if (!preferences.getBoolean(Config.SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION, false)) {
             //avvio l'activity SettingsActivity
@@ -177,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(activity, Config.REQUEST_EXIT_CODE);
         }
 
+        //if (preferences.getString(SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED))
 
 
     }
