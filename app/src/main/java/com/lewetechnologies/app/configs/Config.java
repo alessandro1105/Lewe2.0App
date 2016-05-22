@@ -23,13 +23,12 @@ public class Config {
     public static final String LEWEBAND_BT_NAME = "LW2v0";
 
     //---SHARED PREFERENCE---
-    public static final String SHARED_PREFERENCE_FILE = "com.lewetechnologies.com.PREFERENCE_FILE";
+    public static final String SHARED_PREFERENCE_FILE = "com.lewetechnologies.com.SharedPreferences";
 
     //---SHARED PREFERENCE KEY---
     public static final String SHARED_PREFERENCE_KEY_DEVICE_MAC = "shared_preference_key_device_mac";
     public static final String SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION = "shared_preference_key_first_association";
     public static final String SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED = "shared_preference_key_band_name_associated";
     public static final String SHARED_PREFERENCE_KEY_BAND_STATUS = "shared_preference_key_band_status";
-
 
 }
