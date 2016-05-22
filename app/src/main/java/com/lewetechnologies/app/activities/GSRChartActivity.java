@@ -93,7 +93,7 @@ public class GSRChartActivity extends AppCompatActivity {
         chart.getAxisLeft().setValueFormatter(new GSRYAxisValueFormatter());
 
         //maker view
-        chart.setMarkerView(new GSRTooltipMarkerView(getApplicationContext(), R.layout.tooltip_chart));
+        chart.setMarkerView(new GSRTooltipMarkerView(getApplicationContext(), R.layout.chart_tooltip));
     }
 
     private void initializeDataSet(LineDataSet set) {

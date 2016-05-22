@@ -93,7 +93,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
         chart.getAxisLeft().setValueFormatter(new TemperatureYAxisValueFormatter());
 
         //maker view
-        chart.setMarkerView(new TemperatureTooltipMarkerView(getApplicationContext(), R.layout.tooltip_chart));
+        chart.setMarkerView(new TemperatureTooltipMarkerView(getApplicationContext(), R.layout.chart_tooltip));
     }
 
     private void initializeDataSet(LineDataSet set) {
