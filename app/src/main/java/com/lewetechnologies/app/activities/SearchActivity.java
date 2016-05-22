@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -46,17 +48,32 @@ public class SearchActivity extends AppCompatActivity {
     //indica se è stato registrato il receiver
     private boolean onBTDeviceFoundReceiverRegistered;
 
+    //indica se è stata fatta la prima associazione
+    private boolean firstAssociationDone;
+
+    //shared preferences
+    SharedPreferences preferences;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //creo shared preferences
+        preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
+
+        //inserisco la vista
         setContentView(R.layout.activity_search);
 
         //imposto la toolbar personalizzata
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //imposto il tasto indietro
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //se è già stata fatta la prima associazione
+        if (preferences.getBoolean(Config.SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION, false)) {
+            //imposto il tasto indietro
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         //inizializzo le variabili
         onBTDeviceFoundReceiverRegistered = false; //non ancora registrato il receiver
@@ -140,9 +157,11 @@ public class SearchActivity extends AppCompatActivity {
     //metodo chiamato quando viene trovato un dispositivo BT
     private void onBTDeviceFound(BluetoothDevice device) {
 
-        //se il nome del device trovato è quello di un leweband
-        if (device.getName().equals(Config.LEWEBAND_BT_NAME)) {
-            //bluetooth trovato
+        //se il nome del device trovato è quello di un leweband e non è lo stesso già
+        if (device.getName().equals(Config.LEWEBAND_BT_NAME)
+                && !preferences.getString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, "").equals(device.getAddress())) {
+
+            //leweband trovato
 
             //fermo al progress bar e metto l'icona di successo
             stopProgressBarSuccess();
@@ -154,7 +173,6 @@ public class SearchActivity extends AppCompatActivity {
             stopDiscovery();
 
             //salvo nelle preferenze il device trovato
-            SharedPreferences preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
 
             //salvo i valori nelle preferenze
@@ -177,6 +195,18 @@ public class SearchActivity extends AppCompatActivity {
         //change image icon
         ImageView image = (ImageView) findViewById(R.id.icon);
         image.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error));
+
+        //button
+        Button button = (Button) findViewById(R.id.button);
+        button.setText(getResources().getString(R.string.activity_search_button_text_exit));
+        button.setVisibility(View.VISIBLE);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void stopProgressBarSuccess() {
@@ -187,7 +217,33 @@ public class SearchActivity extends AppCompatActivity {
         //change image icon
         ImageView image = (ImageView) findViewById(R.id.icon);
         image.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_success));
+
+        //button
+        Button button = (Button) findViewById(R.id.button);
+        button.setText(getResources().getString(R.string.activity_search_button_text_continue));
+        button.setVisibility(View.VISIBLE);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
+    @Override
+    public void onBackPressed() {
 
+        //se è già stata fatta la prima associazione
+        if (!preferences.getBoolean(Config.SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION, false)) {
+
+            //richiedo la chiusura dell'app
+            Intent exitIntent = new Intent();
+            setResult(Config.RESULT_EXIT_CODE, exitIntent);
+            finish();
+
+        } else {
+            finish();
+        }
+    }
 }

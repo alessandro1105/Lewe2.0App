@@ -77,6 +77,17 @@
                 android:layout_centerInParent="true" />
         </RelativeLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_search_button_text_continue"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_search_button_margin_top"
+            android:background="@drawable/button_background"
+            android:visibility="gone"/>
+
+
         <!-- Rimosso per test (Causa bug di rendering su android studio ma FUNZIONA)-->
         <!--android:indeterminateDrawable="@drawable/circular_progress_bar"-->
 

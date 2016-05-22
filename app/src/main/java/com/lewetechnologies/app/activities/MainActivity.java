@@ -166,7 +166,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-        
+
+        //controllo se è stata fatta la prima associazione dalle preferenze
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
+
+        //se non è stata fatta la prima associazione avvio la search activity
+        if (!preferences.getBoolean(Config.SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION, false)) {
+            //avvio l'activity SettingsActivity
+            Intent activity = new Intent(this, SearchActivity.class);
+            startActivityForResult(activity, Config.REQUEST_EXIT_CODE);
+        }
+
 
 
     }

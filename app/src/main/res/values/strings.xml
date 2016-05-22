@@ -46,8 +46,10 @@
     <!-- SEARCH ACTIVITY -->
     <string name="activity_search_title">Searching for LeweBand…</string>
     <string name="activity_search_description">keep you LeweBand near your smartphone</string>
-    <string name="activity_search_bt_not_enabled">Cannot search for LeweBand because the bluetooth is off</string>
+    <string name="activity_search_bt_not_enabled">Cannot search for LeweBand</string>
     <string name="activity_search_leweband_found">LeweBand found</string>
+    <string name="activity_search_button_text_continue">Continue</string>
+    <string name="activity_search_button_text_exit">Exit</string>
 
     <!-- MAIN ACTIVITY -->
     <string name="activity_main_bottom_bar_element_temperature">Temperature</string>

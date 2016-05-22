@@ -28,8 +28,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment {
 
                 //ritorno la richiesta di chiusura dell'app
                 Intent exitIntent = new Intent();
-                SettingsPreferenceFragment.this.getActivity().setResult(Config.RESULT_EXIT_CODE, exitIntent);
-                SettingsPreferenceFragment.this.getActivity().finish();
+                getActivity().setResult(Config.RESULT_EXIT_CODE, exitIntent);
+                getActivity().finish();
 
 
                 return true;
