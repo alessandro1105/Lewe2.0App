@@ -22,7 +22,7 @@
     <color name="fragment_main_background_color">#65CCD1</color>
     <color name="fragment_main_data_text_color">#FFFFFF</color>
     <color name="fragment_main_title_text_color">#FFFFFF</color>
-    <color name="fragment_main_date_text_color">#CBF6F7</color>
+    <color name="fragment_main_timestamp_text_color">#CBF6F7</color>
 
     <!-- CHART ACTIVITY -->
     <color name="chart_tooltip_background_color">#F44E4E</color>

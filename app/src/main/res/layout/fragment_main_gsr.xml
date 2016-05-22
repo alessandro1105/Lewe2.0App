@@ -36,7 +36,7 @@
                 android:id="@+id/data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50%"
+                android:text="@string/fragment_main_data_default_text"
                 android:layout_centerInParent="true"
                 android:textSize="@dimen/fragment_main_data_text_size"
                 android:textStyle="bold"
@@ -53,14 +53,14 @@
                 android:textColor="@color/fragment_main_title_text_color" />
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11/05/2016 15:35"
+                android:text="@string/fragment_main_timestamp_default_text"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/fragment_main_date_margin_top"
                 android:textSize="@dimen/fragment_main_date_text_size"
-                android:textColor="@color/fragment_main_date_text_color" />
+                android:textColor="@color/fragment_main_timestamp_text_color" />
 
 
         </RelativeLayout>

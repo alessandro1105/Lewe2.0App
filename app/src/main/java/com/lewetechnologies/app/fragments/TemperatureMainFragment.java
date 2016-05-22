@@ -1,7 +1,6 @@
 package com.lewetechnologies.app.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,14 +20,12 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.lewetechnologies.app.R;
-import com.lewetechnologies.app.activities.TemperatureChartActivity;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.text.DecimalFormatSymbols;
 
 /**
  * Created by alessandro on 22/05/16.
@@ -36,7 +33,18 @@ import java.util.ArrayList;
 //---FRAGMENT CLASS TEMPERATURE---
 public class TemperatureMainFragment extends Fragment {
 
-    TextView dataText;
+    //numero massimo di elementi nel grafico
+    private static final int MAX_CHART_ELEMENT = 5;
+
+    //rootView
+    private View rootView;
+
+    //componenti del fragment da modificare dinamicamente
+    private TextView data; //dato in "grande"
+    private TextView timestamp; //timestamp ricezione dato in "grande"
+
+    private LineChart chart; //grafico
+
 
     //costruttore
     public TemperatureMainFragment() {
@@ -58,19 +66,16 @@ public class TemperatureMainFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //creo la vista
-        View rootView = inflater.inflate(R.layout.fragment_main_temperature, container, false); //TEMPERATURE
+        rootView = inflater.inflate(R.layout.fragment_main_temperature, container, false); //TEMPERATURE
 
         //accedo ai dati da cambiare
-        dataText = (TextView) rootView.findViewById(R.id.data);
-        LineChart chart = (LineChart) rootView.findViewById(R.id.chart);
+        data = (TextView) rootView.findViewById(R.id.data); //dato in "grande"
+        timestamp = (TextView) rootView.findViewById(R.id.timestamp); //timestamp dato in "grande"
+        chart = (LineChart) rootView.findViewById(R.id.chart); //grafico
 
 
         //cambio il font del valore mostrato
-        dataText.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/DINCond-Bold.ttf"));
-
-        //dataText.setText(getArguments().getString("test"));
-
-
+        data.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/DINCond-Bold.ttf"));
 
 
         //onclick chart
@@ -92,8 +97,8 @@ public class TemperatureMainFragment extends Fragment {
             public void onChartLongPressed(MotionEvent me) {
 
                 //avvio l'activity TemperatureChart
-                Intent activity = new Intent(TemperatureMainFragment.this.getActivity(), TemperatureChartActivity.class);
-                startActivity(activity);
+                //Intent activity = new Intent(TemperatureMainFragment.this.getActivity(), TemperatureChartActivity.class);
+                //startActivity(activity);
 
             }
 
@@ -124,37 +129,22 @@ public class TemperatureMainFragment extends Fragment {
         });
 
         //inizializzo il grafico
-        initializeChartView(chart);
+        initializeChart();
 
-        //popolo il grafico
-        ArrayList<String> xVals = new ArrayList<String>();
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        //inserisco un oggetto data vuoto con dataset nel grafico
+        LineData dataChart = new LineData();
+        dataChart.addDataSet(createDataSet());
+        chart.setData(dataChart);
 
-        //se ci sono dati
-        if (getData(xVals, yVals)) { //riempio il grafico
+        //invalido i valori del grafico
+        chart.invalidate();
 
-            //creo il dataset
-            LineDataSet set = new LineDataSet(yVals, "GSR");
-
-            //inizializzo il dataset
-            initializeDataSet(set);
-
-            //aggiungo le etichette al dataset
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set); // add the datasets
-
-            // create a data object with the datasets
-            LineData data = new LineData(xVals, dataSets);
-
-            // set data
-            chart.setData(data);
-        }
 
         //ritorno la vista
         return rootView;
     }
 
-    private void initializeChartView(LineChart chart) {
+    private void initializeChart() {
         //description
         chart.setDescription("");
         chart.setNoDataText("No data available");
@@ -170,7 +160,7 @@ public class TemperatureMainFragment extends Fragment {
         chart.setDrawBorders(false); //elimina i bordi
 
         //animazione
-        chart.animateXY(1500, 1500); //animazione di riempimento
+        //chart.animateXY(1500, 1500); //animazione di riempimento
 
         //chart offset
         chart.setExtraLeftOffset(20f);
@@ -197,10 +187,14 @@ public class TemperatureMainFragment extends Fragment {
         chart.getAxisLeft().setValueFormatter(new TemperatureYAxisValueFormatter());
 
         //maker view
-        chart.setMarkerView(new TemperatureTooltipMarkerView(TemperatureMainFragment.this.getContext(), R.layout.chart_tooltip));
+        chart.setMarkerView(new TemperatureTooltipMarkerView(getContext(), R.layout.chart_tooltip));
     }
 
-    private void initializeDataSet(LineDataSet set) {
+    private LineDataSet createDataSet() {
+
+        //creo il dataset
+        LineDataSet set = new LineDataSet(null, "Temperature");
+
         //line settings
         set.setLineWidth(2f); //line width
 
@@ -218,46 +212,28 @@ public class TemperatureMainFragment extends Fragment {
         //dataset settings
         set.setDrawHighlightIndicators(false); //elimina le linee di highlight
         set.setDrawFilled(false); //elimina la colorazione dell'area sottostante al grafico
+
+        //ritorno il dataset
+        return set;
     }
 
-    //getData
-    private boolean getData(ArrayList<String> xVals, ArrayList<Entry> yVals) {
-        //X labels
-        xVals.add("16/05/2016 15:30");
-        xVals.add("16/05/2016 15:35");
-        xVals.add("16/05/2016 15:40");
-        xVals.add("16/05/2016 15:45");
-        xVals.add("16/05/2016 15:50");
-
-        //Y data
-        yVals.add(new Entry(34.5f, 0));
-        yVals.add(new Entry(37.3f, 1));
-        yVals.add(new Entry(37.5f, 2));
-        yVals.add(new Entry(33.1f, 3));
-        yVals.add(new Entry(32.1f, 4));
-
-        return true;
-
-    }
-
-    public void uodate() {
-        dataText.setText("MA COME CAZZO!!!!");
-    }
 
     //chart YAxis formatter
     public static class TemperatureYAxisValueFormatter implements YAxisValueFormatter {
 
-        private DecimalFormat mFormat;
-
         public TemperatureYAxisValueFormatter () {
-            mFormat = new DecimalFormat("##0.0"); // use one decimal
+            //costruttore vuoto
         }
 
         @Override
         public String getFormattedValue(float value, YAxis yAxis) {
-            // write your logic here
-            // access the YAxis object to get more information
-            return mFormat.format(value) + " °C"; // e.g. append a dollar-sign
+
+            //text formatter
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+            symbols.setDecimalSeparator('.');
+
+            //creo il testo per il valore grande
+            return new DecimalFormat("##0.0", symbols).format(value) + "°C";
         }
     }
 
@@ -276,7 +252,14 @@ public class TemperatureMainFragment extends Fragment {
         // content (user-interface)
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
-            tvContent.setText("" + e.getVal() + "°C"); // set the entry-value as the display text
+            //text formatter
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+            symbols.setDecimalSeparator('.');
+
+            //creo il testo per il valore grande
+            String value = new DecimalFormat("##0.0", symbols).format(e.getVal()) + "°C";
+
+            tvContent.setText(value); // set the entry-value as the display text
         }
 
         @Override
@@ -291,4 +274,61 @@ public class TemperatureMainFragment extends Fragment {
             return -getHeight();
         }
     }
+
+    //metodo di update con l'ultimo valore
+    public void update(String xKey, double yVal) {
+        update(xKey, yVal, false); //richiamo l'altro metodo di update
+    }
+
+    public void update(String xKey, double yVal, boolean updateData) {
+
+        //se è richiesto l'update del dato "grande"
+        if (updateData) {
+
+            //text formatter
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+            symbols.setDecimalSeparator('.');
+
+            //creo il testo per il valore grande
+            String dataText = new DecimalFormat("##0.0", symbols).format(yVal) + "°C";
+
+            //aggiorno i valori
+            data.setText(dataText); //data
+            timestamp.setText(xKey); //date (timestamp)
+        }
+
+
+        //ottengo l'oggetto data dal grafico
+        LineData dataChart = chart.getData();
+
+        //aggiungo xKey
+        dataChart.addXValue(xKey);
+
+        //aggiungo l'entry del nuovo dato
+        dataChart.addEntry(new Entry((float) yVal, dataChart.getDataSetByIndex(0).getEntryCount()), 0);
+
+        if (dataChart.getDataSetByIndex(0).getEntryCount() > MAX_CHART_ELEMENT) {
+            //rimuovo l'entry più vecchia
+            dataChart.getDataSetByIndex(0).removeFirst();
+
+            //modifico gli indici
+            for (int i = 0; i < dataChart.getDataSetByIndex(0).getEntryCount(); i++) {
+                Entry entry = dataChart.getDataSetByIndex(0).getEntryForXIndex(i+1);
+                entry.setXIndex(i);
+            }
+
+        }
+
+        //notifico che il data set è cambiato
+        chart.notifyDataSetChanged();
+
+        //invalido il grafico per il refresh
+        chart.invalidate();
+
+        //indico di mostrare solo gli indici da 0 a MAX_CHART_ELEMENT-1, ovvero MAX_CHART_ELEMENT elementi
+        chart.setVisibleXRangeMaximum(MAX_CHART_ELEMENT-1);
+
+
+    }
+
 }

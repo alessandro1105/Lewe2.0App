@@ -52,6 +52,11 @@
     <string name="activity_main_bottom_bar_element_gsr">GSR</string>
     <string name="activity_main_bottom_bar_element_settings">Settings</string>
 
+
+    <!-- FRAGMENT MAIN -->
+    <string name="fragment_main_data_default_text">NA</string>
+    <string name="fragment_main_timestamp_default_text"></string>
+
     <!-- FRAGMENT MAIN TEMPERATURE -->
     <string name="fragment_main_temperature_title">Temperature</string>
 

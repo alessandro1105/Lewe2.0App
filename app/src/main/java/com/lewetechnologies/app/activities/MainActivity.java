@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 //mSectionsPagerAdapter.update();
                 //mSectionsPagerAdapter.notifyDataSetChanged();
 
-                ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).uodate();
+                ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update("22/05/2016 15:07", (float) (Math.random() * 10) + 50f, true);
             }
 
         });
@@ -146,11 +146,13 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                //selezione GSR nella bottom bar
+                /*//selezione GSR nella bottom bar
                 MainActivity.this.setGSRSelected();
 
                 //visualizzo il fragment scelto
-                mViewPager.setCurrentItem(1, true);
+                mViewPager.setCurrentItem(1, true);*/
+
+                ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update("22/05/2016 15:07", (float) (Math.random() * 10) + 50f, true);
             }
 
         });
