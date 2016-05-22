@@ -17,4 +17,8 @@ public class Config {
     //---LOGGER ERROR LEVEL---
     public static final int LOGGER_ERROR_LEVEL = Logger.DEBUG;
 
+
+    //---SHARED PREFERENCE---
+    public static final String SHARED_PREFERENCE_FILE = "com.lewetechnologies.com.PREFERENCE_FILE";
+
 }

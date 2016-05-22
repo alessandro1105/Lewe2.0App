@@ -2,13 +2,18 @@
 
     <Preference
         android:title="@string/activity_settings_band_status_title"
-        android:summary="Connected (DA CAMBIARE DA SW)">
-
+        android:summary="Disconnected"
+        android:key="status">
     </Preference>
 
     <Preference
         android:title="@string/activity_settings_band_firmware_title"
         android:summary="@string/activity_settings_band_firmware_summary">
+    </Preference>
+
+    <Preference
+        android:title="@string/activity_settings_band_dissociate_title"
+        android:summary="@string/activity_settings_band_dissociate_summary">
     </Preference>
 
     <Preference

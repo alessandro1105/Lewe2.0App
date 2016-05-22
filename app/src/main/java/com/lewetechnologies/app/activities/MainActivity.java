@@ -2,6 +2,7 @@ package com.lewetechnologies.app.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -125,11 +125,16 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                //selezione temperatura nella bottom bar
+                /*//selezione temperatura nella bottom bar
                 MainActivity.this.setTemperatureSelected();
 
                 //visualizzo il fragment scelto
-                mViewPager.setCurrentItem(0, true);
+                mViewPager.setCurrentItem(0, true);*/
+
+                //mSectionsPagerAdapter.update();
+                //mSectionsPagerAdapter.notifyDataSetChanged();
+
+                ((TemperatureFragment) mSectionsPagerAdapter.getItem(0)).uodate();
             }
 
         });
@@ -157,6 +162,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+
+        //TEST PREFERENZE
+        /*SharedPreferences preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putBoolean("status", true);
+
+        editor.commit();*/
+
 
     }
 
@@ -250,11 +266,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //---FRAGMENT CLASS TEMPERATURE---
     public static class TemperatureFragment extends Fragment {
 
-        private View rootView;
+        TextView dataText;
 
         public TemperatureFragment() {
+            //richiede un costruttore
+        }
+
+        public static TemperatureFragment newInstance(String test) {
+
+            //istanzio il fragment
+            TemperatureFragment fragment = new TemperatureFragment();
+
+            //creo il contenitore dei parametri
+            Bundle args = new Bundle();
+
+            //inserisco i parametri
+            args.putString("test", test);
+
+            //setto i parametri
+            fragment.setArguments(args);
+
+            //ritorno il fragment
+            return fragment;
         }
 
         @Override
@@ -262,14 +298,20 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
 
             //creo la vista
-            rootView = inflater.inflate(R.layout.fragment_main_temperature, container, false); //TEMPERATURE
+            View rootView = inflater.inflate(R.layout.fragment_main_temperature, container, false); //TEMPERATURE
+
+            //accedo ai dati da cambiare
+            dataText = (TextView) rootView.findViewById(R.id.data);
+            LineChart chart = (LineChart) rootView.findViewById(R.id.chart);
+
 
             //cambio il font del valore mostrato
-            Typeface blockFonts = Typeface.createFromAsset(TemperatureFragment.this.getContext().getAssets(), "fonts/DINCond-Bold.ttf");
-            ((TextView) rootView.findViewById(R.id.data)).setTypeface(blockFonts);
+            dataText.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/DINCond-Bold.ttf"));
+
+            //dataText.setText(getArguments().getString("test"));
 
 
-            LineChart chart = (LineChart) rootView.findViewById(R.id.chart);
+
 
             //onclick chart
             chart.setTouchEnabled(true); //abilito i gesti touch
@@ -438,6 +480,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        public void uodate() {
+            dataText.setText("MA COME CAZZO!!!!");
+        }
+
+        //chart YAxis formatter
         public static class TemperatureYAxisValueFormatter implements YAxisValueFormatter {
 
             private DecimalFormat mFormat;
@@ -454,6 +501,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //chart tooltip formatter
         private static class TemperatureTooltipMarkerView extends MarkerView {
 
             private TextView tvContent;
@@ -485,12 +533,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    //---FRAGMENT CLASS GSR---
     public static class GSRFragment extends Fragment {
 
+        //root view
         private View rootView;
 
+        //gsr text
+        private TextView data;
+
+        //chart
+        private LineChart chart;
+
+
+        //costruttore
         public GSRFragment() {
         }
+
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -499,11 +559,13 @@ public class MainActivity extends AppCompatActivity {
             //creo la vista
             rootView = inflater.inflate(R.layout.fragment_main_gsr, container, false); //TEMPERATURE
 
+            //ottengo i riferimenti alla view
+            data = (TextView) rootView.findViewById(R.id.data);
+            chart = (LineChart) rootView.findViewById(R.id.chart);
+
             //cambio il font del valore mostrato
             Typeface blockFonts = Typeface.createFromAsset(GSRFragment.this.getContext().getAssets(), "fonts/DINCond-Bold.ttf");
-            ((TextView) rootView.findViewById(R.id.data)).setTypeface(blockFonts);
-
-            LineChart chart = (LineChart) rootView.findViewById(R.id.chart);
+            data.setTypeface(blockFonts);
 
             //onclick chart
             chart.setTouchEnabled(true); //abilito i gesti touch
@@ -672,6 +734,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        //chart YAxis formatter
         public static class GSRYAxisValueFormatter implements YAxisValueFormatter {
 
             private DecimalFormat mFormat;
@@ -688,6 +751,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //chart tooltip formatter
         private static class GSRTooltipMarkerView extends MarkerView {
 
             private TextView tvContent;
@@ -726,16 +790,14 @@ public class MainActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private TemperatureFragment temperatureFragment;
-        private GSRFragment gsrFragment;
+        TemperatureFragment tf;
 
+        private String test = "hey";
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
 
-            //costruisco i fragment
-            temperatureFragment = new TemperatureFragment();
-            gsrFragment = new GSRFragment();
+            tf = new TemperatureFragment();
         }
 
         @Override
@@ -746,21 +808,30 @@ public class MainActivity extends AppCompatActivity {
 
                 //Temperature fragment
                 case 0:
-                    return temperatureFragment; //ritorno il fragment della temperatura
+                    return tf; //ritorno il fragment della temperatura
 
                 //GSR fragment
                 case 1:
-                    return gsrFragment; //ritorno il fragment del GSR
+                    return new GSRFragment(); //ritorno il fragment del GSR
             }
 
             //ritorno il fragment della temperatura nel caso di errore
-            return temperatureFragment;
+            return null;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override
         public int getCount() {
             // Show 2 total pages.
             return 2; //due fragment
+        }
+
+        public void update() {
+            test = "ciao";
         }
     }
 
