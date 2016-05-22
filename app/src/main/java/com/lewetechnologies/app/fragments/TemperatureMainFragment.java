@@ -43,19 +43,11 @@ public class TemperatureMainFragment extends Fragment {
         //richiede un costruttore vuoto
     }
 
-    public static TemperatureMainFragment newInstance(String test) {
+    //factory method per la costruzuione del fragment
+    public static TemperatureMainFragment newInstance() {
 
         //istanzio il fragment
         TemperatureMainFragment fragment = new TemperatureMainFragment();
-
-        //creo il contenitore dei parametri
-        Bundle args = new Bundle();
-
-        //inserisco i parametri
-        args.putString("test", test);
-
-        //setto i parametri
-        fragment.setArguments(args);
 
         //ritorno il fragment
         return fragment;

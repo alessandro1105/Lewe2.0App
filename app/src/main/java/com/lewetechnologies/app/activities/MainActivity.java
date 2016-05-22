@@ -268,25 +268,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        TemperatureMainFragment tf;
+        //costanti per accedere ai fragment
+        public static final int TEMPERATURE_MAIN_FRAGMENT_POSITION = 0;
+        public static final int GSR_MAIN_FRAGMENT_POSITION = 1;
 
-        private String test = "hey";
+        //numero di fragment
+        private static final int FRAGMENT_NUMBER = 2;
+
+        //dichiaro i fragment
+        private TemperatureMainFragment temperatureFragment;
+        private GSRMainFragment gsrFragment;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
 
-            tf = new TemperatureMainFragment();
+            //costruisco i fragment
+            temperatureFragment = TemperatureMainFragment.newInstance();
+            gsrFragment = GSRMainFragment.newInstance();
+
         }
 
         @Override
@@ -296,12 +301,12 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
 
                 //Temperature fragment
-                case 0:
-                    return tf; //ritorno il fragment della temperatura
+                case TEMPERATURE_MAIN_FRAGMENT_POSITION:
+                    return temperatureFragment; //ritorno il fragment della temperatura
 
                 //GSR fragment
-                case 1:
-                    return new GSRMainFragment(); //ritorno il fragment del GSR
+                case GSR_MAIN_FRAGMENT_POSITION:
+                    return gsrFragment; //ritorno il fragment del GSR
             }
 
             //ritorno il fragment della temperatura nel caso di errore
@@ -309,19 +314,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-
-        @Override
         public int getCount() {
             // Show 2 total pages.
-            return 2; //due fragment
+            return FRAGMENT_NUMBER; //due fragment
         }
 
-        public void update() {
-            test = "ciao";
-        }
     }
 
 }

@@ -51,6 +51,16 @@ public class GSRMainFragment extends Fragment {
         //richiede un costruttore vuoto
     }
 
+    //factory method per la costruzuione del fragment
+    public static GSRMainFragment newInstance() {
+
+        //istanzio il fragment
+        GSRMainFragment fragment = new GSRMainFragment();
+
+        //ritorno il fragment
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

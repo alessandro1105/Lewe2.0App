@@ -1,5 +1,6 @@
 package com.lewetechnologies.app.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -48,17 +49,15 @@ public class SettingsBandPreferenceFragment extends PreferenceFragment {
         }
 
         //TEST INTENT PER CAMBIO VISTA
-            /*status.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
+        /*status.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
 
-                    Intent intent = new Intent("test12345678");
+                preference.setSummary("HEY COME VA?");
 
-                    getActivity().sendBroadcast(intent);
-
-                    return false;
-                }
-            });*/
+                return false;
+            }
+        });*/
 
     }
 
