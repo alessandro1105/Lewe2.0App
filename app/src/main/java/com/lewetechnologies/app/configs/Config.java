@@ -31,4 +31,15 @@ public class Config {
     public static final String SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED = "shared_preference_key_band_name_associated";
     public static final String SHARED_PREFERENCE_KEY_BAND_STATUS = "shared_preference_key_band_status";
 
+
+    //---CHIAVI PER EXTRA INTENT CONDIVISI--
+    public final static String EXTRA_DATA_GSR = "com.lewetechnologies.app.services.EXTRA_DATA_GSR"; //dato gsr
+    public final static String EXTRA_DATA_TEMPERATURE = "com.lewetechnologies.app.services.EXTRA_DATA_TEMPERATURE"; //dato temperature
+    public final static String EXTRA_DATA_TIMESTAMP = "com.lewetechnologies.app.services.EXTRA_DATA_TIMESTAMP"; //dato gsr
+
+
+    //---CHIAVI PER JACK--
+    public final static String JACK_TEMPERATURE = "TME";
+    public final static String JACK_GSR = "GSR";
+    public final static String JACK_TIMESTAMP = "TMP";
 }

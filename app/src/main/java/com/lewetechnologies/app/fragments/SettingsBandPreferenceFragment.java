@@ -26,19 +26,10 @@ public class SettingsBandPreferenceFragment extends PreferenceFragment {
     SharedPreferences preferences;
 
 
-    public static SettingsBandPreferenceFragment newInstance(boolean status) {
+    public static SettingsBandPreferenceFragment newInstance() {
 
         //istanzio il fragment
         SettingsBandPreferenceFragment fragment = new SettingsBandPreferenceFragment();
-
-        //creo il contenitore dei parametri
-        Bundle args = new Bundle();
-
-        //inserisco i parametri
-        args.putBoolean("status", status);
-
-        //setto i parametri
-        fragment.setArguments(args);
 
         //ritorno il fragment
         return fragment;
@@ -58,13 +49,8 @@ public class SettingsBandPreferenceFragment extends PreferenceFragment {
         status = (Preference) findPreference("status");
         bandName = (Preference) findPreference("band_name");
 
-        //setto il summary di status in base al parametro passato
-        if (getArguments().getBoolean("status", false)) {
-            status.setSummary(getString(R.string.activity_settings_band_status_summary_connected));
-
-        } else {
-            status.setSummary(getString(R.string.activity_settings_band_status_summary_disconnected));
-        }
+        //setto il summary di status disconnesso di base
+        status.setSummary(getString(R.string.activity_settings_band_status_summary_disconnected));
 
         //setto il nome del band associato
         if (!preferences.getString(Config.SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED, "").equals("")) {

@@ -212,7 +212,7 @@ public class JData {
 
     //get method
 
-    public boolean getBoolean(String key) throws JSONException {
+    public boolean getBoolean(String key) {
         try {
             return values.getBoolean(key);
 
@@ -222,7 +222,7 @@ public class JData {
         }
     }
 
-    public double getFloat(String key) throws JSONException {
+    public double getFloat(String key) {
         try {
             return values.getDouble(key);
 
@@ -232,7 +232,7 @@ public class JData {
         }
     }
 
-    public double getDouble(String key) throws JSONException {
+    public double getDouble(String key) {
         try {
             return values.getDouble(key);
 
@@ -242,7 +242,7 @@ public class JData {
         }
     }
 
-    public char getChar(String key) throws JSONException {
+    public char getChar(String key) {
         try {
             return values.getString(key).charAt(0);
 
@@ -252,7 +252,7 @@ public class JData {
         }
     }
 
-    public long getLong(String key) throws JSONException {
+    public long getLong(String key) {
         try {
             return values.getLong(key);
 
@@ -262,7 +262,7 @@ public class JData {
         }
     }
 
-    public int getInt(String key) throws JSONException {
+    public int getInt(String key) {
         try {
             return values.getInt(key);
 
@@ -272,7 +272,7 @@ public class JData {
         }
     }
 
-    public int getShort(String key) throws JSONException {
+    public int getShort(String key) {
         try {
             return values.getInt(key);
 
@@ -282,7 +282,7 @@ public class JData {
         }
     }
 
-    public String getString(String key) throws JSONException {
+    public String getString(String key) {
         try {
             return values.getString(key);
 

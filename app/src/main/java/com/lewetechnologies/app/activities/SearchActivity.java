@@ -149,6 +149,10 @@ public class SearchActivity extends AppCompatActivity {
 
     //metodo che avvia la ricerca tramite BT
     private void stopDiscovery() {
+
+        //stoppo la ricerca
+        mBluetoothAdapter.cancelDiscovery();
+
         //registro il ricevitore
         unregisterReceiver(onBTDeviceFoundReceiver);
         onBTDeviceFoundReceiverRegistered = false;

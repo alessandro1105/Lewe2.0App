@@ -249,7 +249,7 @@ public abstract class Jack {
 
                 String message = Jack.this.mmJTM.receive();
 
-                if (!message.equals("")) {
+                if (message != null) {
                     Jack.this.execute(message);
                 }
 
