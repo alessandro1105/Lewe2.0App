@@ -4,30 +4,34 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.lewetechnologies.app.configs.Config;
+
 /**
  * Created by alessandro on 22/05/16.
  */
 public class Database {
 
     //---DATABASE SETTINGS---
-    public static final String DATABASE_FILE_NAME = "com.lewetechnologies.com.Database.sql"; //nome del file
-    public static final int DATABASE_VERSION = 1; //verisone del database
-
-    //statement di creazione
-    private static final String DATABASE_CREATE_STATEMENT = "CREATE TABLE sensors (" +
-            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "sensor_name TEXT NOT NULL, " +
-            "sensor_value TEXT NOT NULL, " +
-            "timestamp INTEGER NOT NULL);";
-
-    //field del database
-    public static final String FIELD_SENSORS_ID = "id"; //id
-    public static final String FIELD_SENSORS_SENSOR_NAME = "sensor_name"; //sensor name
-    public static final String FIELD_SENSORS_SENSOR_VALUE = "sensor_value"; //sensor value
-    public static final String FIELD_SENSORS_TIMESTAMP = "timestamp"; //timestamp
+    public static final String DATABASE_FILE_NAME = Config.DATABASE_FILE_NAME; //nome del file
+    public static final int DATABASE_VERSION = Config.DATABASE_VERSION; //verisone del database
 
     //tabella
-    public static final String TABLE_SENSORS = "sensors";
+    public static final String TABLE_NAME = "sensors";
+
+    //field del database
+    public static final String CULUMN_NAME_ID = "id"; //id
+    public static final String CULUMN_NAME_SENSOR_NAME = "sensor_name"; //sensor name
+    public static final String CULUMN_NAME_SENSOR_VALUE = "sensor_value"; //sensor value
+    public static final String CULUMN_NAME_TIMESTAMP = "timestamp"; //timestamp
+
+    //statement di creazione
+    private static final String DATABASE_CREATE_STATEMENT =
+            "CREATE TABLE" + TABLE_NAME + "sensors (" +
+            CULUMN_NAME_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            CULUMN_NAME_SENSOR_NAME + " TEXT NOT NULL, " +
+            CULUMN_NAME_SENSOR_VALUE + " TEXT NOT NULL, " +
+            CULUMN_NAME_TIMESTAMP + " INTEGER NOT NULL" +
+            ");";
 
 
     //---VARIABILI---

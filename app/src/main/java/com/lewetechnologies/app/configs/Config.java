@@ -25,6 +25,10 @@ public class Config {
     //---SHARED PREFERENCE---
     public static final String SHARED_PREFERENCE_FILE = "com.lewetechnologies.com.SharedPreferences";
 
+    //---DATABASE SETTINGS---
+    public static final String DATABASE_FILE_NAME = "com.lewetechnologies.com.Database.sql"; //nome del file
+    public static final int DATABASE_VERSION = 1; //verisone del database
+
     //---SHARED PREFERENCE KEY---
     public static final String SHARED_PREFERENCE_KEY_DEVICE_MAC = "shared_preference_key_device_mac";
     public static final String SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION = "shared_preference_key_first_association";
