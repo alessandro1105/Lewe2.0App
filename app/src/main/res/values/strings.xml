@@ -51,7 +51,9 @@
     <string name="activity_search_description">keep you LeweBand near your smartphone</string>
     <string name="activity_search_bt_not_enabled">Cannot search for LeweBand</string>
     <string name="activity_search_leweband_found">LeweBand found</string>
-    <string name="activity_search_button_text_continue">Continue</string>
+    <string name="activity_search_leweband_not_found">LeweBand not found</string>
+    <string name="activity_search_button_text_continue"><u>Continue</u></string>
+    <string name="activity_search_button_text_retry">Retry</string>
     <string name="activity_search_button_text_exit">Exit</string>
 
     <!-- MAIN ACTIVITY -->

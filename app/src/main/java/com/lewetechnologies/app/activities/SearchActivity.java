@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +18,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.configs.Config;
 
 public class SearchActivity extends AppCompatActivity {
+
+    //---COSTANTI---
+    private static final long SCAN_PERIOD = 10000;
+
+
+    //---VARIABILI---
+    private Handler scanHandler;
 
     //creo il ricevitore di quando è stato trovato un device BT
     BroadcastReceiver onBTDeviceFoundReceiver = new BroadcastReceiver() {
@@ -77,6 +87,7 @@ public class SearchActivity extends AppCompatActivity {
 
         //inizializzo le variabili
         onBTDeviceFoundReceiverRegistered = false; //non ancora registrato il receiver
+        scanHandler = new Handler(); //inizializzo l'handler
 
         //creao bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -138,6 +149,20 @@ public class SearchActivity extends AppCompatActivity {
 
     //metodo che avvia la ricerca tramite BT
     private void startDiscovery() {
+
+        startProgressBar();
+
+        scanHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                stopDiscovery();
+                stopProgressBarRetry();
+
+                //toast per indicare che non è stato trovato il band
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.activity_search_leweband_not_found), Toast.LENGTH_LONG).show();
+            }
+        }, SCAN_PERIOD);
+
         //registro il ricevitore
         registerReceiver(onBTDeviceFoundReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         onBTDeviceFoundReceiverRegistered = true;
@@ -156,6 +181,7 @@ public class SearchActivity extends AppCompatActivity {
         //registro il ricevitore
         unregisterReceiver(onBTDeviceFoundReceiver);
         onBTDeviceFoundReceiverRegistered = false;
+
     }
 
     //metodo chiamato quando viene trovato un dispositivo BT
@@ -202,8 +228,9 @@ public class SearchActivity extends AppCompatActivity {
         image.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error));
 
         //button
-        Button button = (Button) findViewById(R.id.button);
+        TextView button = (TextView) findViewById(R.id.button);
         button.setText(getResources().getString(R.string.activity_search_button_text_exit));
+        button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         button.setVisibility(View.VISIBLE);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -224,8 +251,9 @@ public class SearchActivity extends AppCompatActivity {
         image.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_success));
 
         //button
-        Button button = (Button) findViewById(R.id.button);
+        TextView button = (TextView) findViewById(R.id.button);
         button.setText(getResources().getString(R.string.activity_search_button_text_continue));
+        button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         button.setVisibility(View.VISIBLE);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -234,6 +262,47 @@ public class SearchActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private void stopProgressBarRetry() {
+        //stop progress bar
+        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
+        progress.setIndeterminateDrawable(null);
+
+        //change image icon
+        ImageView image = (ImageView) findViewById(R.id.icon);
+        image.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_error));
+
+        //button
+        TextView button = (TextView) findViewById(R.id.button);
+        button.setText(getResources().getString(R.string.activity_search_button_text_retry));
+        button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        button.setVisibility(View.VISIBLE);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDiscovery();
+            }
+        });
+    }
+
+    private void startProgressBar() {
+        //stop progress bar
+        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
+
+        progress.remove
+        progress.setIndeterminateDrawable(getResources().getDrawable(R.drawable.circular_progress_bar, this.getTheme()));
+        progress.refreshDrawableState();
+        progress.setIndeterminate(true);
+
+        //change image icon
+        ImageView image = (ImageView) findViewById(R.id.icon);
+        image.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_search));
+
+        //button
+        TextView button = (TextView) findViewById(R.id.button);
+        button.setVisibility(View.GONE);
     }
 
     @Override

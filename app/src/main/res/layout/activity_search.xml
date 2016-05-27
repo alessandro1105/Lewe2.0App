@@ -77,15 +77,18 @@
                 android:layout_centerInParent="true" />
         </RelativeLayout>
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/activity_search_button_text_continue"
             android:id="@+id/button"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/activity_search_button_margin_top"
-            android:background="@drawable/button_background"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:textColor="@color/activity_search_button_text_color"
+            android:textSize="@dimen/activity_search_button_text_size"/>
+
+        <!--android:background="@drawable/button_background"-->
 
 
         <!-- Rimosso per test (Causa bug di rendering su android studio ma FUNZIONA)-->

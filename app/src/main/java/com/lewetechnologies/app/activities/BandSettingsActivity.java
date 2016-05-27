@@ -22,7 +22,7 @@ public class BandSettingsActivity extends AppCompatActivity {
 
         //Creo il fragment passando lo stato della connessione con il band
         getFragmentManager().beginTransaction().replace(android.R.id.content,
-            SettingsBandPreferenceFragment.newInstance(preferences.getBoolean(Config.SHARED_PREFERENCE_KEY_BAND_STATUS, false)))
+            SettingsBandPreferenceFragment.newInstance())
             .commit();
 
     }

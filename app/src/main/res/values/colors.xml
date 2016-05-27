@@ -12,6 +12,7 @@
     <!--SEARCH ACTIVITY-->
     <color name="activity_search_title_text_color">#FFFFFF</color>
     <color name="activity_search_description_text_color">#CBF6F7</color>
+    <color name="activity_search_button_text_color">#FFFFFF</color>
 
     <!--MAIN ACTIVITY-->
     <color name="activity_main_exitbutton_background_color">#00ffffff</color>
