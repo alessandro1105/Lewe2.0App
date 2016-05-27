@@ -3,8 +3,6 @@ package com.lewetechnologies.app.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -16,39 +14,30 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.configs.Config;
 import com.lewetechnologies.app.fragments.GSRMainFragment;
 import com.lewetechnologies.app.fragments.TemperatureMainFragment;
+import com.lewetechnologies.app.logger.Logger;
+import com.lewetechnologies.app.services.BluetoothSerialService;
+import com.lewetechnologies.app.services.DatabaseService;
+import com.lewetechnologies.app.services.MainService;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
+    private final static String TAG = MainActivity.class.getSimpleName();
+
+    //---COSTANTI---
+    private static final long COMMAND_PERIOD = 1000;
 
     /**
      * The {@link PagerAdapter} that will provide
@@ -67,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     //shared preferences
     SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +107,11 @@ public class MainActivity extends AppCompatActivity {
         ((ImageButton) findViewById(R.id.exitButton)).setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                //chiudo l'app al click
-                MainActivity.this.shutdownApp();
+                //chiudo i servizi
+                stopServices();
+
+                //chiudo l'app
+                finish();
             }
 
         });
@@ -173,19 +166,53 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        //avvio il servizi
+        startServices();
+
         //controllo se è stata fatta la prima associazione dalle preferenze
         //se non è stata fatta la prima associazione avvio la search activity
         if (!preferences.getBoolean(Config.SHARED_PREFERENCE_KEY_FIRST_ASSOCIATION, false)) {
             //avvio l'activity SettingsActivity
             Intent activity = new Intent(this, SearchActivity.class);
             startActivityForResult(activity, Config.REQUEST_EXIT_CODE);
-        }
 
-        //if (preferences.getString(SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED))
+        } else {
+
+            final String address = preferences.getString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, "");
+
+            //se l'app è associata as un band
+            if (!address.equals("")) {
+
+                Handler connectionCommand = new Handler();
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //connetto il bluetooth service al device
+                        final Intent intent = new Intent(BluetoothSerialService.COMMAND_CONNECT);
+                        intent.putExtra(BluetoothSerialService.EXTRA_DEVICE_ADDRESS, address);
+
+                        //invio l'intent di connessione
+                        sendBroadcast(intent);
+                    }
+                }, COMMAND_PERIOD);
+
+                Logger.e(TAG, "connessione");
+
+            }
+        }
 
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //chiudo l'applicazione
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -237,18 +264,12 @@ public class MainActivity extends AppCompatActivity {
 
         //controllo richiesta di chiusura app
         if (requestCode == Config.REQUEST_EXIT_CODE && resultCode == Config.RESULT_EXIT_CODE) {
+            //chiudo i servizi
+            stopServices();
+
             //chiudo l'app
-            shutdownApp();
+            finish();
         }
-    }
-
-    //metodo che chiude l'app e tutti i suoi componenti
-    private void shutdownApp() {
-        //chiudo i servizi attivi
-
-
-        //chiudo l'activity
-        finish();
     }
 
     //Handler bottom bar
@@ -327,6 +348,23 @@ public class MainActivity extends AppCompatActivity {
             return FRAGMENT_NUMBER; //due fragment
         }
 
+    }
+
+
+    //---GESTIONE DEI SERVIZI
+    //chiude i servizi
+    private void stopServices() {
+        //chiudo il servizio principale
+        Intent intent = new Intent(this, MainService.class);
+        stopService(intent);
+    }
+
+    //avvia i servizi
+    private void startServices() {
+
+        //avvio il servizio principale
+        Intent intent = new Intent(this, MainService.class);
+        startService(intent);
     }
 
 }

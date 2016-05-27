@@ -13,8 +13,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 
 import com.lewetechnologies.app.configs.Config;
 import com.lewetechnologies.app.jack.JData;
@@ -28,28 +28,26 @@ import java.util.UUID;
  * Created by alessandro on 26/05/16.
  */
 public class BluetoothSerialService extends Service implements JTransmissionMethod {
+    private final static String TAG = BluetoothSerialService.class.getSimpleName();
 
     //---COSTANTI--
 
     //AZIONI PER INTENT IN ENTRATA (COMANDI)
-    public final static String COMMAND_CONNECT = "com.lewetechnologies.app.services.COMMAND_CONNECT"; //connetti
-    public final static String COMMAND_DISCONNECT = "com.lewetechnologies.app.services.COMMAND_DISCONNECT"; //disconnetti
-    public final static String COMMAND_CONNECTION_STATUS = "com.lewetechnologies.app.services.COMMAND_CONNECTION_STATUS"; //status
+    public final static String COMMAND_CONNECT = "com.lewetechnologies.app.services.BluetoothSerialService.COMMAND_CONNECT"; //connetti
+    public final static String COMMAND_DISCONNECT = "com.lewetechnologies.app.services.BluetoothSerialService.COMMAND_DISCONNECT"; //disconnetti
+    public final static String COMMAND_CONNECTION_STATUS = "com.lewetechnologies.app.services.BluetoothSerialService.COMMAND_CONNECTION_STATUS"; //status
 
     //estra per intent in entrata
-    public final static  String EXTRA_DEVICE_ADDRESS = "com.lewetechnologies.app.services.EXTRA_DEVICE_ADDRESS"; //devic// e bt address
+    public final static  String EXTRA_DEVICE_ADDRESS = "com.lewetechnologies.app.services.BluetoothSerialService.EXTRA_DEVICE_ADDRESS"; //devic// e bt address
 
     //AZIONI PER INTENT IN USCITA
-    public final static String ACTION_CONNECTED = "com.lewetechnologies.app.services.ACTION_BAND_CONNECTED"; //band connesso
-    public final static String ACTION_DISCONNECTED = "com.lewetechnologies.app.services.ACTION_BAND_DISCONNECTED"; //band disconnesso
-    public final static String ACTION_NEW_DATA = "com.lewetechnologies.app.services.ACTION_NEW_DATA"; //nuovi dati
-    public final static String ACTION_CONNECTION_STATUS = "com.lewetechnologies.app.services.ACTION_CONNECTION_STATUS"; //band connesso
+    public final static String ACTION_CONNECTED = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_BAND_CONNECTED"; //band connesso
+    public final static String ACTION_DISCONNECTED = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_BAND_DISCONNECTED"; //band disconnesso
+    public final static String ACTION_NEW_DATA = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_NEW_DATA"; //nuovi dati
+    public final static String ACTION_CONNECTION_STATUS = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_CONNECTION_STATUS"; //band connesso
 
     //extra per intent in uscita
-    public final static  String EXTRA_CONNECTION_STATUS = "com.lewetechnologies.app.services.EXTRA_CONNECTION_STATUS"; //devic// e bt address
-
-    //tag per logger---
-    private final static String TAG = BluetoothSerialService.class.getSimpleName();
+    public final static  String EXTRA_CONNECTION_STATUS = "com.lewetechnologies.app.services.BluetoothSerialService.EXTRA_CONNECTION_STATUS"; //devic// e bt address
 
     //uuid gatt
     private static final String SERIAL_SERVICE_UUID = "0000ffe0-0000-1000-8000-00805f9b34fb"; //servizio seriale
@@ -172,6 +170,8 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            Logger.e(TAG, intent.getAction());
+
             if (COMMAND_CONNECT.equals(intent.getAction())) {
 
                 //prelevo l'indirizzo del device bt
@@ -271,7 +271,8 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     }
 
     //inizializza il servizio
-    private boolean initialize() {
+    public boolean initialize() {
+
         // For API level 18 and above, get a reference to BluetoothAdapter through
         // BluetoothManager.
         if (mBluetoothManager == null) {
@@ -393,27 +394,32 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
         return buffer.equals("");
     }
 
-    //---FUNZIONI PER IL BINDER
+    //---FUNZIONI PER IL SERIZIO---
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
+        initialize();
+
+        Logger.e(TAG, "onCreate");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return Service.START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        close();
+    }
+
+    //---FUNZIONI PER IL BINDER---
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        initialize();
-        return new LocalBinder();
-    }
-
-    //ritorna il binder
-    public class LocalBinder extends Binder {
-        BluetoothSerialService getService() {
-            return BluetoothSerialService.this;
-        }
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        // After using a given device, you should make sure that BluetoothGatt.close() is called
-        // such that resources are cleaned up properly.  In this particular example, close() is
-        // invoked when the UI is disconnected from the Service.
-        close();
-        return super.onUnbind(intent);
+        return null;
     }
 }

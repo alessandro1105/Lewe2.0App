@@ -1,4 +1,4 @@
-package com.lewetechnologies.app.thread;
+package com.lewetechnologies.app.utils;
 
 import com.lewetechnologies.app.logger.Logger;
 

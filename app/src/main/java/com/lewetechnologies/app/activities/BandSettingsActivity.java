@@ -1,6 +1,8 @@
 package com.lewetechnologies.app.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,15 @@ public class BandSettingsActivity extends AppCompatActivity {
 
     //shared preference
     SharedPreferences preferences;
+
+    //riceve gli stati di connessione
+    BroadcastReceiver connectionStatusReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,5 +36,16 @@ public class BandSettingsActivity extends AppCompatActivity {
             SettingsBandPreferenceFragment.newInstance())
             .commit();
 
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

@@ -1,7 +1,7 @@
 package com.lewetechnologies.app.jack;
 
 import com.lewetechnologies.app.logger.Logger;
-import com.lewetechnologies.app.thread.CyclicalThread;
+import com.lewetechnologies.app.utils.CyclicalThread;
 
 import org.json.JSONException;
 import org.json.JSONObject;

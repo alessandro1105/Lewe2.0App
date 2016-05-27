@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +22,7 @@ import android.widget.Toast;
 
 import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.configs.Config;
+import com.lewetechnologies.app.services.BluetoothSerialService;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -32,6 +32,7 @@ public class SearchActivity extends AppCompatActivity {
 
     //---VARIABILI---
     private Handler scanHandler;
+    private boolean leweBandFound;
 
     //creo il ricevitore di quando è stato trovato un device BT
     BroadcastReceiver onBTDeviceFoundReceiver = new BroadcastReceiver() {
@@ -88,6 +89,7 @@ public class SearchActivity extends AppCompatActivity {
         //inizializzo le variabili
         onBTDeviceFoundReceiverRegistered = false; //non ancora registrato il receiver
         scanHandler = new Handler(); //inizializzo l'handler
+        leweBandFound = false;
 
         //creao bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -156,10 +158,14 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void run() {
                 stopDiscovery();
-                stopProgressBarRetry();
 
-                //toast per indicare che non è stato trovato il band
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.activity_search_leweband_not_found), Toast.LENGTH_LONG).show();
+                //se non è stato trovato il band
+                if (!leweBandFound) {
+                    stopProgressBarRetry();
+
+                    //toast per indicare che non è stato trovato il band
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.activity_search_leweband_not_found), Toast.LENGTH_LONG).show();
+                }
             }
         }, SCAN_PERIOD);
 
@@ -178,9 +184,11 @@ public class SearchActivity extends AppCompatActivity {
         //stoppo la ricerca
         mBluetoothAdapter.cancelDiscovery();
 
-        //registro il ricevitore
-        unregisterReceiver(onBTDeviceFoundReceiver);
-        onBTDeviceFoundReceiverRegistered = false;
+        //disregistro il ricevitore
+        if (onBTDeviceFoundReceiverRegistered) {
+            unregisterReceiver(onBTDeviceFoundReceiver);
+            onBTDeviceFoundReceiverRegistered = false;
+        }
 
     }
 
@@ -192,6 +200,7 @@ public class SearchActivity extends AppCompatActivity {
                 && !preferences.getString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, "").equals(device.getAddress())) {
 
             //leweband trovato
+            leweBandFound = true;
 
             //fermo al progress bar e metto l'icona di successo
             stopProgressBarSuccess();
@@ -212,6 +221,13 @@ public class SearchActivity extends AppCompatActivity {
 
             //salvo i cambiamenti
             editor.commit();
+
+            //connetto il bluetooth service al device
+            final Intent intent = new Intent(BluetoothSerialService.COMMAND_CONNECT);
+            intent.putExtra(BluetoothSerialService.EXTRA_DEVICE_ADDRESS, device.getAddress());
+
+            //invio l'intent di connessione
+            sendBroadcast(intent);
 
         }
     }
@@ -288,10 +304,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void startProgressBar() {
+
+        //NOT WORKING
         //stop progress bar
         ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
-
-        progress.remove
         progress.setIndeterminateDrawable(getResources().getDrawable(R.drawable.circular_progress_bar, this.getTheme()));
         progress.refreshDrawableState();
         progress.setIndeterminate(true);

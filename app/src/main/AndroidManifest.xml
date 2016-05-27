@@ -75,18 +75,34 @@
             </intent-filter>
         </activity>
 
-        <!-- CHART ACTIVITY -->
+        <!-- TEMPERATURE CHART ACTIVITY -->
         <activity
             android:name=".activities.TemperatureChartActivity"
             android:label="@string/title_activity_temperature_chart"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="landscape"/>
 
+        <!-- GSR CHART ACTIVITY -->
         <activity
             android:name=".activities.GSRChartActivity"
             android:label="@string/title_activity_gsr_chart"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="landscape"/>
+
+        <!-- MAIN SERVICE -->
+        <service
+            android:name=".services.MainService"
+            android:enabled="true"/>
+
+        <!-- BLUETOOTH SERIAL SERVICE -->
+        <service
+            android:name=".services.BluetoothSerialService"
+            android:enabled="true"/>
+
+        <!-- DATABASE SERVICE -->
+        <service
+            android:name=".services.DatabaseService"
+            android:enabled="true"/>
 
     </application>
 

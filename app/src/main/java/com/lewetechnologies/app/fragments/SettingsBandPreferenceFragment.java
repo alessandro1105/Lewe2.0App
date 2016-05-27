@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.configs.Config;
+import com.lewetechnologies.app.services.BluetoothSerialService;
 
 /**
  * Created by alessandro on 22/05/16.
@@ -116,6 +117,15 @@ public class SettingsBandPreferenceFragment extends PreferenceFragment {
 
         //toast che indica la dissociazione
         Toast.makeText(getActivity(), getString(R.string.activity_settings_band_not_associated_toast),Toast.LENGTH_LONG).show();
+
+        //invio il comando di disconnessione
+        sendDisconnectionCommand();
+    }
+
+    //invia il comando di disconnessione
+    private void sendDisconnectionCommand() {
+        Intent intent = new Intent(BluetoothSerialService.COMMAND_DISCONNECT);
+        getActivity().sendBroadcast(intent);
     }
 
 }
