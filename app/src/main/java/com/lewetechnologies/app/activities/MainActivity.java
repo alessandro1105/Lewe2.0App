@@ -1,5 +1,6 @@
 package com.lewetechnologies.app.activities;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
 
     //---COSTANTI---
-    private static final long COMMAND_PERIOD = 1000;
+    private static final long COMMAND_PERIOD = 500;
 
     /**
      * The {@link PagerAdapter} that will provide
@@ -178,29 +179,21 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            final String address = preferences.getString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, "");
+            //verifico se il bluetooth è abilitato
+            if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 
-            //se l'app è associata as un band
-            if (!address.equals("")) {
+                //invio intent richiesta apertura BT
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, Config.REQUEST_ENABLE_BT);
 
-                Handler connectionCommand = new Handler();
+            //il bluetooth è abilitato avvio la ricerca
+            } else {
 
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //connetto il bluetooth service al device
-                        final Intent intent = new Intent(BluetoothSerialService.COMMAND_CONNECT);
-                        intent.putExtra(BluetoothSerialService.EXTRA_DEVICE_ADDRESS, address);
-
-                        //invio l'intent di connessione
-                        sendBroadcast(intent);
-                    }
-                }, COMMAND_PERIOD);
-
-                Logger.e(TAG, "connessione");
+                //invio il comando di connessione
+                sendConnectionCommand();
 
             }
+
         }
 
 
@@ -269,6 +262,15 @@ public class MainActivity extends AppCompatActivity {
 
             //chiudo l'app
             finish();
+
+        //controllo se è stato abilitato il BT
+        } else if (requestCode == Config.REQUEST_ENABLE_BT) {
+
+            if (BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+
+                Logger.e(TAG, "connessione");
+                sendConnectionCommand();
+            }
         }
     }
 
@@ -367,4 +369,30 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
+    //invio comando di connessione
+    private void sendConnectionCommand() {
+
+        //prelevo il mac address del device
+        final String address = preferences.getString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, "");
+
+        //se l'app è associata as un band
+        if (!address.equals("")) {
+
+            //connetto il bluetooth service al device
+            final Intent intent = new Intent(BluetoothSerialService.COMMAND_CONNECT);
+            intent.putExtra(BluetoothSerialService.EXTRA_DEVICE_ADDRESS, address);
+
+            //invio il comando di connessione dopo COMMAND_PERIOD per permettere l'avvio del servizio
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //invio il comando di connessione
+                    sendBroadcast(intent);
+                }
+            }, COMMAND_PERIOD);
+
+
+        }
+
+    }
 }

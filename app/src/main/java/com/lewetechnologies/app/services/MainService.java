@@ -3,10 +3,14 @@ package com.lewetechnologies.app.services;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.activities.MainActivity;
 
 /**
@@ -17,10 +21,23 @@ public class MainService extends Service {
     //---COSTANTI---
     private static final int ONGOING_NOTIFICATION_ID = 1105;
 
-    //connection states
-    private static final int STATE_DISCONNECTED = 0; //disconnesso
-    private static final int STATE_CONNECTING = 1; //in attesa di connessione
-    private static final int STATE_CONNECTED = 2; //connesso
+    //riceve gli stati di connessione
+    BroadcastReceiver connectionStatusReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //aggiorno la preferenza "status"
+            if (BluetoothSerialService.ACTION_CONNECTION_STATUS.equals(intent.getAction())) {
+                setNotification(intent.getIntExtra(BluetoothSerialService.EXTRA_CONNECTION_STATUS, BluetoothSerialService.STATE_DISCONNECTED));
+
+            } else if (BluetoothSerialService.ACTION_CONNECTED.equals(intent.getAction())) {
+                setNotification(BluetoothSerialService.STATE_CONNECTED);
+
+            } else if (BluetoothSerialService.ACTION_DISCONNECTED.equals(intent.getAction())) {
+                setNotification(BluetoothSerialService.STATE_DISCONNECTED);
+            }
+        }
+    };
 
 
     //---FUNZIONI DI GESTIONE PER I SERVIZI---
@@ -52,14 +69,32 @@ public class MainService extends Service {
     private void setNotification(int state) {
 
         Notification.Builder builder = new Notification.Builder(this); //creo builder
+        builder.setSmallIcon(R.mipmap.ic_launcher); //imposto icona
+        builder.setContentTitle(getString(R.string.service_main_notification_title_text)); //titolo notifica
+        builder.setPriority(Notification.PRIORITY_MIN);
+
+
+        //impostazione descrizione
+        switch (state) {
+
+            case BluetoothSerialService.STATE_CONNECTED:
+                builder.setContentText(getString(R.string.service_main_notification_description_band_connected_text)); //sottotitolo
+                break;
+
+            case BluetoothSerialService.STATE_DISCONNECTED:
+                builder.setContentText(getString(R.string.service_main_notification_description_band_disconnected_text)); //sottotitolo
+                break;
+
+        }
+
 
         //intent apertura main
         Intent intent = new Intent(this, MainActivity.class); //creo intent apertura main
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0); //pending intent
 
         builder.setContentIntent(pendingIntent);  //imposto l'intent
 
+        //avvio il servizio come foregroud
         startForeground(ONGOING_NOTIFICATION_ID, builder.build());
 
     }
@@ -71,10 +106,18 @@ public class MainService extends Service {
         super.onCreate();
 
         //imposto la notifica e il servizio come foreground
-        setNotification(STATE_DISCONNECTED);
+        setNotification(BluetoothSerialService.STATE_DISCONNECTED);
 
         //avvio i servizi
         startServices();
+
+        //registro il receiver
+        IntentFilter connectionStatusReceiverFilter = new IntentFilter();
+        connectionStatusReceiverFilter.addAction(BluetoothSerialService.ACTION_CONNECTION_STATUS);
+        connectionStatusReceiverFilter.addAction(BluetoothSerialService.ACTION_CONNECTED);
+        connectionStatusReceiverFilter.addAction(BluetoothSerialService.ACTION_DISCONNECTED);
+
+        registerReceiver(connectionStatusReceiver, connectionStatusReceiverFilter);
 
     }
 
@@ -89,6 +132,8 @@ public class MainService extends Service {
 
         //chiudo i servizi
         stopServices();
+
+        unregisterReceiver(connectionStatusReceiver);
     }
 
     //---FUNZIONI PER IL BINDER---

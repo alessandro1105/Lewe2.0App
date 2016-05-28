@@ -46,4 +46,9 @@ public class Config {
     public final static String JACK_TEMPERATURE = "TME";
     public final static String JACK_GSR = "GSR";
     public final static String JACK_TIMESTAMP = "TMP";
+
+
+    //---CHIAVI PER DB---
+    public final static String DATABASE_KEY_TEMPERATURE = "TME";
+    public final static String DATABASE_KEY_GSR = "TME";
 }

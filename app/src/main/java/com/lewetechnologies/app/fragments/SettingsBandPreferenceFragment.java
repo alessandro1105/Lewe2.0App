@@ -17,6 +17,8 @@ import com.lewetechnologies.app.services.BluetoothSerialService;
  */
 public class SettingsBandPreferenceFragment extends PreferenceFragment {
 
+
+
     //preferenza status
     Preference status;
 
@@ -126,6 +128,25 @@ public class SettingsBandPreferenceFragment extends PreferenceFragment {
     private void sendDisconnectionCommand() {
         Intent intent = new Intent(BluetoothSerialService.COMMAND_DISCONNECT);
         getActivity().sendBroadcast(intent);
+    }
+
+    //aggiorna la preferenza status
+    public void updateStatus(int connectionStatus) {
+
+        switch (connectionStatus) {
+            case BluetoothSerialService.STATE_CONNECTED:
+                status.setSummary(getString(R.string.activity_settings_band_status_summary_connected));
+                break;
+
+            case BluetoothSerialService.STATE_CONNECTING:
+                status.setSummary(getString(R.string.activity_settings_band_status_summary_connecting));
+                break;
+
+            case BluetoothSerialService.STATE_DISCONNECTED:
+                status.setSummary(getString(R.string.activity_settings_band_status_summary_disconnected));
+                break;
+        }
+
     }
 
 }

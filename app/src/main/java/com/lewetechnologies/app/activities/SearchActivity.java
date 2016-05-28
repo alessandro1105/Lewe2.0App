@@ -32,7 +32,6 @@ public class SearchActivity extends AppCompatActivity {
 
     //---VARIABILI---
     private Handler scanHandler;
-    private boolean leweBandFound;
 
     //creo il ricevitore di quando è stato trovato un device BT
     BroadcastReceiver onBTDeviceFoundReceiver = new BroadcastReceiver() {
@@ -58,9 +57,6 @@ public class SearchActivity extends AppCompatActivity {
 
     //indica se è stato registrato il receiver
     private boolean onBTDeviceFoundReceiverRegistered;
-
-    //indica se è stata fatta la prima associazione
-    private boolean firstAssociationDone;
 
     //shared preferences
     SharedPreferences preferences;
@@ -89,7 +85,6 @@ public class SearchActivity extends AppCompatActivity {
         //inizializzo le variabili
         onBTDeviceFoundReceiverRegistered = false; //non ancora registrato il receiver
         scanHandler = new Handler(); //inizializzo l'handler
-        leweBandFound = false;
 
         //creao bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -160,12 +155,7 @@ public class SearchActivity extends AppCompatActivity {
                 stopDiscovery();
 
                 //se non è stato trovato il band
-                if (!leweBandFound) {
-                    stopProgressBarRetry();
-
-                    //toast per indicare che non è stato trovato il band
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.activity_search_leweband_not_found), Toast.LENGTH_LONG).show();
-                }
+                stopProgressBarRetry();
             }
         }, SCAN_PERIOD);
 
@@ -200,13 +190,9 @@ public class SearchActivity extends AppCompatActivity {
                 && !preferences.getString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, "").equals(device.getAddress())) {
 
             //leweband trovato
-            leweBandFound = true;
 
             //fermo al progress bar e metto l'icona di successo
             stopProgressBarSuccess();
-
-            //mostro toast per indicare che il device è stato trovato
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.activity_search_leweband_found), Toast.LENGTH_LONG).show();
 
             //stoppo la ricerca
             stopDiscovery();

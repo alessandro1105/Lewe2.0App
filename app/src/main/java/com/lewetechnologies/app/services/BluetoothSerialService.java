@@ -13,10 +13,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 
 import com.lewetechnologies.app.configs.Config;
+import com.lewetechnologies.app.database.Database;
 import com.lewetechnologies.app.jack.JData;
 import com.lewetechnologies.app.jack.JTransmissionMethod;
 import com.lewetechnologies.app.jack.Jack;
@@ -71,7 +74,7 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     private String buffer; //message buffer
 
     private BluetoothManager mBluetoothManager; //bluetooth manager
-    private BluetoothAdapter mBluetoothAdapter; //blueooth adapter
+    private BluetoothAdapter mBluetoothAdapter; //bluetooth adapter
     private String mBluetoothDeviceAddress; //indirizzo device bluetooth
     private BluetoothGatt mBluetoothGatt; //blueooth GATT
     private int mConnectionState = STATE_DISCONNECTED; //stato del servizio (DISCONNECTED, CONNECTING, CONNECTED)
@@ -103,8 +106,14 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 jack.stop();
                 Logger.i(TAG, "JACK stop.");
 
-                //provo a riconnettere
-                connect(mBluetoothDeviceAddress);
+                //verifo dalle preferenze se è possibile riconnettere (se non è cambiato il mac address)
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
+
+                //se il mac non è cambiato riconnetti, altrimenti non eseguo la riconnessione
+                if (preferences.getString(Config.SHARED_PREFERENCE_KEY_BAND_NAME_ASSOCIATED, "").equals(mBluetoothDeviceAddress)) {
+                    //provo a riconnettere
+                    connect(mBluetoothDeviceAddress);
+                }
             }
         }
 
@@ -164,15 +173,12 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
         }
     };
 
-
     //broadcast receiver per i command
     BroadcastReceiver commandReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Logger.e(TAG, intent.getAction());
-
-            if (COMMAND_CONNECT.equals(intent.getAction())) {
+            if (COMMAND_CONNECT.equals(intent.getAction()) && BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 
                 //prelevo l'indirizzo del device bt
                 String address = intent.getStringExtra(EXTRA_DEVICE_ADDRESS);
@@ -180,13 +186,13 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 //connessione
                 connect(address);
 
-            } else if (COMMAND_DISCONNECT.equals(intent.getAction())) {
+            } else if (COMMAND_DISCONNECT.equals(intent.getAction()) && BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 
                 //disconnessione
                 disconnect();
 
             } else if (COMMAND_CONNECTION_STATUS.equals(intent.getAction())) {
-                broadcastUpdate(COMMAND_CONNECTION_STATUS);
+                broadcastUpdate(ACTION_CONNECTION_STATUS);
             }
 
         }
@@ -197,7 +203,14 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
         final Intent intent = new Intent(action);
 
         if (ACTION_CONNECTION_STATUS.equals(action)) {
-            intent.putExtra(EXTRA_CONNECTION_STATUS, mConnectionState);
+
+            //se mi sto connettendo il device è sconnesso
+            if (mConnectionState == STATE_CONNECTING) {
+                intent.putExtra(EXTRA_CONNECTION_STATUS, STATE_DISCONNECTED);
+
+            } else {
+                intent.putExtra(EXTRA_CONNECTION_STATUS, mConnectionState);
+            }
 
         }
 
@@ -296,6 +309,42 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
             @Override
             public void onReceive(JData message, long id) {
 
+                //inserisco il dato del DB
+
+                //---TEMPERATURE---
+                String query = "INSERT INTO " + Database.TABLE_NAME + " (" +
+                        Database.CULUMN_NAME_SENSOR_NAME + ", " +
+                        Database.CULUMN_NAME_SENSOR_VALUE + ", " +
+                        Database.CULUMN_NAME_TIMESTAMP +
+                        ") VALUES (" +
+                        Config.DATABASE_KEY_TEMPERATURE + ", " +
+                        "" + message.getDouble(Config.JACK_TEMPERATURE) + ", " +
+                        "" + message.getLong(Config.JACK_TIMESTAMP) +
+                        ");";
+
+                Intent insertTemperatureQuery = new Intent(DatabaseService.COMMAND_EXECUTE_QUERY);
+                insertTemperatureQuery.putExtra(DatabaseService.EXTRA_QUERY, query);
+
+                sendBroadcast(insertTemperatureQuery);
+
+                //---GSR---
+                query = "INSERT INTO " + Database.TABLE_NAME + " (" +
+                        Database.CULUMN_NAME_SENSOR_NAME + ", " +
+                        Database.CULUMN_NAME_SENSOR_VALUE + ", " +
+                        Database.CULUMN_NAME_TIMESTAMP +
+                        ") VALUES (" +
+                        Config.DATABASE_KEY_GSR + ", " +
+                        "" + message.getLong(Config.JACK_GSR) + ", " +
+                        "" + message.getLong(Config.JACK_TIMESTAMP) +
+                        ");";
+
+                Intent insertGSRQuery = new Intent(DatabaseService.COMMAND_EXECUTE_QUERY);
+                insertTemperatureQuery.putExtra(DatabaseService.EXTRA_QUERY, query);
+
+                sendBroadcast(insertGSRQuery);
+
+
+                //---AVVISO DEL RICEVIMENTO DI NUOVI DATI---
                 //preparo l'intent per avvisare l'app dei nuovi dati
                 final Intent intent = new Intent(ACTION_NEW_DATA);
 
@@ -304,6 +353,7 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 intent.putExtra(Config.EXTRA_DATA_TIMESTAMP, message.getLong(Config.JACK_TIMESTAMP));
 
                 sendBroadcast(intent);
+
 
             }
 
@@ -399,9 +449,8 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     public void onCreate() {
         super.onCreate();
 
+        //inizializzo il servizio
         initialize();
-
-        Logger.e(TAG, "onCreate");
     }
 
     @Override
@@ -413,6 +462,7 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     public void onDestroy() {
         super.onDestroy();
 
+        //chiudo il servizio
         close();
     }
 
