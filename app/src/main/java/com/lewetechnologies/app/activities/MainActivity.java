@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     //shared preferences
     SharedPreferences preferences;
 
+    int i = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,16 +128,11 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                /*//selezione temperatura nella bottom bar
-                MainActivity.this.setTemperatureSelected();
+                //selezione temperatura nella bottom bar
+                setTemperatureSelected();
 
                 //visualizzo il fragment scelto
-                mViewPager.setCurrentItem(0, true);*/
-
-                //mSectionsPagerAdapter.update();
-                //mSectionsPagerAdapter.notifyDataSetChanged();
-
-                ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update("22/05/2016 15:07", (float) (Math.random() * 10) + 50f, true);
+                mViewPager.setCurrentItem(0, true);
             }
 
         });
@@ -145,13 +142,11 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                /*//selezione GSR nella bottom bar
-                MainActivity.this.setGSRSelected();
+                //selezione GSR nella bottom bar
+                setGSRSelected();
 
                 //visualizzo il fragment scelto
-                mViewPager.setCurrentItem(1, true);*/
-
-                ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update("22/05/2016 15:07", (float) (Math.random() * 10) + 50f, true);
+                mViewPager.setCurrentItem(1, true);
             }
 
         });
@@ -196,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        //SNIPPER PER INSERIMENTO DATI NEI FRAGMENT
+        //((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update("22/05/2016 15:07", (float) (Math.random() * 10) + 50f, true);
+        //((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update("22/05/2016 15:07", (float) (Math.random() * 10) + 50f, true);
 
     }
 

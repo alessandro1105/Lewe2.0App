@@ -98,15 +98,13 @@ public class TemperatureMainFragment extends Fragment {
             @Override
             public void onChartLongPressed(MotionEvent me) {
 
-                //avvio l'activity TemperatureChart
-                Intent activity = new Intent(TemperatureMainFragment.this.getActivity(), TemperatureChartActivity.class);
-                startActivity(activity);
-
             }
 
             @Override
             public void onChartDoubleTapped(MotionEvent me) {
-
+                //avvio l'activity TemperatureChart
+                Intent activity = new Intent(TemperatureMainFragment.this.getActivity(), TemperatureChartActivity.class);
+                startActivity(activity);
             }
 
             @Override
@@ -312,6 +310,9 @@ public class TemperatureMainFragment extends Fragment {
         if (dataChart.getDataSetByIndex(0).getEntryCount() > MAX_CHART_ELEMENT) {
             //rimuovo l'entry più vecchia
             dataChart.getDataSetByIndex(0).removeFirst();
+
+            //rimuovo la xKey più vecchia
+            dataChart.removeXValue(0);
 
             //modifico gli indici
             for (int i = 0; i < dataChart.getDataSetByIndex(0).getEntryCount(); i++) {

@@ -97,15 +97,13 @@ public class GSRMainFragment extends Fragment {
             @Override
             public void onChartLongPressed(MotionEvent me) {
 
-                //avvio l'activity GSRChart
-                Intent activity = new Intent(GSRMainFragment.this.getActivity(), GSRChartActivity.class);
-                startActivity(activity);
-
             }
 
             @Override
             public void onChartDoubleTapped(MotionEvent me) {
-
+                //avvio l'activity GSRChart
+                Intent activity = new Intent(GSRMainFragment.this.getActivity(), GSRChartActivity.class);
+                startActivity(activity);
             }
 
             @Override
@@ -295,6 +293,9 @@ public class GSRMainFragment extends Fragment {
         if (dataChart.getDataSetByIndex(0).getEntryCount() > MAX_CHART_ELEMENT) {
             //rimuovo l'entry più vecchia
             dataChart.getDataSetByIndex(0).removeFirst();
+
+            //rimuovo la xKey più vecchia
+            dataChart.removeXValue(0);
 
             //modifico gli indici
             for (int i = 0; i < dataChart.getDataSetByIndex(0).getEntryCount(); i++) {
