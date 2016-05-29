@@ -23,42 +23,34 @@ import java.util.ArrayList;
 
 public class GSRChartActivity extends AppCompatActivity {
 
+    //chart
+    private LineChart chart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gsr_chart);
 
-        LineChart chart = (LineChart) findViewById(R.id.chart);
+        //recupero il riferimento al grafico
+        chart = (LineChart) findViewById(R.id.chart);
 
         //inizializzo il grafico
-        initializeChartView(chart);
+        initializeChart();
 
-        //popolo il grafico
-        ArrayList<String> xVals = new ArrayList<String>();
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-        getData(xVals, yVals);
+        //inserisco un oggetto data vuoto con dataset nel grafico
+        LineData dataChart = new LineData();
+        dataChart.addDataSet(createDataSet());
+        chart.setData(dataChart);
 
-        //creo il dataset
-        LineDataSet set = new LineDataSet(yVals, "GSRs");
-
-        //inizializzo il dataset
-        initializeDataSet(set);
-
-        //aggiungo le etichette al dataset
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(set); // add the datasets
-
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-
-        // set data
-        chart.setData(data);
+        //invalido i valori del grafico
+        chart.invalidate();
     }
 
-    private void initializeChartView(LineChart chart) {
+    private void initializeChart() {
         //description
         chart.setDescription("");
-        chart.setNoDataTextDescription("");
+        chart.setNoDataText("No data available");
+        chart.setNoDataTextDescription("Connect your LeweBand");
 
         //background
         chart.setBackgroundColor(Color.TRANSPARENT); //background color
@@ -70,14 +62,18 @@ public class GSRChartActivity extends AppCompatActivity {
         chart.setDrawBorders(false); //elimina i bordi
 
         //animazione
-        chart.animateXY(1500, 1500); //animazione di riempimento
+        //chart.animateXY(1500, 1500); //animazione di riempimento
+
+        //chart offset
+        chart.setExtraLeftOffset(20f);
+        chart.setExtraRightOffset(33f);
+        chart.setExtraBottomOffset(20f);
+        chart.setExtraTopOffset(28f);
 
         //settings asse x
         chart.getXAxis().setDrawGridLines(false); //disabilita la grid dell'asse x
         chart.getXAxis().setDrawLabels(true); //abilita le label dell'asse x
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); //posizione asse x
-        chart.setExtraLeftOffset(20f);
-        chart.setExtraRightOffset(50f);
         chart.getXAxis().setTextColor(Color.parseColor("#666666"));
         chart.getXAxis().setAxisLineWidth(2f);
 
@@ -93,10 +89,14 @@ public class GSRChartActivity extends AppCompatActivity {
         chart.getAxisLeft().setValueFormatter(new GSRYAxisValueFormatter());
 
         //maker view
-        chart.setMarkerView(new GSRTooltipMarkerView(getApplicationContext(), R.layout.chart_tooltip));
+        chart.setMarkerView(new GSRTooltipMarkerView(this, R.layout.chart_tooltip));
     }
 
-    private void initializeDataSet(LineDataSet set) {
+    private LineDataSet createDataSet() {
+
+        //creo il dataset
+        LineDataSet set = new LineDataSet(null, "GSR");
+
         //line settings
         set.setLineWidth(2f); //line width
 
@@ -114,36 +114,28 @@ public class GSRChartActivity extends AppCompatActivity {
         //dataset settings
         set.setDrawHighlightIndicators(false); //elimina le linee di highlight
         set.setDrawFilled(false); //elimina la colorazione dell'area sottostante al grafico
-    }
 
-    //getData
-    private void getData(ArrayList<String> xVals, ArrayList<Entry> yVals) {
-        //X labels
-        xVals.add("16/05/2016 15:30");
-        xVals.add("16/05/2016 15:35");
-        xVals.add("16/05/2016 15:40");
-        xVals.add("16/05/2016 15:45");
-        xVals.add("16/05/2016 15:50");
-        xVals.add("16/05/2016 15:55");
-        xVals.add("16/05/2016 16:00");
-        xVals.add("16/05/2016 16:05");
-        xVals.add("16/05/2016 16:10");
-        xVals.add("16/05/2016 16:15");
-
-        //Y data
-        yVals.add(new Entry(34.5f, 0));
-        yVals.add(new Entry(37.3f, 1));
-        yVals.add(new Entry(37.5f, 2));
-        yVals.add(new Entry(33.1f, 3));
-        yVals.add(new Entry(32.1f, 4));
-        yVals.add(new Entry(35.0f, 5));
-        yVals.add(new Entry(37.3f, 6));
-        yVals.add(new Entry(37.5f, 7));
-        yVals.add(new Entry(33.1f, 8));
-        yVals.add(new Entry(32.1f, 9));
+        //ritorno il dataset
+        return set;
     }
 
 
+    //chart YAxis formatter
+    public static class GSRYAxisValueFormatter implements YAxisValueFormatter {
+
+        public GSRYAxisValueFormatter () {
+            //costruttore vuoto
+        }
+
+        @Override
+        public String getFormattedValue(float value, YAxis yAxis) {
+            // write your logic here
+            // access the YAxis object to get more information
+            return new DecimalFormat("##").format(value) + "%"; // e.g. append a dollar-sign
+        }
+    }
+
+    //chart tooltip formatter
     private static class GSRTooltipMarkerView extends MarkerView {
 
         private TextView tvContent;
@@ -158,7 +150,11 @@ public class GSRChartActivity extends AppCompatActivity {
         // content (user-interface)
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
-            tvContent.setText("" + e.getVal() + "%"); // set the entry-value as the display text
+
+            //creo il testo per il valore grande
+            String value = new DecimalFormat("##").format(e.getVal()) + "°C";
+
+            tvContent.setText(value); // set the entry-value as the display text
         }
 
         @Override
@@ -174,19 +170,23 @@ public class GSRChartActivity extends AppCompatActivity {
         }
     }
 
-    public static class GSRYAxisValueFormatter implements YAxisValueFormatter {
+    //update dati grafico
+    public void update(String xKey, double yVal) {
 
-        private DecimalFormat mFormat;
+        //ottengo l'oggetto data dal grafico
+        LineData dataChart = chart.getData();
 
-        public GSRYAxisValueFormatter () {
-            mFormat = new DecimalFormat("##"); // use one decimal
-        }
+        //aggiungo xKey
+        dataChart.addXValue(xKey);
 
-        @Override
-        public String getFormattedValue(float value, YAxis yAxis) {
-            // write your logic here
-            // access the YAxis object to get more information
-            return mFormat.format(value) + "%"; // e.g. append a dollar-sign
-        }
+        //aggiungo l'entry del nuovo dato
+        dataChart.addEntry(new Entry((float) yVal, dataChart.getDataSetByIndex(0).getEntryCount()), 0);
+
+        //notifico che il data set è cambiato
+        chart.notifyDataSetChanged();
+
+        //invalido il grafico per il refresh
+        chart.invalidate();
+
     }
 }

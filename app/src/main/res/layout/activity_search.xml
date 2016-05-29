@@ -61,13 +61,24 @@
             android:layout_gravity="center">
 
             <ProgressBar
-                android:id="@+id/progress"
+                android:id="@+id/progress_rotating"
                 android:layout_width="@dimen/activity_search_progressbar_width"
                 android:layout_height="@dimen/activity_search_progressbar_height"
                 android:background="@drawable/circular_progress_bar_shape"
                 android:indeterminateDrawable="@drawable/circular_progress_bar"
                 android:layout_gravity="center"
-                style="?android:attr/progressBarStyleLarge" />
+                style="?android:attr/progressBarStyleLarge"
+                android:visibility="visible"/>
+
+            <ProgressBar
+                android:id="@+id/progress_not_rotating"
+                android:layout_width="@dimen/activity_search_progressbar_width"
+                android:layout_height="@dimen/activity_search_progressbar_height"
+                android:background="@drawable/circular_progress_bar_shape"
+                android:layout_gravity="center"
+                style="?android:attr/progressBarStyleLarge"
+                android:indeterminate="false"
+                android:visibility="gone"/>
 
             <ImageView
                 android:layout_width="@dimen/activity_search_imageview_width"
@@ -87,8 +98,6 @@
             android:visibility="gone"
             android:textColor="@color/activity_search_button_text_color"
             android:textSize="@dimen/activity_search_button_text_size"/>
-
-        <!--android:background="@drawable/button_background"-->
 
 
         <!-- Rimosso per test (Causa bug di rendering su android studio ma FUNZIONA)-->

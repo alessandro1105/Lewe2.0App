@@ -1,6 +1,7 @@
 package com.lewetechnologies.app.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.lewetechnologies.app.R;
+import com.lewetechnologies.app.activities.TemperatureChartActivity;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -97,8 +99,8 @@ public class TemperatureMainFragment extends Fragment {
             public void onChartLongPressed(MotionEvent me) {
 
                 //avvio l'activity TemperatureChart
-                //Intent activity = new Intent(TemperatureMainFragment.this.getActivity(), TemperatureChartActivity.class);
-                //startActivity(activity);
+                Intent activity = new Intent(TemperatureMainFragment.this.getActivity(), TemperatureChartActivity.class);
+                startActivity(activity);
 
             }
 

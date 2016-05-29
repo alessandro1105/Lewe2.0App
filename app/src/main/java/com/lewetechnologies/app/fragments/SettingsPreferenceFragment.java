@@ -35,21 +35,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment {
             }
         });
 
-        //on click listener su "Exit" (richiede di chiudere l'app
-        final Preference factoryReset = (Preference) findPreference("factory_reset"); //search by key
-        factoryReset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-
-                //eseguo il factory reset
-                factoryReset();
-
-                //chiudo l'app
-                sendExitRequest();
-
-                return true;
-            }
-        });
-
     }
 
     private void sendExitRequest() {
@@ -57,20 +42,5 @@ public class SettingsPreferenceFragment extends PreferenceFragment {
         Intent exitIntent = new Intent();
         getActivity().setResult(Config.RESULT_EXIT_CODE, exitIntent);
         getActivity().finish();
-    }
-
-    private void factoryReset() {
-        //accedo alle shared preference
-        SharedPreferences preferences = getActivity().getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        //cancello tutte le preferenze
-        editor.clear();
-
-        //salvo
-        editor.commit();
-
-        //cancello tutto dal DB
-        //DA SCRIVERE
     }
 }

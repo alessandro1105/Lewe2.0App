@@ -136,7 +136,7 @@ public class SearchActivity extends AppCompatActivity {
 
             //il bt non è stato abilitato
             } else {
-                stopProgressBarError(); //blocco la progress bar e metto l'immagine di errore
+                setupErrorView(); //blocco la progress bar e metto l'immagine di errore
 
                 //mostro toast con l'errore
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.activity_search_bt_not_enabled), Toast.LENGTH_LONG).show();
@@ -147,7 +147,7 @@ public class SearchActivity extends AppCompatActivity {
     //metodo che avvia la ricerca tramite BT
     private void startDiscovery() {
 
-        startProgressBar();
+        setupStartView();
 
         scanHandler.postDelayed(new Runnable() {
             @Override
@@ -155,7 +155,7 @@ public class SearchActivity extends AppCompatActivity {
                 stopDiscovery();
 
                 //se non è stato trovato il band
-                stopProgressBarRetry();
+                setupRetryView();
             }
         }, SCAN_PERIOD);
 
@@ -192,7 +192,7 @@ public class SearchActivity extends AppCompatActivity {
             //leweband trovato
 
             //fermo al progress bar e metto l'icona di successo
-            stopProgressBarSuccess();
+            setupSuccessView();
 
             //stoppo la ricerca
             stopDiscovery();
@@ -219,11 +219,15 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    //gestione della grafica
-    private void stopProgressBarError() {
-        //stop progress bar
-        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
-        progress.setIndeterminateDrawable(null);
+    //---GESTIONE GRAFICA---
+    private void setupErrorView() {
+        //progressbar
+        ProgressBar progressBatRotating = (ProgressBar) findViewById(R.id.progress_rotating);
+        progressBatRotating.setVisibility(View.GONE);
+
+        ProgressBar progressBarNotRotating = (ProgressBar) findViewById(R.id.progress_not_rotating);
+        progressBarNotRotating.setIndeterminateDrawable(null); //elimino il drawable indeterminate
+        progressBarNotRotating.setVisibility(View.VISIBLE);
 
         //change image icon
         ImageView image = (ImageView) findViewById(R.id.icon);
@@ -243,10 +247,14 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void stopProgressBarSuccess() {
-        //stop progress bar
-        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
-        progress.setIndeterminateDrawable(null);
+    private void setupSuccessView() {
+        //progressbar
+        ProgressBar progressBatRotating = (ProgressBar) findViewById(R.id.progress_rotating);
+        progressBatRotating.setVisibility(View.GONE);
+
+        ProgressBar progressBarNotRotating = (ProgressBar) findViewById(R.id.progress_not_rotating);
+        progressBarNotRotating.setIndeterminateDrawable(null); //elimino il drawable indeterminate
+        progressBarNotRotating.setVisibility(View.VISIBLE);
 
         //change image icon
         ImageView image = (ImageView) findViewById(R.id.icon);
@@ -266,10 +274,14 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void stopProgressBarRetry() {
-        //stop progress bar
-        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
-        progress.setIndeterminateDrawable(null);
+    private void setupRetryView() {
+        //progressbar
+        ProgressBar progressBatRotating = (ProgressBar) findViewById(R.id.progress_rotating);
+        progressBatRotating.setVisibility(View.GONE);
+
+        ProgressBar progressBarNotRotating = (ProgressBar) findViewById(R.id.progress_not_rotating);
+        progressBarNotRotating.setIndeterminateDrawable(null); //elimino il drawable indeterminate
+        progressBarNotRotating.setVisibility(View.VISIBLE);
 
         //change image icon
         ImageView image = (ImageView) findViewById(R.id.icon);
@@ -289,14 +301,14 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void startProgressBar() {
+    private void setupStartView() {
+        //progressbar
+        ProgressBar progressBatRotating = (ProgressBar) findViewById(R.id.progress_rotating);
+        progressBatRotating.setVisibility(View.VISIBLE);
 
-        //NOT WORKING
-        //stop progress bar
-        ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
-        progress.setIndeterminateDrawable(getResources().getDrawable(R.drawable.circular_progress_bar, this.getTheme()));
-        progress.refreshDrawableState();
-        progress.setIndeterminate(true);
+        ProgressBar progressBarNotRotating = (ProgressBar) findViewById(R.id.progress_not_rotating);
+        progressBarNotRotating.setIndeterminateDrawable(null); //elimino il drawable indeterminate
+        progressBarNotRotating.setVisibility(View.GONE);
 
         //change image icon
         ImageView image = (ImageView) findViewById(R.id.icon);

@@ -28,8 +28,6 @@
     <string name="activity_settings_main_author_summary">Alessandro Pasqualini</string>
     <string name="activity_settings_main_exit_title">Exit</string>
     <string name="activity_settings_main_exit_summary">Close the app and all the services</string>
-    <string name="activity_settings_main_clear_title">Factory reset</string>
-    <string name="activity_settings_main_clear_summary">Clear all data and set initial settings</string>
 
     <!--SETTINGS BAND ACTIVITY -->
     <string name="activity_settings_band_status_title">Status</string>

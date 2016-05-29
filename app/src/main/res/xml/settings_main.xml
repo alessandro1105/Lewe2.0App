@@ -20,12 +20,6 @@
     </Preference>
 
     <Preference
-        android:title="@string/activity_settings_main_clear_title"
-        android:summary="@string/activity_settings_main_clear_summary"
-        android:key="factory_reset">
-    </Preference>
-
-    <Preference
         android:title="@string/activity_settings_main_exit_title"
         android:summary="@string/activity_settings_main_exit_summary"
         android:key="exit">
