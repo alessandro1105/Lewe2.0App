@@ -160,7 +160,7 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            if (characteristic.getUuid().toString().equals(SERIAL_CHARACTERISTC_RX)) {
+            if (SERIAL_CHARACTERISTC_RX.equals(characteristic.getUuid().toString())) {
                 //leggo i dati
                 final byte[] data = characteristic.getValue();
 
@@ -392,8 +392,6 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     @Override
     public String receive() {
 
-        buffer = "<{\"val\":{\"TMP\":0,\"GSR\":22,\"TME\":24.50},\"id\":0,\"type\":\"data\"}>";
-
         Logger.e(TAG, "Buffer receive(): " + buffer);
 
         //se il buffer è vuoto
@@ -471,7 +469,7 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
 
     @Override
     public boolean available() {
-        return buffer.equals("");
+        return !buffer.equals("");
     }
 
     //---FUNZIONI PER IL SERIZIO---
