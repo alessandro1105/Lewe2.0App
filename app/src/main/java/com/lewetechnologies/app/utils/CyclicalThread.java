@@ -47,7 +47,7 @@ public abstract class CyclicalThread extends Thread {
 
             @Override
             public void run() {
-                while (!threadEnabled) {
+                while (threadEnabled) {
 
                     //richiamo il metodo user specified
                     execute();

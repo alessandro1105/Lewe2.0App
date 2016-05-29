@@ -169,6 +169,8 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                     //aggiungo la stringa ricevuta al buffer
                     buffer += new String(data);
                 }
+
+                Logger.e(TAG, "Buffer: " + buffer);
             }
         }
     };
@@ -302,6 +304,9 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
             return false;
         }
 
+        //inizializzo il buffer
+        buffer = "";
+
         //inizializzo Jack (valori di default per i tempi di polling)
         jack = new Jack(this) {
 
@@ -312,7 +317,7 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 //inserisco il dato del DB
 
                 //---TEMPERATURE---
-                String query = "INSERT INTO " + Database.TABLE_NAME + " (" +
+                /*String query = "INSERT INTO " + Database.TABLE_NAME + " (" +
                         Database.CULUMN_NAME_SENSOR_NAME + ", " +
                         Database.CULUMN_NAME_SENSOR_VALUE + ", " +
                         Database.CULUMN_NAME_TIMESTAMP +
@@ -352,8 +357,9 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 intent.putExtra(Config.EXTRA_DATA_GSR, message.getLong(Config.JACK_GSR));
                 intent.putExtra(Config.EXTRA_DATA_TIMESTAMP, message.getLong(Config.JACK_TIMESTAMP));
 
-                sendBroadcast(intent);
+                sendBroadcast(intent);*/
 
+                Logger.e(TAG, "onReceive()");
 
             }
 
@@ -386,6 +392,10 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     @Override
     public String receive() {
 
+        buffer = "<{\"val\":{\"TMP\":0,\"GSR\":22,\"TME\":24.50},\"id\":0,\"type\":\"data\"}>";
+
+        Logger.e(TAG, "Buffer receive(): " + buffer);
+
         //se il buffer è vuoto
         if (buffer.equals("")) {
             return null; //non è stato prelevato nessun messaggio
@@ -412,28 +422,48 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
         //elimino il messaggio dal buffer
         buffer = buffer.substring(buffer.indexOf(JTM_FINISH_SEQUENCE) + JTM_FINISH_SEQUENCE.length());
 
+        Logger.e(TAG, "Message received: " + message);
+
         //ritorno il messaggio prelevato
         return message;
+
     }
 
     @Override
     public void send(String message) {
+
+        Logger.e(TAG, "send(): " + message);
+
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Logger.e(TAG, "BluetoothAdapter not initialized", Logger.SEVERE);
             return;
         }
 
         if (mConnectionState == STATE_CONNECTED) {
-            Logger.d(TAG, "Sending: " + message);
 
-            //converto in byte il messaggio
-            final byte[] tx = message.getBytes();
+            String messageToSend = JTM_START_SEQUENCE + message + JTM_FINISH_SEQUENCE;
 
-            //sctivo la caratteristica TX
-            characteristicTX.setValue(tx);
+            //MAX 20 byte per messaggio
+            for (int i = 0; i < (int) (Math.ceil(messageToSend.length() / 20.0)); i++) {
 
-            //scrivo la caratteristica
-            mBluetoothGatt.writeCharacteristic(characteristicTX);
+                //parte del messaggio
+                String part = messageToSend.substring(i*20, ((i+1)*20 < messageToSend.length()) ? ((i+1)*20) : messageToSend.length());
+
+                Logger.d(TAG, "Sending: " + part);
+
+                //converto in byte il messaggio
+                final byte[] tx = part.getBytes();
+
+                //scrivo la caratteristica TX
+                characteristicTX.setValue(tx);
+
+                //speed-up BLE transfert
+                characteristicTX.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+
+                //scrivo la caratteristica
+                mBluetoothGatt.writeCharacteristic(characteristicTX);
+
+            }
 
         }
 
