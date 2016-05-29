@@ -26,7 +26,7 @@ public class Database {
 
     //statement di creazione
     private static final String DATABASE_CREATE_STATEMENT =
-            "CREATE TABLE" + TABLE_NAME + "sensors (" +
+            "CREATE TABLE " + TABLE_NAME + " (" +
             CULUMN_NAME_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CULUMN_NAME_SENSOR_NAME + " TEXT NOT NULL, " +
             CULUMN_NAME_SENSOR_VALUE + " TEXT NOT NULL, " +

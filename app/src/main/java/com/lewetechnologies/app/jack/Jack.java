@@ -22,8 +22,8 @@ public abstract class Jack {
     private static final String JK_MESSAGE_ID = "id"; //id messaggio
     public static final String JK_MESSAGE_PAYLOAD = "val"; //payload messaggio
 
-    private static final long JK_TIMER_RESEND_MESSAGE = 500;//tempo (ms) da attendere prima di reinviare i messaggi non confermati
-    private static final long JK_TIMER_POLLING = 100; //tempo (ms) da attendere tra un polling e un altro del mezzo di strasmissione
+    private static final long JK_TIMER_RESEND_MESSAGE = 1000;//tempo (ms) da attendere prima di reinviare i messaggi non confermati
+    private static final long JK_TIMER_POLLING = 500; //tempo (ms) da attendere tra un polling e un altro del mezzo di strasmissione
 
 
     //---VARIABILI---

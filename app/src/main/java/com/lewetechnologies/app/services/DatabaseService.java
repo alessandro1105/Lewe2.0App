@@ -11,11 +11,14 @@ import android.support.annotation.Nullable;
 
 import com.lewetechnologies.app.database.Database;
 import com.lewetechnologies.app.database.DatabaseResult;
+import com.lewetechnologies.app.logger.Logger;
 
 /**
  * Created by alessandro on 27/05/16.
  */
 public class DatabaseService extends Service {
+
+    private final static String TAG = DatabaseService.class.getSimpleName();
 
     //---COSTANTI---
 
@@ -42,8 +45,11 @@ public class DatabaseService extends Service {
                 //prelevo la query
                 String query = intent.getStringExtra(EXTRA_QUERY);
 
+                //show the query
+                Logger.e(TAG, "" + query);
+
                 //eseguo la query
-                DatabaseResult result = executeQuery(query);
+                DatabaseResult result = /*executeQuery(query);*/ null;
 
                 //se la query ha un risultato
                 if (result != null) {

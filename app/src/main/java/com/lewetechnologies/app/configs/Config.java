@@ -50,5 +50,5 @@ public class Config {
 
     //---CHIAVI PER DB---
     public final static String DATABASE_KEY_TEMPERATURE = "TME";
-    public final static String DATABASE_KEY_GSR = "TME";
+    public final static String DATABASE_KEY_GSR = "GSR";
 }

@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 
 import com.lewetechnologies.app.configs.Config;
@@ -317,18 +316,20 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 //inserisco il dato del DB
 
                 //---TEMPERATURE---
-                /*String query = "INSERT INTO " + Database.TABLE_NAME + " (" +
+                String query = "INSERT INTO " + Database.TABLE_NAME + " (" +
                         Database.CULUMN_NAME_SENSOR_NAME + ", " +
                         Database.CULUMN_NAME_SENSOR_VALUE + ", " +
                         Database.CULUMN_NAME_TIMESTAMP +
                         ") VALUES (" +
-                        Config.DATABASE_KEY_TEMPERATURE + ", " +
-                        "" + message.getDouble(Config.JACK_TEMPERATURE) + ", " +
+                        "'" + Config.DATABASE_KEY_TEMPERATURE + "', " +
+                        "'" + message.getDouble(Config.JACK_TEMPERATURE) + "', " +
                         "" + message.getLong(Config.JACK_TIMESTAMP) +
                         ");";
 
                 Intent insertTemperatureQuery = new Intent(DatabaseService.COMMAND_EXECUTE_QUERY);
                 insertTemperatureQuery.putExtra(DatabaseService.EXTRA_QUERY, query);
+
+                Logger.i(TAG, query);
 
                 sendBroadcast(insertTemperatureQuery);
 
@@ -338,13 +339,15 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                         Database.CULUMN_NAME_SENSOR_VALUE + ", " +
                         Database.CULUMN_NAME_TIMESTAMP +
                         ") VALUES (" +
-                        Config.DATABASE_KEY_GSR + ", " +
-                        "" + message.getLong(Config.JACK_GSR) + ", " +
+                        "'" + Config.DATABASE_KEY_GSR + "', " +
+                        "'" + message.getLong(Config.JACK_GSR) + "', " +
                         "" + message.getLong(Config.JACK_TIMESTAMP) +
                         ");";
 
                 Intent insertGSRQuery = new Intent(DatabaseService.COMMAND_EXECUTE_QUERY);
-                insertTemperatureQuery.putExtra(DatabaseService.EXTRA_QUERY, query);
+                insertGSRQuery.putExtra(DatabaseService.EXTRA_QUERY, query);
+
+                Logger.i(TAG, query);
 
                 sendBroadcast(insertGSRQuery);
 
@@ -357,7 +360,7 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 intent.putExtra(Config.EXTRA_DATA_GSR, message.getLong(Config.JACK_GSR));
                 intent.putExtra(Config.EXTRA_DATA_TIMESTAMP, message.getLong(Config.JACK_TIMESTAMP));
 
-                sendBroadcast(intent);*/
+                sendBroadcast(intent);
 
                 Logger.e(TAG, "onReceive()");
 
@@ -439,29 +442,44 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
 
         if (mConnectionState == STATE_CONNECTED) {
 
-            String messageToSend = JTM_START_SEQUENCE + message + JTM_FINISH_SEQUENCE;
+            final String messageToSend = JTM_START_SEQUENCE + message + JTM_FINISH_SEQUENCE;
 
-            //MAX 20 byte per messaggio
-            for (int i = 0; i < (int) (Math.ceil(messageToSend.length() / 20.0)); i++) {
+            //creo un thread che gestisca l'invio del messaggio
+            new Thread(new Thread() {
+                @Override
+                public void run() {
+                    //MAX 20 byte per messaggio
+                    for (int i = 0; i < (int) (Math.ceil(messageToSend.length() / 20.0)); i++) {
 
-                //parte del messaggio
-                String part = messageToSend.substring(i*20, ((i+1)*20 < messageToSend.length()) ? ((i+1)*20) : messageToSend.length());
+                        //parte del messaggio
+                        String part = messageToSend.substring(i*20, ((i+1)*20 < messageToSend.length()) ? ((i+1)*20) : messageToSend.length());
 
-                Logger.d(TAG, "Sending: " + part);
+                        Logger.d(TAG, "Sending: " + part);
 
-                //converto in byte il messaggio
-                final byte[] tx = part.getBytes();
+                        //converto in byte il messaggio
+                        final byte[] tx = part.getBytes();
 
-                //scrivo la caratteristica TX
-                characteristicTX.setValue(tx);
+                        //scrivo la caratteristica TX
+                        characteristicTX.setValue(tx);
 
-                //speed-up BLE transfert
-                characteristicTX.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                        //speed-up BLE transfert
+                        characteristicTX.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
 
-                //scrivo la caratteristica
-                mBluetoothGatt.writeCharacteristic(characteristicTX);
+                        //attendo che il pezzo di messaggio precedentemente inviato sia stato ricevuto
+                        try {
+                            sleep(i*20);
 
-            }
+                        } catch (InterruptedException e) {
+                            return;
+                        }
+
+                        //scrivo la caratteristica
+                        mBluetoothGatt.writeCharacteristic(characteristicTX);
+
+                    }
+                }
+
+            }).start();
 
         }
 
