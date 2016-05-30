@@ -2,6 +2,7 @@ package com.lewetechnologies.app.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.lewetechnologies.app.R;
 
@@ -12,24 +13,13 @@ public class CreditsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credits);
 
-        //visualizzo il back button
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //imposto la toolbar personalizzata
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                //NavUtils.navigateUpFromSameTask(this);
-                onBackPressed();
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
 
 
 }
