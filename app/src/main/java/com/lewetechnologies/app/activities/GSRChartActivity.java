@@ -244,7 +244,7 @@ public class GSRChartActivity extends AppCompatActivity {
         public void refreshContent(Entry e, Highlight highlight) {
 
             //creo il testo per il valore grande
-            String value = new DecimalFormat("##").format(e.getVal()) + "°C";
+            String value = new DecimalFormat("##").format(e.getVal()) + "%";
 
             tvContent.setText(value); // set the entry-value as the display text
         }

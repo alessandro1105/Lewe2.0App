@@ -250,7 +250,7 @@ public class GSRMainFragment extends Fragment {
         public void refreshContent(Entry e, Highlight highlight) {
 
             //creo il testo per il valore grande
-            String value = new DecimalFormat("##").format(e.getVal()) + "°C";
+            String value = new DecimalFormat("##").format(e.getVal()) + "%";
 
             tvContent.setText(value); // set the entry-value as the display text
         }
@@ -274,7 +274,7 @@ public class GSRMainFragment extends Fragment {
         if (updateData) {
 
             //creo il testo per il valore grande
-            String dataText = new DecimalFormat("##").format(yVal) + "°C";
+            String dataText = new DecimalFormat("##").format(yVal) + "%";
 
             //aggiorno i valori
             data.setText(dataText); //data

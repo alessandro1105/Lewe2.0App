@@ -76,9 +76,6 @@ public class DatabaseService extends Service {
     //funzioni per gestire il databse
     private DatabaseResult executeQuery(String query) {
 
-        //apro il database
-        database.open();
-
         //eseguo la query
         Cursor cursor = database.executeQuery(query); //eseguo la query
 
@@ -133,9 +130,6 @@ public class DatabaseService extends Service {
         //chiudo il cursore del db
         cursor.close();
 
-        //chiudo il database
-        database.close();
-
         //ritorno il contenitore dei dati
         return result;
     }
@@ -147,6 +141,9 @@ public class DatabaseService extends Service {
 
         //creo il database
         database = new Database(this);
+
+        //apro il database
+        database.open();
 
         //registro il receiver
         IntentFilter commandReceiverFilter = new IntentFilter();
@@ -163,6 +160,8 @@ public class DatabaseService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        database.close();
 
         //disregistro il receiver
         unregisterReceiver(commandReceiver);

@@ -186,7 +186,7 @@ public class SearchActivity extends AppCompatActivity {
     private void onBTDeviceFound(BluetoothDevice device) {
 
         //se il nome del device trovato è quello di un leweband e non è lo stesso già
-        if (device.getName().equals(Config.LEWEBAND_BT_NAME)
+        if (Config.LEWEBAND_BT_NAME.equals(device.getName())
                 && !preferences.getString(Config.SHARED_PREFERENCE_KEY_DEVICE_MAC, "").equals(device.getAddress())) {
 
             //leweband trovato

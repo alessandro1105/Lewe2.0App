@@ -65,6 +65,9 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     private static final String JTM_START_SEQUENCE = "<";
     private static final String JTM_FINISH_SEQUENCE = ">";
 
+    //comandi
+    private static final long WAIT_PERIOD = 500;
+
     //jack
     Jack jack;
 

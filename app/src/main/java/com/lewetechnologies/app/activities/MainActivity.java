@@ -52,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String ACTION_DATABASE_RESULT_TEMPERATURE = "com.lewetechnologies.app.activities.MainActivity.ACTION_DATABASE_RESULT_TEMPERATURE";
     private static final String ACTION_DATABASE_RESULT_GSR = "com.lewetechnologies.app.activities.MainActivity.ACTION_DATABASE_RESULT_GSR";
 
-    //comandi
-    private static final long WAIT_PERIOD = 500;
-
 
     //---VARIABILI---
 
