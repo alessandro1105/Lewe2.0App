@@ -266,9 +266,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //avvio il servizi
-        startServices();
-
 
         //registro i receiver
         registerReceiver(newDataReceiver, new IntentFilter(BluetoothSerialService.ACTION_NEW_DATA));
@@ -476,14 +473,6 @@ public class MainActivity extends AppCompatActivity {
         stopService(intent);
     }
 
-    //avvia i servizi
-    private void startServices() {
-
-        //avvio il servizio principale
-        Intent intent = new Intent(this, MainService.class);
-        startService(intent);
-    }
-
     //invio comando di connessione
     private void sendConnectionCommand() {
 
@@ -497,15 +486,8 @@ public class MainActivity extends AppCompatActivity {
             final Intent intent = new Intent(BluetoothSerialService.COMMAND_CONNECT);
             intent.putExtra(BluetoothSerialService.EXTRA_DEVICE_ADDRESS, address);
 
-            //invio il comando di connessione dopo WAIT_PERIOD per permettere l'avvio del servizio
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //invio il comando di connessione
-                    sendBroadcast(intent);
-                }
-            }, WAIT_PERIOD);
-
+            //invio il comando di connessione
+            sendBroadcast(intent);
 
         }
 
@@ -533,22 +515,8 @@ public class MainActivity extends AppCompatActivity {
         querySelectGSR.putExtra(DatabaseService.EXTRA_QUERY, query);
         querySelectGSR.putExtra(DatabaseService.EXTRA_DESTINATION_ACTION, ACTION_DATABASE_RESULT_GSR);
 
-        //invio la query dopo WAIT_PERIOD per permettere l'avvio del servizio
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //invio il comando di connessione
-                sendBroadcast(querySelectTemperature);
-            }
-        }, WAIT_PERIOD);
-
-        //invio la query dopo WAIT_PERIOD per permettere l'avvio del servizio
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //invio il comando di connessione
-                sendBroadcast(querySelectGSR);
-            }
-        }, WAIT_PERIOD);
+        //invio le query al db subito
+        sendBroadcast(querySelectTemperature);
+        sendBroadcast(querySelectGSR);
     }
 }
