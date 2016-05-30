@@ -1,9 +1,13 @@
 package com.lewetechnologies.app.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -17,15 +21,81 @@ import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.lewetechnologies.app.R;
+import com.lewetechnologies.app.configs.Config;
+import com.lewetechnologies.app.database.Database;
+import com.lewetechnologies.app.database.DatabaseResult;
+import com.lewetechnologies.app.fragments.GSRMainFragment;
+import com.lewetechnologies.app.fragments.TemperatureMainFragment;
+import com.lewetechnologies.app.logger.Logger;
+import com.lewetechnologies.app.services.BluetoothSerialService;
+import com.lewetechnologies.app.services.DatabaseService;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TemperatureChartActivity extends AppCompatActivity {
 
+    private final static String TAG = TemperatureChartActivity.class.getSimpleName();
+
+
+    //---COSTANTI---
+
+    //intent action
+    private static final String ACTION_DATABASE_RESULT = "com.lewetechnologies.app.activities.TemperatureChartActivity.ACTION_DATABASE_RESULT";
+
     //chart
     private LineChart chart;
+
+    //new data receiver
+    BroadcastReceiver newDataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (BluetoothSerialService.ACTION_NEW_DATA.equals(intent.getAction())) {
+
+                //prelevo i dati dall'intent
+                double temperature = intent.getDoubleExtra(Config.EXTRA_DATA_TEMPERATURE, 0);
+                long gsr = intent.getLongExtra(Config.EXTRA_DATA_GSR, 0);
+                long timestamp = intent.getLongExtra(Config.EXTRA_DATA_TIMESTAMP, 0);
+
+                //aggiorno i dati
+                update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature);
+
+            }
+        }
+    };
+
+    //database data Receiver
+    BroadcastReceiver databaseResultReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (ACTION_DATABASE_RESULT.equals(intent.getAction())) {
+
+                Logger.e(TAG, "ACTION_DATABASE_RESULT_TEMPERATURE");
+
+                //prelevo i risultati dal db
+                DatabaseResult result = (DatabaseResult) intent.getSerializableExtra(DatabaseService.EXTRA_DATABASE_RESULT);
+
+                //scorro tutti i risultati
+                for (int i = 0; i < result.size(); i++) {
+
+                    //prelevo i dati
+                    long timestamp = (long) result.getRecordField(i, Database.CULUMN_NAME_TIMESTAMP);
+                    double temperature = Double.parseDouble((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
+
+                    update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature);
+
+                }
+
+                //onetimereceiver
+                unregisterReceiver(this);
+            }
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +115,30 @@ public class TemperatureChartActivity extends AppCompatActivity {
 
         //invalido i valori del grafico
         chart.invalidate();
+
+        //registro i receiver
+        registerReceiver(newDataReceiver, new IntentFilter(BluetoothSerialService.ACTION_NEW_DATA));
+        registerReceiver(databaseResultReceiver, new IntentFilter(ACTION_DATABASE_RESULT));
+
+        //invio l'intent per ricevere i dati
+        //eseguo gli intent per ricevere i dati dal DB
+        String query = "SELECT * FROM " + Database.TABLE_NAME +
+                " WHERE " + Database.CULUMN_NAME_SENSOR_NAME + " = '" + Config.DATABASE_KEY_TEMPERATURE + "'" +
+                " ORDER BY " + Database.CULUMN_NAME_TIMESTAMP + " ASC";
+
+        final Intent intent = new Intent(DatabaseService.COMMAND_EXECUTE_QUERY);
+        intent.putExtra(DatabaseService.EXTRA_QUERY, query);
+        intent.putExtra(DatabaseService.EXTRA_DESTINATION_ACTION, ACTION_DATABASE_RESULT);
+
+        sendBroadcast(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //unregistro i receiver
+        unregisterReceiver(newDataReceiver);
     }
 
     private void initializeChart() {

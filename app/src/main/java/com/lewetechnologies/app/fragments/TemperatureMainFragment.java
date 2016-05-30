@@ -36,7 +36,7 @@ import java.text.DecimalFormatSymbols;
 public class TemperatureMainFragment extends Fragment {
 
     //numero massimo di elementi nel grafico
-    private static final int MAX_CHART_ELEMENT = 5;
+    public static final int MAX_CHART_ELEMENT = 5;
 
     //rootView
     private View rootView;
@@ -164,7 +164,7 @@ public class TemperatureMainFragment extends Fragment {
 
         //chart offset
         chart.setExtraLeftOffset(20f);
-        chart.setExtraRightOffset(33f);
+        chart.setExtraRightOffset(45f);
         chart.setExtraBottomOffset(20f);
         chart.setExtraTopOffset(28f);
 
@@ -174,6 +174,7 @@ public class TemperatureMainFragment extends Fragment {
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); //posizione asse x
         chart.getXAxis().setTextColor(Color.parseColor("#666666"));
         chart.getXAxis().setAxisLineWidth(2f);
+        chart.setScaleXEnabled(false); //disabilita lo zoom dell'asse x
 
         //settings asse y
         chart.getAxisLeft().setDrawGridLines(true);//abilito la griglia

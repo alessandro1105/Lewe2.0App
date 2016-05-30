@@ -49,7 +49,7 @@ public class DatabaseService extends Service {
                 Logger.e(TAG, "" + query);
 
                 //eseguo la query
-                DatabaseResult result = /*executeQuery(query);*/ null;
+                DatabaseResult result = executeQuery(query);
 
                 //se la query ha un risultato
                 if (result != null) {
@@ -90,37 +90,45 @@ public class DatabaseService extends Service {
         //creo il contenitore dei risultati
         DatabaseResult result = new DatabaseResult(); //coontenitore dati db
 
-        //scorro il cursore
-        do {
+        //sposto il cursore all'inzio
+        cursor.moveToFirst();
 
-            //aggiungo un record nel contenitore
-            int recordIndex = result.addRecord(); //indice del record nel contenitore
+        //se ci sono dati nel cursore
+        if (cursor.getCount() > 0) {
 
-            //scorro le colonne nel cursore
-            for (String key: cursor.getColumnNames()) {
+            //scorro il cursore
+            do {
 
-                //prelevo l'indice del campo nel cursore
-                int fieldIndex = cursor.getColumnIndex(key); //indice campo nel db
+                //aggiungo un record nel contenitore
+                int recordIndex = result.addRecord(); //indice del record nel contenitore
 
-                //aggiungo il valore nel record del contenitore dei dati
+                //scorro le colonne nel cursore
+                for (String key : cursor.getColumnNames()) {
 
-                //stringa
-                if (cursor.getType(fieldIndex) == cursor.FIELD_TYPE_STRING) { //string
-                    result.addRecordField(recordIndex, key, cursor.getString(fieldIndex));
+                    //prelevo l'indice del campo nel cursore
+                    int fieldIndex = cursor.getColumnIndex(key); //indice campo nel db
 
-                //float
-                } else if (cursor.getType(fieldIndex) == cursor.FIELD_TYPE_FLOAT) { //float
-                    result.addRecordField(recordIndex, key, new Double(cursor.getFloat(fieldIndex)));
+                    //aggiungo il valore nel record del contenitore dei dati
 
-                //long
-                } if (cursor.getType(fieldIndex) == cursor.FIELD_TYPE_INTEGER) { //integer
-                    result.addRecordField(recordIndex, key, new Long(cursor.getInt(fieldIndex)));
+                    //stringa
+                    if (cursor.getType(fieldIndex) == Cursor.FIELD_TYPE_STRING) { //string
+                        result.addRecordField(recordIndex, key, cursor.getString(fieldIndex));
+
+                    //float
+                    } else if (cursor.getType(fieldIndex) == Cursor.FIELD_TYPE_FLOAT) { //float
+                        result.addRecordField(recordIndex, key, cursor.getFloat(fieldIndex));
+
+                    //long
+                    } else if (cursor.getType(fieldIndex) == Cursor.FIELD_TYPE_INTEGER) { //integer
+                        result.addRecordField(recordIndex, key, cursor.getLong(fieldIndex));
+                    }
+
                 }
 
-            }
 
+            } while (cursor.moveToNext()); //scorro i dati
 
-        } while (cursor.moveToNext()); //scorro i dati
+        }
 
         //chiudo il cursore del db
         cursor.close();

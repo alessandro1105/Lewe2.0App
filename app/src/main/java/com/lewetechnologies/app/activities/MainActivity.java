@@ -1,9 +1,12 @@
 package com.lewetechnologies.app.activities;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -15,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +29,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.configs.Config;
+import com.lewetechnologies.app.database.Database;
+import com.lewetechnologies.app.database.DatabaseResult;
 import com.lewetechnologies.app.fragments.GSRMainFragment;
 import com.lewetechnologies.app.fragments.TemperatureMainFragment;
 import com.lewetechnologies.app.logger.Logger;
@@ -34,11 +40,23 @@ import com.lewetechnologies.app.services.MainService;
 
 import android.os.Handler;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
 
+
     //---COSTANTI---
-    private static final long COMMAND_PERIOD = 500;
+
+    //intent action
+    private static final String ACTION_DATABASE_RESULT_TEMPERATURE = "com.lewetechnologies.app.activities.MainActivity.ACTION_DATABASE_RESULT_TEMPERATURE";
+    private static final String ACTION_DATABASE_RESULT_GSR = "com.lewetechnologies.app.activities.MainActivity.ACTION_DATABASE_RESULT_GSR";
+
+    //comandi
+    private static final long WAIT_PERIOD = 500;
+
+
+    //---VARIABILI---
 
     /**
      * The {@link PagerAdapter} that will provide
@@ -58,7 +76,94 @@ public class MainActivity extends AppCompatActivity {
     //shared preferences
     SharedPreferences preferences;
 
-    int i = 0;
+    //new data receiver
+    BroadcastReceiver newDataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (BluetoothSerialService.ACTION_NEW_DATA.equals(intent.getAction())) {
+
+                //prelevo i dati dall'intent
+                double temperature = intent.getDoubleExtra(Config.EXTRA_DATA_TEMPERATURE, 0);
+                long gsr = intent.getLongExtra(Config.EXTRA_DATA_GSR, 0);
+                long timestamp = intent.getLongExtra(Config.EXTRA_DATA_TIMESTAMP, 0);
+
+                //aggiorno i dati
+                ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature, true);
+                ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) gsr, true);
+            }
+        }
+    };
+
+    //database data Receiver
+    BroadcastReceiver databaseResultTemperatureReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (ACTION_DATABASE_RESULT_TEMPERATURE.equals(intent.getAction())) {
+
+                Logger.e(TAG, "ACTION_DATABASE_RESULT_TEMPERATURE");
+
+                //prelevo i risultati dal db
+                DatabaseResult result = (DatabaseResult) intent.getSerializableExtra(DatabaseService.EXTRA_DATABASE_RESULT);
+
+                //scorro tutti i risultati
+                for (int i = result.size() -1; i >= 0; i--) {
+
+                    //prelevo i dati
+                    long timestamp = (long) result.getRecordField(i, Database.CULUMN_NAME_TIMESTAMP);
+                    double temperature = Double.parseDouble((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
+
+                    if (i == 0) {
+                        ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature, true);
+
+                    } else {
+                        ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature, false);
+                    }
+
+                }
+
+                //onetimereceiver
+                unregisterReceiver(this);
+            }
+
+        }
+    };
+
+    //database data Receiver
+    BroadcastReceiver databaseResultGSRReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (ACTION_DATABASE_RESULT_GSR.equals(intent.getAction())) {
+
+                Logger.e(TAG, "ACTION_DATABASE_RESULT_GSR");
+
+                //prelevo i risultati dal db
+                DatabaseResult result = (DatabaseResult) intent.getSerializableExtra(DatabaseService.EXTRA_DATABASE_RESULT);
+
+                //scorro tutti i risultati
+                for (int i = result.size() -1; i >= 0; i--) {
+
+                    //prelevo i dati
+                    long timestamp = (long) result.getRecordField(i, Database.CULUMN_NAME_TIMESTAMP);
+                    long gsr = Long.parseLong((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
+
+                    if (i == 0) {
+                        ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) gsr, true);
+
+                    } else {
+                        ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) gsr, false);
+                    }
+
+                }
+
+                //onetimereceiver
+                unregisterReceiver(this);
+            }
+
+        }
+    };
 
 
     @Override
@@ -161,9 +266,18 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
         //avvio il servizi
         startServices();
+
+
+        //registro i receiver
+        registerReceiver(newDataReceiver, new IntentFilter(BluetoothSerialService.ACTION_NEW_DATA));
+        registerReceiver(databaseResultTemperatureReceiver, new IntentFilter(ACTION_DATABASE_RESULT_TEMPERATURE));
+        registerReceiver(databaseResultGSRReceiver, new IntentFilter(ACTION_DATABASE_RESULT_GSR));
+
+        //interrogo il databse
+        sendQuery();
+
 
         //controllo se è stata fatta la prima associazione dalle preferenze
         //se non è stata fatta la prima associazione avvio la search activity
@@ -200,6 +314,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        //disregistro i receiver
+        unregisterReceiver(newDataReceiver);
 
         //chiudo l'applicazione
         finish();
@@ -380,17 +497,58 @@ public class MainActivity extends AppCompatActivity {
             final Intent intent = new Intent(BluetoothSerialService.COMMAND_CONNECT);
             intent.putExtra(BluetoothSerialService.EXTRA_DEVICE_ADDRESS, address);
 
-            //invio il comando di connessione dopo COMMAND_PERIOD per permettere l'avvio del servizio
+            //invio il comando di connessione dopo WAIT_PERIOD per permettere l'avvio del servizio
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     //invio il comando di connessione
                     sendBroadcast(intent);
                 }
-            }, COMMAND_PERIOD);
+            }, WAIT_PERIOD);
 
 
         }
 
+    }
+
+    //invio le query
+    private void sendQuery() {
+        //eseguo gli intent per ricevere i dati dal DB
+        String query = "SELECT * FROM " + Database.TABLE_NAME +
+                " WHERE " + Database.CULUMN_NAME_SENSOR_NAME + " = '" + Config.DATABASE_KEY_TEMPERATURE + "'" +
+                " ORDER BY " + Database.CULUMN_NAME_TIMESTAMP + " DESC" +
+                " LIMIT " + TemperatureMainFragment.MAX_CHART_ELEMENT;
+
+        final Intent querySelectTemperature = new Intent(DatabaseService.COMMAND_EXECUTE_QUERY);
+        querySelectTemperature.putExtra(DatabaseService.EXTRA_QUERY, query);
+        querySelectTemperature.putExtra(DatabaseService.EXTRA_DESTINATION_ACTION, ACTION_DATABASE_RESULT_TEMPERATURE);
+
+        //eseguo gli intent per ricevere i dati dal DB
+        query = "SELECT * FROM " + Database.TABLE_NAME +
+                " WHERE " + Database.CULUMN_NAME_SENSOR_NAME + " = '" + Config.DATABASE_KEY_GSR + "'" +
+                " ORDER BY " + Database.CULUMN_NAME_TIMESTAMP + " DESC" +
+                " LIMIT " + TemperatureMainFragment.MAX_CHART_ELEMENT;
+
+        final Intent querySelectGSR = new Intent(DatabaseService.COMMAND_EXECUTE_QUERY);
+        querySelectGSR.putExtra(DatabaseService.EXTRA_QUERY, query);
+        querySelectGSR.putExtra(DatabaseService.EXTRA_DESTINATION_ACTION, ACTION_DATABASE_RESULT_GSR);
+
+        //invio la query dopo WAIT_PERIOD per permettere l'avvio del servizio
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //invio il comando di connessione
+                sendBroadcast(querySelectTemperature);
+            }
+        }, WAIT_PERIOD);
+
+        //invio la query dopo WAIT_PERIOD per permettere l'avvio del servizio
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //invio il comando di connessione
+                sendBroadcast(querySelectGSR);
+            }
+        }, WAIT_PERIOD);
     }
 }
