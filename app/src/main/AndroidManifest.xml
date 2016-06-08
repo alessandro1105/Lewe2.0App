@@ -28,14 +28,14 @@
         <!-- CREDITS ACTIVITY -->
         <activity
             android:name=".activities.CreditsActivity"
-            android:label="@string/title_activity_credits"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainActivity" />
 
         <!-- ABOUT ACTIVITY -->
         <activity
             android:name=".activities.AboutActivity"
-            android:label="@string/title_activity_about"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainActivity">
             <intent-filter>

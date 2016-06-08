@@ -69,7 +69,10 @@ public class MainService extends Service {
     private void setNotification(int state) {
 
         Notification.Builder builder = new Notification.Builder(this); //creo builder
-        builder.setSmallIcon(R.mipmap.ic_launcher); //imposto icona
+
+        builder.setSmallIcon(R.drawable.notification_icon);
+
+        //builder.setSmallIcon(R.mipmap.ic_launcher); //imposto icona
         builder.setContentTitle(getString(R.string.service_main_notification_title_text)); //titolo notifica
         builder.setPriority(Notification.PRIORITY_LOW);
 

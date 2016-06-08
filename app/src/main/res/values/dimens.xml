@@ -5,7 +5,7 @@
 
     <!-- SPLASHSCREEN ACTIVITY-->
     <dimen name="activity_splashscreen_logo_width">300dp</dimen>
-    <dimen name="activity_splashscreen_logo_height">120dp</dimen>
+    <dimen name="activity_splashscreen_logo_height">300dp</dimen>
 
     <!-- SEARCH ACTIVITY -->
     <dimen name="activity_search_title_text_size">23sp</dimen>
