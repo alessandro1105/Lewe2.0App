@@ -2,10 +2,11 @@ package com.lewetechnologies.app.activities;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import com.lewetechnologies.app.configs.Config;
 import com.lewetechnologies.app.services.BluetoothSerialService;
 
 public class SearchActivity extends AppCompatActivity {
+    private final static String TAG = SearchActivity.class.getSimpleName();
 
     //---COSTANTI---
     private static final long SCAN_PERIOD = 10000;
@@ -33,33 +35,17 @@ public class SearchActivity extends AppCompatActivity {
     //---VARIABILI---
     private Handler scanHandler;
 
-    //creo il ricevitore di quando è stato trovato un device BT
-    BroadcastReceiver onBTDeviceFoundReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            //se è stato trovato un dispositivo
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-
-                //recupero il device trovato
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                onBTDeviceFound(device);
-
-
-            }
-        }
-    };
-
     //bluetooth adapter
-    BluetoothAdapter mBluetoothAdapter;
+    private BluetoothAdapter mBluetoothAdapter;
+
+    //ble scanner
+    private BluetoothLeScanner mBluetoothLeScanner;
 
     //indica se è stato registrato il receiver
     private boolean onBTDeviceFoundReceiverRegistered;
 
     //shared preferences
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
 
 
     @Override
@@ -147,6 +133,9 @@ public class SearchActivity extends AppCompatActivity {
     //metodo che avvia la ricerca tramite BT
     private void startDiscovery() {
 
+        //prelevo lo scanner BLE
+        mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
+
         setupStartView();
 
         scanHandler.postDelayed(new Runnable() {
@@ -159,12 +148,19 @@ public class SearchActivity extends AppCompatActivity {
             }
         }, SCAN_PERIOD);
 
-        //registro il ricevitore
-        registerReceiver(onBTDeviceFoundReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-        onBTDeviceFoundReceiverRegistered = true;
+        //inizio la ricerca
+        mBluetoothLeScanner.startScan(new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
+                //super.onScanResult(callbackType, result);
 
-        //inizio la ricerca del bluetooth
-        mBluetoothAdapter.startDiscovery();
+                //prelevo il device trovato
+                BluetoothDevice device = result.getDevice();
+
+                //chiamo la funzione di gestione
+                onBTDeviceFound(device);
+            }
+        });
 
     }
 
@@ -172,13 +168,18 @@ public class SearchActivity extends AppCompatActivity {
     private void stopDiscovery() {
 
         //stoppo la ricerca
-        mBluetoothAdapter.cancelDiscovery();
+        mBluetoothLeScanner.stopScan(new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
+                //super.onScanResult(callbackType, result);
 
-        //disregistro il ricevitore
-        if (onBTDeviceFoundReceiverRegistered) {
-            unregisterReceiver(onBTDeviceFoundReceiver);
-            onBTDeviceFoundReceiverRegistered = false;
-        }
+                //prelevo il device trovato
+                BluetoothDevice device = result.getDevice();
+
+                //chiamo la funzione di gestione
+                onBTDeviceFound(device);
+            }
+        });
 
     }
 
