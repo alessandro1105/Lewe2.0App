@@ -363,6 +363,9 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
                 intent.putExtra(Config.EXTRA_DATA_GSR, message.getLong(Config.JACK_GSR));
                 intent.putExtra(Config.EXTRA_DATA_TIMESTAMP, message.getLong(Config.JACK_TIMESTAMP));
 
+
+                Logger.e(TAG, "Timestamp: " + message.getLong(Config.JACK_TIMESTAMP));
+
                 sendBroadcast(intent);
 
                 Logger.e(TAG, "onReceive()");

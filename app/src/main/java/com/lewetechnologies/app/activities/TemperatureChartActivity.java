@@ -32,6 +32,7 @@ import com.lewetechnologies.app.services.DatabaseService;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -61,7 +62,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
                 long timestamp = intent.getLongExtra(Config.EXTRA_DATA_TIMESTAMP, 0);
 
                 //aggiorno i dati
-                update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature);
+                update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature);
 
             }
         }
@@ -86,7 +87,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
                     long timestamp = (long) result.getRecordField(i, Database.CULUMN_NAME_TIMESTAMP);
                     double temperature = Double.parseDouble((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
 
-                    update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature);
+                    update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature);
 
                 }
 

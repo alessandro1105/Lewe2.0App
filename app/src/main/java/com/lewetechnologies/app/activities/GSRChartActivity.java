@@ -29,6 +29,7 @@ import com.lewetechnologies.app.services.BluetoothSerialService;
 import com.lewetechnologies.app.services.DatabaseService;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -58,7 +59,7 @@ public class GSRChartActivity extends AppCompatActivity {
                 long timestamp = intent.getLongExtra(Config.EXTRA_DATA_TIMESTAMP, 0);
 
                 //aggiorno i dati
-                update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) temperature);
+                update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature);
 
             }
         }
@@ -83,7 +84,7 @@ public class GSRChartActivity extends AppCompatActivity {
                     long timestamp = (long) result.getRecordField(i, Database.CULUMN_NAME_TIMESTAMP);
                     long gsr = Long.parseLong((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
 
-                    update(DateFormat.format("dd/MM/yyyy HH:mm", new Date(timestamp)).toString(), (float) gsr);
+                    update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) gsr);
 
                 }
 
