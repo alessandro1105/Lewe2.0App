@@ -86,9 +86,11 @@ public class MainActivity extends AppCompatActivity {
                 long gsr = intent.getLongExtra(Config.EXTRA_DATA_GSR, 0);
                 long timestamp = intent.getLongExtra(Config.EXTRA_DATA_TIMESTAMP, 0);
 
+                Logger.e(TAG, "TIMESTAMP NEW DATA" + timestamp);
+
                 //aggiorno i dati
-                ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature, true);
-                ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) gsr, true);
+                ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) temperature, true);
+                ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) gsr, true);
             }
         }
     };
@@ -113,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
                     double temperature = Double.parseDouble((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
 
                     if (i == 0) {
-                        ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature, true);
+                        ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) temperature, true);
 
                     } else {
-                        ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature, false);
+                        ((TemperatureMainFragment) mSectionsPagerAdapter.getItem(0)).update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) temperature, false);
                     }
 
                 }
@@ -148,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
                     long gsr = Long.parseLong((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
 
                     if (i == 0) {
-                        ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) gsr, true);
+                        ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) gsr, true);
 
                     } else {
-                        ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) gsr, false);
+                        ((GSRMainFragment) mSectionsPagerAdapter.getItem(1)).update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) gsr, false);
                     }
 
                 }

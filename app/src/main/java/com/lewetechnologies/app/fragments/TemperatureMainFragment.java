@@ -183,6 +183,7 @@ public class TemperatureMainFragment extends Fragment {
         chart.setScaleYEnabled(false); //disabilita lo zoom dell'asse y
         chart.getAxisLeft().setTextColor(Color.parseColor("#666666")); //colore delle label
         chart.getAxisLeft().setAxisLineWidth(2f);
+        chart.getAxisLeft().setLabelCount(5, true);
 
         //formatter
         chart.getAxisLeft().setValueFormatter(new TemperatureYAxisValueFormatter());

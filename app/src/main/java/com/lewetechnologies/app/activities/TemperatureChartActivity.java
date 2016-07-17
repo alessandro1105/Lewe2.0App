@@ -62,7 +62,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
                 long timestamp = intent.getLongExtra(Config.EXTRA_DATA_TIMESTAMP, 0);
 
                 //aggiorno i dati
-                update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature);
+                update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) temperature);
 
             }
         }
@@ -87,7 +87,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
                     long timestamp = (long) result.getRecordField(i, Database.CULUMN_NAME_TIMESTAMP);
                     double temperature = Double.parseDouble((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
 
-                    update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature);
+                    update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) temperature);
 
                 }
 
@@ -180,6 +180,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
         chart.setScaleYEnabled(false); //disabilita lo zoom dell'asse y
         chart.getAxisLeft().setTextColor(Color.parseColor("#666666")); //colore delle label
         chart.getAxisLeft().setAxisLineWidth(2f);
+        chart.getAxisLeft().setLabelCount(6, true);
 
         //formatter
         chart.getAxisLeft().setValueFormatter(new TemperatureYAxisValueFormatter());

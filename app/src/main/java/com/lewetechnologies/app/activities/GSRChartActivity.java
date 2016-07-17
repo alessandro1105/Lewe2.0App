@@ -59,7 +59,7 @@ public class GSRChartActivity extends AppCompatActivity {
                 long timestamp = intent.getLongExtra(Config.EXTRA_DATA_TIMESTAMP, 0);
 
                 //aggiorno i dati
-                update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) temperature);
+                update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) temperature);
 
             }
         }
@@ -84,7 +84,7 @@ public class GSRChartActivity extends AppCompatActivity {
                     long timestamp = (long) result.getRecordField(i, Database.CULUMN_NAME_TIMESTAMP);
                     long gsr = Long.parseLong((String) result.getRecordField(i, Database.CULUMN_NAME_SENSOR_VALUE));
 
-                    update(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date(timestamp * 1000)).toString(), (float) gsr);
+                    update(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(timestamp * 1000 - 7200000)).toString(), (float) gsr);
 
                 }
 
