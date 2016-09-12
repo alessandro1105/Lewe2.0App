@@ -25,6 +25,12 @@ import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.configs.Config;
 import com.lewetechnologies.app.services.BluetoothSerialService;
 
+/**
+ * Classe dell'activity che effettua la ricerca del dispositivo bluetooth
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
+ */
 public class SearchActivity extends AppCompatActivity {
     private final static String TAG = SearchActivity.class.getSimpleName();
 

@@ -3,7 +3,10 @@ package com.lewetechnologies.app.utils;
 import com.lewetechnologies.app.logger.Logger;
 
 /**
- * Created by alessandro on 20/05/16.
+ * Classe astratta usata per realizzare thread che eseguono continuamente il codice allo scadere di un timer
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 
 //classe che gestisce un thread ciclico
@@ -12,6 +15,11 @@ public abstract class CyclicalThread extends Thread {
     private long timerPolling; //indica ogni quanto eseguire il metodo execute
     private boolean threadEnabled; //variabile che se true fa terminare naturalmente il thread
 
+    /**
+     * Costruttore della classe
+     *
+     * @param timer indica il valore del timer espresso in millisecondi
+     */
     //costruttore
     public CyclicalThread(long timer) {
         super();
@@ -23,6 +31,9 @@ public abstract class CyclicalThread extends Thread {
         threadEnabled = false;
     }
 
+    /**
+     * Funzione che avvia il thread ciclico
+     */
     //stop thread
     public void startThread() { //avvia il thread
 
@@ -33,15 +44,20 @@ public abstract class CyclicalThread extends Thread {
         super.start();
     }
 
-
+    /**
+     * Funzione che ferma il thread ciclico (il thread viene messo in pausa)
+     */
     public void stopThread() { //stoppa il thread
 
         //fermo il thread
         threadEnabled = false;
     }
 
+    /**
+     * Implementazione del metodo run della superclasse Thread, garantendo la ciclicità
+     */
     //metodo run
-    public void run() {
+    public final void run() {
 
         new Runnable() {
 
@@ -67,6 +83,9 @@ public abstract class CyclicalThread extends Thread {
 
     }
 
+    /**
+     * Metodo da implementare con il codice dell'utente da ripetere ciclicamente
+     */
     //metodo che contiene il corpo del thread da eseguire ripetutamente
     abstract public void execute();
 

@@ -29,7 +29,10 @@ import com.lewetechnologies.app.activities.GSRChartActivity;
 import java.text.DecimalFormat;
 
 /**
- * Created by alessandro on 22/05/16.
+ * Classe del main fragment per la visualizzazione dei dati del sensore GSR
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 //---FRAGMENT CLASS GSR---
 public class GSRMainFragment extends Fragment {
@@ -47,11 +50,19 @@ public class GSRMainFragment extends Fragment {
     private LineChart chart; //grafico
 
 
+    /**
+     * Costruttore vuoto del fragment
+     */
     //costruttore
     public GSRMainFragment() {
         //richiede un costruttore vuoto
     }
 
+    /**
+     * Factory Method per il fragment
+     *
+     * @return Ritorna un'istanza del fragment
+     */
     //factory method per la costruzuione del fragment
     public static GSRMainFragment newInstance() {
 
@@ -61,7 +72,6 @@ public class GSRMainFragment extends Fragment {
         //ritorno il fragment
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -219,7 +229,7 @@ public class GSRMainFragment extends Fragment {
 
 
     //chart YAxis formatter
-    public static class GSRYAxisValueFormatter implements YAxisValueFormatter {
+    private static class GSRYAxisValueFormatter implements YAxisValueFormatter {
 
         public GSRYAxisValueFormatter () {
             //costruttore vuoto
@@ -268,6 +278,13 @@ public class GSRMainFragment extends Fragment {
         }
     }
 
+    /**
+     * Metodo usato per aggiornare i dati contenuti nel fragment
+     *
+     * @param xKey Chiave del nuovo dato
+     * @param yVal Valore del nuovo dato
+     * @param updateData Indica se il dato inserito è l'ultimo
+     */
     public void update(String xKey, double yVal, boolean updateData) {
 
         //se è richiesto l'update del dato "grande"

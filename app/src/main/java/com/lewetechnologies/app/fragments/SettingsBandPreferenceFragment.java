@@ -13,22 +13,27 @@ import com.lewetechnologies.app.configs.Config;
 import com.lewetechnologies.app.services.BluetoothSerialService;
 
 /**
- * Created by alessandro on 22/05/16.
+ * Classe del fragment contenente le impostazioni del bracciale
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public class SettingsBandPreferenceFragment extends PreferenceFragment {
 
-
-
     //preferenza status
-    Preference status;
+    private Preference status;
 
     //pereferenza bandName
-    Preference bandName;
+    private Preference bandName;
 
     //shared preference
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
 
-
+    /**
+     * Factory Method per il fragment
+     *
+     * @return Ritorna un'istanza del fragment
+     */
     public static SettingsBandPreferenceFragment newInstance() {
 
         //istanzio il fragment
@@ -93,13 +98,6 @@ public class SettingsBandPreferenceFragment extends PreferenceFragment {
         }
     }
 
-    private void sendExitRequest() {
-        //ritorno la richiesta di chiusura dell'app
-        Intent exitIntent = new Intent();
-        getActivity().setResult(Config.RESULT_EXIT_CODE, exitIntent);
-        getActivity().finish();
-    }
-
     private void dissociateLeweBand() {
         //accedo alle shared preference
         SharedPreferences.Editor editor = preferences.edit();
@@ -130,6 +128,11 @@ public class SettingsBandPreferenceFragment extends PreferenceFragment {
         getActivity().sendBroadcast(intent);
     }
 
+    /**
+     * Metodo usato per aggiornare i dati contenuti nel fragment
+     *
+     * @param connectionStatus Indica lo stato della connessione al dispositivo bluetooth
+     */
     //aggiorna la preferenza status
     public void updateStatus(int connectionStatus) {
 

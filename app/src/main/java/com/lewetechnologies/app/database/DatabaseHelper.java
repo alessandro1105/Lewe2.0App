@@ -7,13 +7,24 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.lewetechnologies.app.logger.Logger;
 
 /**
- * Created by alessandro on 22/05/16.
+ * Classe Helper del database
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     //query di creazione del db se non esiste (passata nel costruttore)
     private String databaseCreateStatement;
 
+    /**
+     * Costruttore della classe helper del database
+     *
+     * @param context Costesto dell'applicazione
+     * @param databaseName Nome del databse
+     * @param databaseVersion Versione del database
+     * @param databaseCreateStatement Statement di creazione del database
+     */
     //costruttore
     public DatabaseHelper(Context context, String databaseName, int databaseVersion, String databaseCreateStatement) {
         super(context, databaseName, null, databaseVersion);

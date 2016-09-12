@@ -7,21 +7,45 @@ import android.database.sqlite.SQLiteDatabase;
 import com.lewetechnologies.app.configs.Config;
 
 /**
- * Created by alessandro on 22/05/16.
+ * Classe di gestione del database
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public class Database {
 
     //---DATABASE SETTINGS---
+    /**
+     * Costante contenente il nome del file del database (preleva il suo valore direttamente dalla classe Config)
+     */
     public static final String DATABASE_FILE_NAME = Config.DATABASE_FILE_NAME; //nome del file
+    /**
+     * Costante contenente la versione del database (preleva il suo valore direttamente dalla classe Config)
+     */
     public static final int DATABASE_VERSION = Config.DATABASE_VERSION; //verisone del database
 
     //tabella
+    /**
+     * Nome della tabella contenuta nel databse
+     */
     public static final String TABLE_NAME = "sensors";
 
     //field del database
+    /**
+     * Nome della colonna ID contenuta nella tabella
+     */
     public static final String CULUMN_NAME_ID = "id"; //id
+    /**
+     * Nome della colonna Sensor Name contenuta nella tabella
+     */
     public static final String CULUMN_NAME_SENSOR_NAME = "sensor_name"; //sensor name
+    /**
+     * Nome della colonna Sensor Value contenuta nella tabella
+     */
     public static final String CULUMN_NAME_SENSOR_VALUE = "sensor_value"; //sensor value
+    /**
+     * Nome della colonna Timestamp contenuta nella tabella
+     */
     public static final String CULUMN_NAME_TIMESTAMP = "timestamp"; //timestamp
 
     //statement di creazione
@@ -40,6 +64,11 @@ public class Database {
     private DatabaseHelper databaseHelper; //helper per la connessione al db
 
 
+    /**
+     * Costruttore della classe
+     *
+     * @param context Contesto dell'applicazione
+     */
     //costruttore
     public Database(Context context) {
 
@@ -53,6 +82,9 @@ public class Database {
     }
 
 
+    /**
+     * Metodo che apre la connesione con il database
+     */
     //apertura database
     public void open() { //apre la connessione con il db
 
@@ -65,6 +97,9 @@ public class Database {
     }
 
 
+    /**
+     * Metodo che chiude la connessione con il database
+     */
     //chiusura database
     public void close() { //chiude la connessione con il db
 
@@ -77,6 +112,13 @@ public class Database {
 
     }
 
+    /**
+     * Metodo che esegue la query passata come argomento
+     *
+     * @param querySQL Query da eseguire nel database
+     * @return Ritorna il cursore per scorrere i record selezionati
+     * @throws DatabaseException
+     */
     //execute
     public Cursor executeQuery(String querySQL) {
 

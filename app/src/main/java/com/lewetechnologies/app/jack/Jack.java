@@ -10,7 +10,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * Created by alessandro on 20/05/16.
+ * Classe principale dell'implementazione del protocollo Jack.
+ * Deve essere estesa per implementare gli handler agli eventi di ricezione di un messaggio e di ricezione di una conferma
+ * e per il metodo che fornisce un ID univoco per i messaggi inviati
+ *
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public abstract class Jack {
 
@@ -20,6 +26,9 @@ public abstract class Jack {
     private static final String JK_MESSAGE_TYPE_DATA = "data"; //tipo dati
 
     private static final String JK_MESSAGE_ID = "id"; //id messaggio
+    /**
+     * Chiave del messaggio Jack che contiene il payload del messaggio
+     */
     public static final String JK_MESSAGE_PAYLOAD = "val"; //payload messaggio
 
     private static final long JK_TIMER_RESEND_MESSAGE = 1000;//tempo (ms) da attendere prima di reinviare i messaggi non confermati
@@ -41,13 +50,39 @@ public abstract class Jack {
 
 
     //---HANDLER USER SPECIFIED---
+
+    /**
+     * Handler dell'evento di ricezione di un messaggio (da implementare)
+     *
+     * @param message Contenuto del messaggio ricevuto
+     * @param id ID del messaggio ricevuto
+     */
     public abstract void onReceive(JData message, long id); //handler onReceive
+
+    /**
+     * Handler dell'evento di ricezione di una conferma ad un messaggio inviato (da implementare)
+     *
+     * @param id ID del messaggio confermato
+     */
     public abstract void onReceiveAck(long id); //handler onReceiveAck
+
+    /**
+     * Metodo che deve restituire un ID univoco per i messaggi da inviare
+     *
+     * @return Ritorna un numero long univoco
+     */
     public abstract long getMessageID(); //deve ritornare un id valido per il messaggio
 
 
     //---PUBLIC---
 
+    /**
+     * Costruttore della classe
+     *
+     * @param mmJTM Mezzo di trasmissione (oggetto di una classe che implementa JTransmissionMethod)
+     * @param timerSendMessage Timer in millisecondi tra un intervallo di invio e un'altro
+     * @param timerPolling Timer in millisecondi di attesa tra polling successivi del mezzo di trasmissione
+     */
     //costruttore con tutti i parametri (mmJTM, timerResendMessage, timerPolling)
     public Jack(JTransmissionMethod mmJTM, long timerSendMessage, long timerPolling) {
 
@@ -65,12 +100,19 @@ public abstract class Jack {
 
     }
 
+    /**
+     * Costruttore della classe
+     *
+     * @param mmJTM Mezzo di trasmissione (oggetto di una classe che implementa JTransmissionMethod)
+     */
     //costruttore con solo mmJTM
     public Jack(JTransmissionMethod mmJTM) {
         this(mmJTM, JK_TIMER_RESEND_MESSAGE, JK_TIMER_POLLING);
     }
 
-
+    /**
+     * Metodo che avvia il polling del mezzo di comunicazione
+     */
     //funzione di avvio
     public void start() {
         Logger.i("Jack", "Start Jack protocol");
@@ -80,6 +122,9 @@ public abstract class Jack {
 
     }
 
+    /**
+     * Metodo che ferma il polling del mezzo di comunicazione
+     */
     //funzione di stop
     public void stop() {
         Logger.i("Jack", "Stop Jack protocol");
@@ -89,6 +134,9 @@ public abstract class Jack {
 
     }
 
+    /**
+     * Metodo che svuota il buffer dei messaggi da inviare
+     */
     //funzione per svuotare il buffer di invio
     public void flushBufferSend() {
 
@@ -97,6 +145,13 @@ public abstract class Jack {
 
     }
 
+    /**
+     * Metodo che inserisce nel buffer dei messaggi da inviare il messaggio passato come argomento
+     *
+     * @param message Messaggio da inviare
+     * @return ID del messaggio inviato
+     * @throws JackException
+     */
     //funzione per inviare un messaggio
     public long send(JData message) throws JackException {
 
@@ -227,9 +282,8 @@ public abstract class Jack {
 
     }
 
-
     //thread per controllare periodicamente il mezzo di trasmissione
-    public class PollingThread extends CyclicalThread {
+    private class PollingThread extends CyclicalThread {
 
         private long timeLastSend;
 

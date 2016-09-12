@@ -13,16 +13,19 @@ import com.lewetechnologies.app.fragments.SettingsBandPreferenceFragment;
 import com.lewetechnologies.app.logger.Logger;
 import com.lewetechnologies.app.services.BluetoothSerialService;
 
+/**
+ * Classe dell'activity contente le impostazioni del bracciale
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
+ */
 public class BandSettingsActivity extends AppCompatActivity {
 
-    //shared preference
-    SharedPreferences preferences;
-
     //fragment
-    SettingsBandPreferenceFragment fragment;
+    private SettingsBandPreferenceFragment fragment;
 
     //riceve gli stati di connessione
-    BroadcastReceiver connectionStatusReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver connectionStatusReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -43,9 +46,6 @@ public class BandSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //prelevo le shared preference
-        preferences = getApplicationContext().getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
 
         //creo il fragment
         fragment = SettingsBandPreferenceFragment.newInstance();

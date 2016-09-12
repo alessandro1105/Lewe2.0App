@@ -14,7 +14,11 @@ import com.lewetechnologies.app.database.DatabaseResult;
 import com.lewetechnologies.app.logger.Logger;
 
 /**
- * Created by alessandro on 27/05/16.
+ * Servizio di gestione del database. Questo servizio è stato sviluppato in modo da rendere disponibile
+ * l'utilizzo del database tramite intent da qualsiasi parte dell'applicazione *
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public class DatabaseService extends Service {
 
@@ -23,20 +27,32 @@ public class DatabaseService extends Service {
     //---COSTANTI---
 
     //comandi
+    /**
+     * Azione dell'intent per comandandare al servizio di eseguire una query nel database
+     */
     public static final String COMMAND_EXECUTE_QUERY = "com.lewetechnologies.app.services.DatabaseService.COMMAND_EXECUTE_QUERY";
     //extra per i comandi
+    /**
+     * Chiave usata nell'extra dell'intent di comando contenente la query da eseguire nel databse
+     */
     public static final String EXTRA_QUERY = "com.lewetechnologies.app.services.DatabaseService.EXTRA_QUERY"; //query
+    /**
+     * Chiave usata nell'extra dell'intent di comando contenente l'azione dell'intent a cui restituire i dati prelevati dal databse
+     */
     public static final String EXTRA_DESTINATION_ACTION = "com.lewetechnologies.app.services.DatabaseService.EXTRA_DESTINATION_ACTION"; //anction di destinazione per il risultato
 
     //extra per i risultati
+    /**
+     * Chiave usata nell'extra dell'intent di riusposta contente i risultati dell'esecuzione della query nel database
+     */
     public static final String EXTRA_DATABASE_RESULT = "com.lewetechnologies.app.services.DatabaseService.EXTRA_DATABASE_RESULT";
 
 
     //---VARIABILI---
-    Database database; //database
+    private Database database; //database
 
     //receiver command
-    BroadcastReceiver commandReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver commandReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 

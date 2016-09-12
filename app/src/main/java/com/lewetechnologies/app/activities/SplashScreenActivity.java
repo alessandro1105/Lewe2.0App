@@ -10,6 +10,12 @@ import android.view.WindowManager;
 import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.services.MainService;
 
+/**
+ * Classe dell'activity contente lo splash screen dell'applicazione
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
+ */
 public class SplashScreenActivity extends Activity {
 
     @Override

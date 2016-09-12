@@ -36,6 +36,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Classe dell'activity contente il grafico con tutte le letture ricevute dal sensore di temperatura
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
+ */
 public class TemperatureChartActivity extends AppCompatActivity {
 
     private final static String TAG = TemperatureChartActivity.class.getSimpleName();
@@ -50,7 +56,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
     private LineChart chart;
 
     //new data receiver
-    BroadcastReceiver newDataReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver newDataReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -69,7 +75,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
     };
 
     //database data Receiver
-    BroadcastReceiver databaseResultReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver databaseResultReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -255,7 +261,7 @@ public class TemperatureChartActivity extends AppCompatActivity {
     }
 
     //chart YAxis formatter
-    public static class TemperatureYAxisValueFormatter implements YAxisValueFormatter {
+    private static class TemperatureYAxisValueFormatter implements YAxisValueFormatter {
 
         public TemperatureYAxisValueFormatter () {
             //costruttore vuoto
@@ -273,6 +279,12 @@ public class TemperatureChartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo usato per aggiornare i dati contenuti nel grafico
+     *
+     * @param xKey Chiave del nuovo dato
+     * @param yVal Valore del nuovo dato
+     */
     //update dati grafico
     public void update(String xKey, double yVal) {
 

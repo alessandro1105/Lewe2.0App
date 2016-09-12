@@ -8,6 +8,9 @@ import android.view.MenuItem;
 
 import com.lewetechnologies.app.R;
 
+/**
+ * Classe dell'activity contenente le informazioni sull'applicazione
+ */
 public class AboutActivity extends AppCompatActivity {
 
     @Override

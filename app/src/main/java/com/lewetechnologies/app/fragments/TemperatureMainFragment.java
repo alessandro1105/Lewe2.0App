@@ -30,7 +30,10 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 /**
- * Created by alessandro on 22/05/16.
+ * Classe del main fragment per la visualizzazione dei dati del sensore di temperatura
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 //---FRAGMENT CLASS TEMPERATURE---
 public class TemperatureMainFragment extends Fragment {
@@ -47,12 +50,19 @@ public class TemperatureMainFragment extends Fragment {
 
     private LineChart chart; //grafico
 
-
+    /**
+     * Costruttore vuoto del fragment
+     */
     //costruttore
     public TemperatureMainFragment() {
         //richiede un costruttore vuoto
     }
 
+    /**
+     * Factory Method per il fragment
+     *
+     * @return Ritorna un'istanza del fragment
+     */
     //factory method per la costruzuione del fragment
     public static TemperatureMainFragment newInstance() {
 
@@ -221,7 +231,7 @@ public class TemperatureMainFragment extends Fragment {
 
 
     //chart YAxis formatter
-    public static class TemperatureYAxisValueFormatter implements YAxisValueFormatter {
+    private static class TemperatureYAxisValueFormatter implements YAxisValueFormatter {
 
         public TemperatureYAxisValueFormatter () {
             //costruttore vuoto
@@ -277,11 +287,13 @@ public class TemperatureMainFragment extends Fragment {
         }
     }
 
-    //metodo di update con l'ultimo valore
-    public void update(String xKey, double yVal) {
-        update(xKey, yVal, false); //richiamo l'altro metodo di update
-    }
-
+    /**
+     * Metodo usato per aggiornare i dati contenuti nel fragment
+     *
+     * @param xKey Chiave del nuovo dato
+     * @param yVal Valore del nuovo dato
+     * @param updateData Indica se il dato inserito è l'ultimo
+     */
     public void update(String xKey, double yVal, boolean updateData) {
 
         //se è richiesto l'update del dato "grande"

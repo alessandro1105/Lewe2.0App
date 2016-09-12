@@ -27,7 +27,12 @@ import com.lewetechnologies.app.logger.Logger;
 import java.util.UUID;
 
 /**
- * Created by alessandro on 26/05/16.
+ * Servizio il cui compito è quello di gestire la connessione bluetooth seriale
+ * Implementa l'interfaccia JTransmissionMethod del protocollo di comunicazione Jack
+ *
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public class BluetoothSerialService extends Service implements JTransmissionMethod {
     private final static String TAG = BluetoothSerialService.class.getSimpleName();
@@ -35,20 +40,48 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     //---COSTANTI--
 
     //AZIONI PER INTENT IN ENTRATA (COMANDI)
+    /**
+     * Codice di request nell'intent per richiedere la connessione al dispositivo bluetooth
+     */
     public final static String COMMAND_CONNECT = "com.lewetechnologies.app.services.BluetoothSerialService.COMMAND_CONNECT"; //connetti
+    /**
+     * Codice di request nell'intent per richiedere la disconnessione dal dispositivo bluetooth
+     */
     public final static String COMMAND_DISCONNECT = "com.lewetechnologies.app.services.BluetoothSerialService.COMMAND_DISCONNECT"; //disconnetti
+    /**
+     * Codice di request nell'intent per richiedere lo stato della connessione bluetooth
+     */
     public final static String COMMAND_CONNECTION_STATUS = "com.lewetechnologies.app.services.BluetoothSerialService.COMMAND_CONNECTION_STATUS"; //status
 
-    //estra per intent in entrata
-    public final static  String EXTRA_DEVICE_ADDRESS = "com.lewetechnologies.app.services.BluetoothSerialService.EXTRA_DEVICE_ADDRESS"; //devic// e bt address
+
+    //extra per intent in entrata
+    /**
+     * Chiave usata negli extra degli intent per indicare il MAC Address del dispositivo bluetooth
+     */
+    public final static String EXTRA_DEVICE_ADDRESS = "com.lewetechnologies.app.services.BluetoothSerialService.EXTRA_DEVICE_ADDRESS"; //devic// e bt address
 
     //AZIONI PER INTENT IN USCITA
+    /**
+     * Azione degli intent inviati in broadcast dal servizio indicante che è stata stabilita la connessione al dispositivo bluetooth
+     */
     public final static String ACTION_CONNECTED = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_BAND_CONNECTED"; //band connesso
+    /**
+     * Azione degli intent inviati in broadcast dal servizio indicante che è il dispositivo bluetooth è stato disconnesso
+     */
     public final static String ACTION_DISCONNECTED = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_BAND_DISCONNECTED"; //band disconnesso
+    /**
+     * Azione degli intent inviati in broadcast dal servizio indicante la presenza di nuovi dati ricevuti dal dispositivo bluetooth
+     */
     public final static String ACTION_NEW_DATA = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_NEW_DATA"; //nuovi dati
+    /**
+     * Azione degli intent inviati in broadcast dal servizio indicante la presenza di nuovi dati ricevuti dal dispositivo bluetooth
+     */
     public final static String ACTION_CONNECTION_STATUS = "com.lewetechnologies.app.services.BluetoothSerialService.ACTION_CONNECTION_STATUS"; //band connesso
 
     //extra per intent in uscita
+    /**
+     * Chiave usata negli extra degli intent per indicare lo stato della connessione bluetooth
+     */
     public final static  String EXTRA_CONNECTION_STATUS = "com.lewetechnologies.app.services.BluetoothSerialService.EXTRA_CONNECTION_STATUS"; //devic// e bt address
 
     //uuid gatt
@@ -57,8 +90,17 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     private static final String SERIAL_CHARACTERISTC_RX = "0000ffe1-0000-1000-8000-00805f9b34fb"; //caratteristica di RX
 
     //connection states
+    /**
+     * Valore restituito per indicare che il dispositivo bluetooth è disconnesso
+     */
     public static final int STATE_DISCONNECTED = 0; //disconnesso
+    /**
+     * Valore restituito per indicare che il dispositivo bluetooth è in connessione
+     */
     public static final int STATE_CONNECTING = 1; //in attesa di connessione
+    /**
+     * Valore restituito per indicare che il dispositivo bluetooth è connesso
+     */
     public static final int STATE_CONNECTED = 2; //connesso
 
     //caratteri per JTM
@@ -288,6 +330,12 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     }
 
     //inizializza il servizio
+
+    /**
+     * Metodo che inzializza il servizio. Da chiamarsi dopo la creazione del servizio stesso
+     *
+     * @return Ritorna un valore booleano indicante se l'inizializzazione del servizio è avvenuta correttamente
+     */
     public boolean initialize() {
 
         // For API level 18 and above, get a reference to BluetoothAdapter through
@@ -398,6 +446,12 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
     }
 
     //---FUNZIONE DI JTM--
+
+    /**
+     * Implementazione del metodo dell'interfaccia JTransmissionMethod.
+     *
+     * @return restituisce il primo messaggio disponibile nel buffer di ricezione dei messaggi
+     */
     @Override
     public String receive() {
 
@@ -436,6 +490,11 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
 
     }
 
+    /**
+     * Implementazione del metodo dell'interfaccia JTransmissionMethod.
+     *
+     * @param message Messaggio da inviare al dispositivo bluetooth connesso
+     */
     @Override
     public void send(String message) {
 
@@ -491,6 +550,11 @@ public class BluetoothSerialService extends Service implements JTransmissionMeth
 
     }
 
+    /**
+     * Implementazione del metodo dell'interfaccia JTransmissionMethod.
+     *
+     * @return Ritorna un valore booleano indicante se il buffer è vuoto o contiene almeno un carattere
+     */
     @Override
     public boolean available() {
         return !buffer.equals("");

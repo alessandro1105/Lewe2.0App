@@ -43,6 +43,12 @@ import android.os.Handler;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Classe dell'activity principale dell'applicazione
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
+ */
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
 
@@ -72,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     //shared preferences
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
 
     //new data receiver
-    BroadcastReceiver newDataReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver newDataReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     //database data Receiver
-    BroadcastReceiver databaseResultTemperatureReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver databaseResultTemperatureReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     //database data Receiver
-    BroadcastReceiver databaseResultGSRReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver databaseResultGSRReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -387,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Handler bottom bar
-    public void setTemperatureSelected() {
+    private void setTemperatureSelected() {
         //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
         ((ImageView) findViewById(R.id.bottombar_icon_temperature)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_temperature_selected));
         ((TextView) findViewById(R.id.bottombar_text_temperature)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color_selected));
@@ -398,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.bottombar_text_gsr)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color));
     }
 
-    public void setGSRSelected() {
+    private void setGSRSelected() {
         //setto la nuova icona e il colore del testo della bottombar dell'elemento selezionato
         ((ImageView) findViewById(R.id.bottombar_icon_gsr)).setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_gsr_selected));
         ((TextView) findViewById(R.id.bottombar_text_gsr)).setTextColor(ContextCompat.getColor(getApplication(), R.color.activity_main_bottombar_element_description_text_color_selected));
@@ -415,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         //costanti per accedere ai fragment
         public static final int TEMPERATURE_MAIN_FRAGMENT_POSITION = 0;

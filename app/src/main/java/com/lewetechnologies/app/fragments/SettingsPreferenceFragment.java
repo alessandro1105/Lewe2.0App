@@ -11,7 +11,10 @@ import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.configs.Config;
 
 /**
- * Created by alessandro on 22/05/16.
+ * Classe del fragment contenente la pagina principale delle impostazioni
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public class SettingsPreferenceFragment extends PreferenceFragment {
 

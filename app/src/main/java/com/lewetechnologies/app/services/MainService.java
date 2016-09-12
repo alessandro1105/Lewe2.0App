@@ -14,7 +14,10 @@ import com.lewetechnologies.app.R;
 import com.lewetechnologies.app.activities.MainActivity;
 
 /**
- * Created by alessandro on 27/05/16.
+ * Servizio principale. Ha il compito di avviare e gestire i servizi secondari (DatabaseService e BluetoothService)
+ *
+ * @author Alessandro Pasqualini - alessandro.pasqualini.1105@gmail.com
+ * @version 1.00
  */
 public class MainService extends Service {
 
@@ -22,7 +25,7 @@ public class MainService extends Service {
     private static final int ONGOING_NOTIFICATION_ID = 1105;
 
     //riceve gli stati di connessione
-    BroadcastReceiver connectionStatusReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver connectionStatusReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
